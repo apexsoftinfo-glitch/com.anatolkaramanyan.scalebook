@@ -1,0 +1,73 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+.idea/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configurations and tasks you actually
+# want to commit. Some settings that are individual or local-to-your-project
+# are excluded.
+.vscode/:
+  !settings.json
+  !tasks.json
+  !launch.json
+  !extensions.json
+  !*.code-snippets
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.packages
+node_modules/
+package-lock.json
+/build/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place separate commands in separate files
+# and they will contain absolute paths.
+android/app/src/main/res/values/strings.xml
+android/key.properties
+android/local.properties
+android/app/google-services.json
+
+# iOS/macOS
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/App.framework
+ios/Flutter/App.podspec
+ios/Flutter/App.framework.dSYM
+ios/Flutter/App.framework.dSYM.zip
+ios/Runner/GeneratedPluginRegistrant.h
+ios/Runner/GeneratedPluginRegistrant.m
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+
+# Secrets
+.env
+api_keys.dart
+
+# ScaleBook Data
+scalebook_data/
