@@ -9,7 +9,7 @@ import '../../features/session/data/datasources/fake_connectivity_data_source.da
 import '../../features/session/data/datasources/profile_data_source.dart';
 import '../../features/session/data/datasources/supabase_profile_data_source.dart';
 import '../../features/session/data/datasources/profile_local_data_source.dart';
-import '../../features/session/data/datasources/fake_profile_local_data_source.dart';
+import '../../features/session/data/datasources/shared_prefs_profile_local_data_source.dart';
 import '../../features/session/data/datasources/fake_subscription_data_source.dart';
 import '../../features/session/data/datasources/revenuecat_data_source.dart';
 import '../../features/session/data/datasources/subscription_data_source.dart';
@@ -31,7 +31,7 @@ void registerSessionModule(GetIt getIt, {bool revenueCatEnabled = false}) {
     getIt.registerLazySingleton<AuthDataSource>(() => _MockAuthDataSource());
     getIt.registerLazySingleton<ProfileDataSource>(() => _MockProfileDataSource());
   }
-  getIt.registerLazySingleton<ProfileLocalDataSource>(() => FakeProfileLocalDataSource());
+  getIt.registerLazySingleton<ProfileLocalDataSource>(() => SharedPrefsProfileLocalDataSource());
   getIt.registerLazySingleton<ConnectivityDataSource>(() => FakeConnectivityDataSource());
 
   // Subscription — RevenueCat or Fake fallback

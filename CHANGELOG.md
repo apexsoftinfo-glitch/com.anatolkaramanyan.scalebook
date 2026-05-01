@@ -16,7 +16,8 @@
 - Nowe tło jest generowane w czasie rzeczywistym, co eliminuje błędy wczytywania i gwarantuje 100% czystości (brak osób/niechcianych elementów).
 - Dodano techniczne detale: miarki na krawędziach, oznaczenia kątowe, oznaczenia skali ("1/24 SCALE WORKBENCH") oraz profesjonalną głębię kolorystyczną (Navy Blue).
 - Skonfigurowano i wygenerowano poprawną ikonę aplikacji (ScaleBook) dla systemów Android i iOS.
-- Naprawiono problem wylogowywania użytkownika po restarcie aplikacji – sesja jest teraz poprawnie przywracana z pamięci urządzenia.
+- Wprowadzono trwały cache profilu użytkownika – zapobiega to błędnemu wyświetlaniu ekranu powitalnego/onboarding przy wolnym połączeniu internetowym.
+- Zwiększono stabilność sesji – aplikacja teraz inteligentnie ignoruje przejściowe stany "brak sesji" podczas inicjalizacji Supabase.
 - Dodano funkcję usuwania etapów budowy – przesuń wpis w lewo, aby zobaczyć ikonę kosza i potwierdzić usunięcie.
 - Poprawiono widok podglądu zdjęć – teraz otwierają się na prawdziwym pełnym ekranie (bez paska systemowego), co pozwala na jeszcze lepsze wykorzystanie zoomu.
 - Zoptymalizowano widok historii budowy – zdjęcia są teraz mniejsze i umieszczone obok tekstu, dzięki czemu na ekranie mieści się więcej wpisów.

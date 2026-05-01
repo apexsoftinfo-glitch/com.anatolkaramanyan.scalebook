@@ -51,7 +51,17 @@ class SupabaseSessionRepository implements SessionRepository {
     // 3. Listen to auth state changes
     // We rely on the stream to give us the restored session.
     _authSubscription = _authDataSource.authStateChanges.listen((user) async {
+      final isInitializing = _sessionController.value.map(
+        (_) => false,
+        unauthenticated: (_) => false,
+        initializing: (_) => true,
+      );
+
       if (user == null) {
+        // If we are still initializing, don't immediately jump to unauthenticated.
+        // Supabase often emits a null state while restoring the session.
+        if (isInitializing) return;
+
         // Only emit unauthenticated if we are not already in that state
         final isUnauthenticated = _sessionController.value.map(
           (_) => false,
@@ -83,14 +93,14 @@ class SupabaseSessionRepository implements SessionRepository {
       );
     } else {
       // Don't emit unauthenticated immediately, wait a bit for the stream
-      // but if after 1 second we still have nothing, emit unauthenticated
-      Future.delayed(const Duration(seconds: 1), () {
-        final isInitializing = _sessionController.value.map(
+      // but if after 2 seconds we still have nothing, emit unauthenticated
+      Future.delayed(const Duration(seconds: 2), () {
+        final isStillInitializing = _sessionController.value.map(
           (_) => false,
           unauthenticated: (_) => false,
           initializing: (_) => true,
         );
-        if (isInitializing) {
+        if (isStillInitializing) {
           _sessionController.add(const UserSession.unauthenticated());
         }
       });
