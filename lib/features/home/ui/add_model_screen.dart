@@ -270,12 +270,19 @@ class _AddModelScreenState extends State<AddModelScreen> {
         );
 
         if (!context.mounted) return;
-        context.read<HomeCubit>().addProject(newProject);
+        
+        // Use await here to catch errors from the repository
+        await context.read<HomeCubit>().addProject(newProject);
+        
+        if (!mounted) return;
         Navigator.pop(context);
       } catch (e) {
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Błąd podczas zapisywania: $e')), // L10N
+          SnackBar(
+            content: Text('Błąd podczas zapisywania w chmurze: $e'),
+            backgroundColor: Colors.red,
+          ),
         );
       } finally {
         if (mounted) setState(() => _isSaving = false);

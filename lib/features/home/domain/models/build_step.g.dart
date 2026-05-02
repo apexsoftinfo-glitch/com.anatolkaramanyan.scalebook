@@ -8,17 +8,17 @@ part of 'build_step.dart';
 
 _BuildStep _$BuildStepFromJson(Map<String, dynamic> json) => _BuildStep(
   id: json['id'] as String,
-  projectId: json['projectId'] as String,
+  projectId: json['project_id'] as String,
   date: DateTime.parse(json['date'] as String),
   note: json['note'] as String,
-  imageUrl: json['imageUrl'] as String?,
+  imageUrl: json['image_url'] as String?,
 );
 
 Map<String, dynamic> _$BuildStepToJson(_BuildStep instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'projectId': instance.projectId,
+      'project_id': instance.projectId,
       'date': instance.date.toIso8601String(),
       'note': instance.note,
-      'imageUrl': instance.imageUrl,
+      'image_url': instance.imageUrl,
     };

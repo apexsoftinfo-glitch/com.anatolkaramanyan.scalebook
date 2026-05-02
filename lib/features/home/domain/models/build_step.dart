@@ -7,10 +7,10 @@ part 'build_step.g.dart';
 abstract class BuildStep with _$BuildStep {
   const factory BuildStep({
     required String id,
-    required String projectId,
+    @JsonKey(name: 'project_id') required String projectId,
     required DateTime date,
     required String note,
-    String? imageUrl,
+    @JsonKey(name: 'image_url') String? imageUrl,
   }) = _BuildStep;
 
   const BuildStep._();

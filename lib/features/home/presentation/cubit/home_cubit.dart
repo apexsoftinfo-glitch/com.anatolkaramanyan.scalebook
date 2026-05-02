@@ -29,6 +29,7 @@ class HomeCubit extends Cubit<HomeState> {
       await loadProjects(); // Refresh list
     } catch (e) {
       emit(HomeState.error(e.toString()));
+      rethrow; // Allow UI to catch this
     }
   }
 
@@ -38,6 +39,7 @@ class HomeCubit extends Cubit<HomeState> {
       await loadProjects(); // Refresh list
     } catch (e) {
       emit(HomeState.error(e.toString()));
+      rethrow;
     }
   }
 }

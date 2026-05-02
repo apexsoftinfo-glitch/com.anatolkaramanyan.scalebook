@@ -12,10 +12,10 @@ abstract class ModelProject with _$ModelProject {
     required String scale,
     @Default(0.0) double progress,
     required String status,
-    String? mainImageUrl,
+    @JsonKey(name: 'main_image_url') String? mainImageUrl,
     @Default([]) List<BuildStep> steps,
-    @Default([]) List<String> galleryUrls,
-    required DateTime createdAt,
+    @JsonKey(name: 'gallery_urls') @Default([]) List<String> galleryUrls,
+    @JsonKey(name: 'created_at') required DateTime createdAt,
   }) = _ModelProject;
 
   const ModelProject._();

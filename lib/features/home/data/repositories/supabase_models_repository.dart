@@ -12,8 +12,8 @@ class SupabaseModelsRepository implements ModelsRepository {
     final response = await _client
         .from('projects')
         .select('*, build_steps(*)')
-        .eq('userId', _userId)
-        .order('createdAt', ascending: false);
+        .eq('user_id', _userId)
+        .order('created_at', ascending: false);
 
     return (response as List).map((json) {
       final stepsData = json['build_steps'] as List;
@@ -31,16 +31,15 @@ class SupabaseModelsRepository implements ModelsRepository {
   @override
   Future<void> addProject(ModelProject project) async {
     await _client.from('projects').insert({
-      ...project.toJson(),
-      'userId': _userId,
-      'steps': null, // Don't insert nested steps here
+      ...project.toJson()..remove('steps'),
+      'user_id': _userId,
     });
     
     if (project.steps.isNotEmpty) {
       await _client.from('build_steps').insert(
         project.steps.map((s) => {
           ...s.toJson(),
-          'userId': _userId,
+          'user_id': _userId,
         }).toList()
       );
     }
@@ -54,9 +53,9 @@ class SupabaseModelsRepository implements ModelsRepository {
       'scale': project.scale,
       'progress': project.progress,
       'status': project.status,
-      'mainImageUrl': project.mainImageUrl,
-      'galleryUrls': project.galleryUrls,
-      'updatedAt': DateTime.now().toIso8601String(),
+      'main_image_url': project.mainImageUrl,
+      'gallery_urls': project.galleryUrls,
+      'updated_at': DateTime.now().toIso8601String(),
     }).eq('id', project.id);
 
     // 2. Sync build steps (naive approach: upsert)
@@ -64,8 +63,8 @@ class SupabaseModelsRepository implements ModelsRepository {
       await _client.from('build_steps').upsert(
         project.steps.map((s) => {
           ...s.toJson(),
-          'userId': _userId,
-          'projectId': project.id,
+          'user_id': _userId,
+          'project_id': project.id,
         }).toList()
       );
     }

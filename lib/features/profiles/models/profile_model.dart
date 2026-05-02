@@ -9,12 +9,12 @@ abstract class ProfileModel with _$ProfileModel {
 
   const factory ProfileModel({
     required String id,
-    String? firstName,
-    String? lastName,
-    String? avatarUrl,
-    @Default(false) bool hasCompletedOnboarding,
-    DateTime? createdAt,
-    DateTime? updatedAt,
+    @JsonKey(name: 'first_name') String? firstName,
+    @JsonKey(name: 'last_name') String? lastName,
+    @JsonKey(name: 'avatar_url') String? avatarUrl,
+    @JsonKey(name: 'has_completed_onboarding') @Default(false) bool hasCompletedOnboarding,
+    @JsonKey(name: 'created_at') DateTime? createdAt,
+    @JsonKey(name: 'updated_at') DateTime? updatedAt,
   }) = _ProfileModel;
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) =>

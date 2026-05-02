@@ -13,18 +13,18 @@ _ModelProject _$ModelProjectFromJson(Map<String, dynamic> json) =>
       scale: json['scale'] as String,
       progress: (json['progress'] as num?)?.toDouble() ?? 0.0,
       status: json['status'] as String,
-      mainImageUrl: json['mainImageUrl'] as String?,
+      mainImageUrl: json['main_image_url'] as String?,
       steps:
           (json['steps'] as List<dynamic>?)
               ?.map((e) => BuildStep.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
       galleryUrls:
-          (json['galleryUrls'] as List<dynamic>?)
+          (json['gallery_urls'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      createdAt: DateTime.parse(json['createdAt'] as String),
+      createdAt: DateTime.parse(json['created_at'] as String),
     );
 
 Map<String, dynamic> _$ModelProjectToJson(_ModelProject instance) =>
@@ -34,8 +34,8 @@ Map<String, dynamic> _$ModelProjectToJson(_ModelProject instance) =>
       'scale': instance.scale,
       'progress': instance.progress,
       'status': instance.status,
-      'mainImageUrl': instance.mainImageUrl,
+      'main_image_url': instance.mainImageUrl,
       'steps': instance.steps,
-      'galleryUrls': instance.galleryUrls,
-      'createdAt': instance.createdAt.toIso8601String(),
+      'gallery_urls': instance.galleryUrls,
+      'created_at': instance.createdAt.toIso8601String(),
     };
