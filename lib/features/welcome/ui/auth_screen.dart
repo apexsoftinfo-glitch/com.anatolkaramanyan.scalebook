@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import '../../../core/design_system/app_colors.dart';
+import '../../../core/config/api_keys.dart';
 import '../../session/domain/repositories/session_repository.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -66,6 +67,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           color: AppColors.navyBlue,
                         ),
                         const SizedBox(height: 12),
+                        const SizedBox(height: 12),
                         const Text(
                           'AUTORYZACJA TECHNICZNA', // L10N
                           textAlign: TextAlign.center,
@@ -76,6 +78,21 @@ class _AuthScreenState extends State<AuthScreen> {
                             color: AppColors.red,
                           ),
                         ),
+                        if (!ApiKeys.isSupabaseConfigured)
+                          Container(
+                            margin: const EdgeInsets.only(top: 8),
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            color: AppColors.red.withValues(alpha: 0.1),
+                            child: const Text(
+                              '⚠️ TRYB DEMO (BRAK KLUCZY API) ⚠️', // L10N
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                         const SizedBox(height: 32),
                         TextFormField(
                           controller: _emailController,
