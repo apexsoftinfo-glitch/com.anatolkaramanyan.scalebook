@@ -16,7 +16,8 @@
 - Nowe tło jest generowane w czasie rzeczywistym, co eliminuje błędy wczytywania i gwarantuje 100% czystości (brak osób/niechcianych elementów).
 - Dodano techniczne detale: miarki na krawędziach, oznaczenia kątowe, oznaczenia skali ("1/24 SCALE WORKBENCH") oraz profesjonalną głębię kolorystyczną (Navy Blue).
 - Skonfigurowano i wygenerowano poprawną ikonę aplikacji (ScaleBook) dla systemów Android i iOS.
-- Włączono pełną synchronizację danych (projekty, etapy) z chmurą Supabase przy zachowaniu **lokalnego przechowywania zdjęć** (zgodnie z życzeniem).
+- Oficjalnie zmieniono nazwę pakietu i identyfikatory aplikacji na **ScaleBook** (`com.scalebook.app`).
+- Włączono pełną synchronizację danych (projekty, etapy) z chmurą Supabase przy zachowaniu **lokalnego przechowywania zdjęć**.
 - Ustandaryzowano schemat bazy danych (camelCase) dla pełnej spójności z modelami aplikacji.
 - Skonfigurowano produkcyjne klucze API i przygotowano zaktualizowany skrypt `supabase_schema.sql`.
 - Dodano funkcję usuwania etapów budowy – przesuń wpis w lewo, aby zobaczyć ikonę kosza i potwierdzić usunięcie.

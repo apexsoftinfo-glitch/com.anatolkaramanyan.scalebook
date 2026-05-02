@@ -23,7 +23,7 @@ val keystoreProperties = Properties().apply {
 
 android {
     // TODO: Change namespace to your own App Bundle ID:
-    namespace = "com.example.twelveappstemplate"
+    namespace = "com.scalebook.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -38,7 +38,7 @@ android {
 
     defaultConfig {
         // TODO: Change applicationId to your own App Bundle ID:
-        applicationId = "com.example.twelveappstemplate"
+        applicationId = "com.scalebook.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 26
