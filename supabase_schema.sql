@@ -26,6 +26,10 @@ CREATE POLICY "Users can insert their own profile"
 ON public.profiles FOR INSERT 
 WITH CHECK (auth.uid() = id);
 
+CREATE POLICY "Users can delete their own profile" 
+ON public.profiles FOR DELETE 
+USING (auth.uid() = id);
+
 -- 2. PROJECTS TABLE
 CREATE TABLE IF NOT EXISTS public.projects (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -65,7 +69,16 @@ CREATE POLICY "Users can manage their own build steps"
 ON public.build_steps FOR ALL 
 USING (auth.uid() = userId);
 
--- 4. STORAGE BUCKET
+-- 4. RPC FUNCTIONS
+-- Function to allow users to delete their own account from auth.users
+CREATE OR REPLACE FUNCTION delete_user()
+RETURNS void AS $$
+BEGIN
+  DELETE FROM auth.users WHERE id = auth.uid();
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 5. STORAGE BUCKET
 -- Run these in your Storage dashboard:
 -- Create a bucket named 'models' and make it public or use RLS.
 -- Example RLS for storage:

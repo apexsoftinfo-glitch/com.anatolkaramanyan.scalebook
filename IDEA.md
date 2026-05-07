@@ -16,7 +16,7 @@
 - *"Oddzielić zdjęcia modelarskie od prywatnych zdjęć w telefonie"*
 - *"Eksportować historię budowy do social mediów (kolaże)"*
 - *"Projekt non-profit, wspierany wyłącznie przez serwis buycoffee.to"*
-- *"Wyłącznie lokalne ZIP ze wszystkimi zdjęciami i danymi. W bazach tylko konta użytkowników."*
+- *"Pełna synchronizacja projektów z chmurą (Supabase) przy zachowaniu lokalnego przechowywania zdjęć. Backup ZIP zawiera komplet danych."*
 
 ---
 
@@ -114,8 +114,9 @@ Model Detail
 └── FAB/CTA → Add Build Step
 
 Settings
-├── Backup & Restore (Export/Import ZIP)
+├── Backup & Restore (Eksport Kompleksowy ZIP: Zdjęcia + Baza + Ustawienia)
 ├── Zmień język (PL/EN)
+├── "Zmień hasło" (dla zalogowanych)
 ├── "Wesprzyj ScaleBook" (BuyCoffee.to)
 └── Wyloguj / Usuń konto
 ```
@@ -141,10 +142,11 @@ Settings
 
 ## Settings (Core)
 
-- **Export Kolekcji:** Pakuje zdjęcia i JSON z opisami do jednego pliku ZIP (lokalnie).
+- **Eksport Kolekcji:** Pakuje zdjęcia, JSON z projektami (z chmury i lokalnie) oraz ustawienia do jednego pliku ZIP.
 - **Import Kolekcji:** Rozpakowuje ZIP i odbudowuje lokalną bazę/galerię.
+- **Zmień hasło:** Szybka zmiana hasła bezpośrednio w aplikacji.
 - **BuyCoffee.to:** Duży, estetyczny przycisk "Postaw kawę twórcy" (Link zewnętrzny).
-- **Język:** PL/EN.
+- **Język:** PL/EN (automatyczna zmiana w całym UI).
 
 ---
 

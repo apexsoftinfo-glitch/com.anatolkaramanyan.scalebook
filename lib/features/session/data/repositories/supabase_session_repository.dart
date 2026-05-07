@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../profiles/models/profile_model.dart';
 import '../datasources/auth_data_source.dart';
@@ -144,10 +145,31 @@ class SupabaseSessionRepository implements SessionRepository {
   }
 
   @override
+  Future<void> resetPassword(String email) async {
+    await _authDataSource.resetPassword(email);
+  }
+
+  @override
+  Future<void> changePassword(String newPassword) async {
+    await Supabase.instance.client.auth.updateUser(UserAttributes(password: newPassword));
+  }
+
+  @override
   Future<void> updateProfile(ProfileModel profile) async {
     await _profileDataSource.upsertProfile(profile);
     await _profileLocalDataSource.cacheProfile(profile);
     await refresh();
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    final userId = current.userId;
+    if (userId != null) {
+      // Call the Postgres function that has SECURITY DEFINER permissions
+      // to delete the user from auth.users.
+      await Supabase.instance.client.rpc('delete_user');
+      await signOut();
+    }
   }
 
   @override

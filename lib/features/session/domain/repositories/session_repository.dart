@@ -26,8 +26,17 @@ abstract class SessionRepository {
   /// Sign out
   Future<void> signOut();
 
+  /// Reset password for email
+  Future<void> resetPassword(String email);
+
+  /// Change password for current user
+  Future<void> changePassword(String newPassword);
+
   /// Update profile
   Future<void> updateProfile(ProfileModel profile);
+
+  /// Delete current user account and data
+  Future<void> deleteAccount();
 
   /// Dispose all subscriptions
   void dispose();

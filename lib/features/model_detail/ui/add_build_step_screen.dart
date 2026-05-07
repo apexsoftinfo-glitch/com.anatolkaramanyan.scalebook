@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:scalebook/l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import '../../home/domain/models/build_step.dart';
-import '../../../core/design_system/app_colors.dart';
-import '../../../core/design_system/widgets/cutting_mat_background.dart';
-import '../../../core/services/image_service.dart';
+import 'package:scalebook/core/design_system/app_colors.dart';
+import 'package:scalebook/core/design_system/widgets/cutting_mat_background.dart';
+import 'package:scalebook/core/design_system/widgets/app_image.dart';
+import 'package:scalebook/core/services/image_service.dart';
 import 'package:uuid/uuid.dart';
 
 class AddBuildStepScreen extends StatefulWidget {
@@ -68,7 +70,7 @@ class _AddBuildStepScreenState extends State<AddBuildStepScreen> {
           children: [
             ListTile(
               leading: const Icon(Icons.photo_library),
-              title: const Text('Galeria'), // L10N
+              title: Text(S.of(context).gallery), // L10N
               onTap: () {
                 Navigator.pop(context);
                 _pickImage(ImageSource.gallery);
@@ -76,7 +78,7 @@ class _AddBuildStepScreenState extends State<AddBuildStepScreen> {
             ),
             ListTile(
               leading: const Icon(Icons.photo_camera),
-              title: const Text('Aparat'), // L10N
+              title: Text(S.of(context).camera), // L10N
               onTap: () {
                 Navigator.pop(context);
                 _pickImage(ImageSource.camera);
@@ -117,7 +119,7 @@ class _AddBuildStepScreenState extends State<AddBuildStepScreen> {
   Future<void> _save() async {
     if (_noteController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Dodaj krótki opis etapu prac.')), // L10N
+        SnackBar(content: Text(S.of(context).addStepDescription)), // L10N
       );
       return;
     }
@@ -143,7 +145,7 @@ class _AddBuildStepScreenState extends State<AddBuildStepScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Błąd podczas zapisywania: $e')), // L10N
+          SnackBar(content: Text(S.of(context).errorSaving(e.toString()))), // L10N
         );
       }
     } finally {
@@ -156,7 +158,7 @@ class _AddBuildStepScreenState extends State<AddBuildStepScreen> {
     final isEditing = widget.initialStep != null;
     return Scaffold(
       appBar: AppBar(
-        title: Text(isEditing ? 'EDYTUJ ETAP' : 'NOWY ETAP BUDOWY'), // L10N
+        title: Text(isEditing ? S.of(context).editStepLabel : S.of(context).newBuildStep), // L10N
       ),
       body: CuttingMatBackground(
         child: SingleChildScrollView(
@@ -181,8 +183,8 @@ class _AddBuildStepScreenState extends State<AddBuildStepScreen> {
               Card(
                 child: ListTile(
                   leading: const Icon(Icons.calendar_today, color: AppColors.navyBlue),
-                  title: const Text(
-                    'DATA ETAPU', // L10N
+                  title: Text(
+                    S.of(context).stepDate, // L10N
                     style: TextStyle(fontSize: 12, color: AppColors.grey, fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(
@@ -198,8 +200,8 @@ class _AddBuildStepScreenState extends State<AddBuildStepScreen> {
                 controller: _noteController,
                 maxLines: 5,
                 decoration: InputDecoration(
-                  labelText: 'OPIS ETAPU PRAC', // L10N
-                  hintText: 'Co dziś zrobiono przy modelu?', // L10N
+                  labelText: S.of(context).stepDescriptionLabel, // L10N
+                  hintText: S.of(context).stepDescriptionHint, // L10N
                   alignLabelWithHint: true,
                   fillColor: Colors.white.withAlpha(230),
                   filled: true,
@@ -220,7 +222,7 @@ class _AddBuildStepScreenState extends State<AddBuildStepScreen> {
                         width: 20,
                         child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                       )
-                    : Text(isEditing ? 'ZAPISZ ZMIANY' : 'ZAPISZ ETAP'), // L10N
+                    : Text(isEditing ? S.of(context).saveChanges : S.of(context).saveStep), // L10N
               ),
             ],
           ),
@@ -237,7 +239,7 @@ class _AddBuildStepScreenState extends State<AddBuildStepScreen> {
       if (_existingImageUrl!.startsWith('http')) {
         return Image.network(_existingImageUrl!, fit: BoxFit.cover);
       } else {
-        return Image.file(File(_existingImageUrl!), fit: BoxFit.cover);
+        return AppImage(imageUrl: _existingImageUrl!, fit: BoxFit.cover);
       }
     }
     return Column(
@@ -245,8 +247,8 @@ class _AddBuildStepScreenState extends State<AddBuildStepScreen> {
       children: [
         const Icon(Icons.add_a_photo, size: 64, color: AppColors.navyBlue),
         const SizedBox(height: 8),
-        const Text(
-          'DODAJ ZDJĘCIE', // L10N
+        Text(
+          S.of(context).addPhoto, // L10N
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: AppColors.navyBlue,

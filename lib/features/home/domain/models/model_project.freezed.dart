@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ModelProject {
 
- String get id; String get title; String get scale; double get progress; String get status;@JsonKey(name: 'main_image_url') String? get mainImageUrl; List<BuildStep> get steps;@JsonKey(name: 'gallery_urls') List<String> get galleryUrls;@JsonKey(name: 'created_at') DateTime get createdAt;
+ String get id; String get title; String get scale; double get progress; String get status; String? get mainImageUrl; String? get finishedMainImageUrl; List<String> get finishedGalleryUrls; String? get finalNotes; List<BuildStep> get steps; List<String> get galleryUrls; DateTime get createdAt;
 /// Create a copy of ModelProject
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ModelProjectCopyWith<ModelProject> get copyWith => _$ModelProjectCopyWithImpl<M
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ModelProject&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.scale, scale) || other.scale == scale)&&(identical(other.progress, progress) || other.progress == progress)&&(identical(other.status, status) || other.status == status)&&(identical(other.mainImageUrl, mainImageUrl) || other.mainImageUrl == mainImageUrl)&&const DeepCollectionEquality().equals(other.steps, steps)&&const DeepCollectionEquality().equals(other.galleryUrls, galleryUrls)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ModelProject&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.scale, scale) || other.scale == scale)&&(identical(other.progress, progress) || other.progress == progress)&&(identical(other.status, status) || other.status == status)&&(identical(other.mainImageUrl, mainImageUrl) || other.mainImageUrl == mainImageUrl)&&(identical(other.finishedMainImageUrl, finishedMainImageUrl) || other.finishedMainImageUrl == finishedMainImageUrl)&&const DeepCollectionEquality().equals(other.finishedGalleryUrls, finishedGalleryUrls)&&(identical(other.finalNotes, finalNotes) || other.finalNotes == finalNotes)&&const DeepCollectionEquality().equals(other.steps, steps)&&const DeepCollectionEquality().equals(other.galleryUrls, galleryUrls)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,scale,progress,status,mainImageUrl,const DeepCollectionEquality().hash(steps),const DeepCollectionEquality().hash(galleryUrls),createdAt);
+int get hashCode => Object.hash(runtimeType,id,title,scale,progress,status,mainImageUrl,finishedMainImageUrl,const DeepCollectionEquality().hash(finishedGalleryUrls),finalNotes,const DeepCollectionEquality().hash(steps),const DeepCollectionEquality().hash(galleryUrls),createdAt);
 
 @override
 String toString() {
-  return 'ModelProject(id: $id, title: $title, scale: $scale, progress: $progress, status: $status, mainImageUrl: $mainImageUrl, steps: $steps, galleryUrls: $galleryUrls, createdAt: $createdAt)';
+  return 'ModelProject(id: $id, title: $title, scale: $scale, progress: $progress, status: $status, mainImageUrl: $mainImageUrl, finishedMainImageUrl: $finishedMainImageUrl, finishedGalleryUrls: $finishedGalleryUrls, finalNotes: $finalNotes, steps: $steps, galleryUrls: $galleryUrls, createdAt: $createdAt)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ModelProjectCopyWith<$Res>  {
   factory $ModelProjectCopyWith(ModelProject value, $Res Function(ModelProject) _then) = _$ModelProjectCopyWithImpl;
 @useResult
 $Res call({
- String id, String title, String scale, double progress, String status,@JsonKey(name: 'main_image_url') String? mainImageUrl, List<BuildStep> steps,@JsonKey(name: 'gallery_urls') List<String> galleryUrls,@JsonKey(name: 'created_at') DateTime createdAt
+ String id, String title, String scale, double progress, String status, String? mainImageUrl, String? finishedMainImageUrl, List<String> finishedGalleryUrls, String? finalNotes, List<BuildStep> steps, List<String> galleryUrls, DateTime createdAt
 });
 
 
@@ -65,7 +65,7 @@ class _$ModelProjectCopyWithImpl<$Res>
 
 /// Create a copy of ModelProject
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? scale = null,Object? progress = null,Object? status = null,Object? mainImageUrl = freezed,Object? steps = null,Object? galleryUrls = null,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? scale = null,Object? progress = null,Object? status = null,Object? mainImageUrl = freezed,Object? finishedMainImageUrl = freezed,Object? finishedGalleryUrls = null,Object? finalNotes = freezed,Object? steps = null,Object? galleryUrls = null,Object? createdAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -73,6 +73,9 @@ as String,scale: null == scale ? _self.scale : scale // ignore: cast_nullable_to
 as String,progress: null == progress ? _self.progress : progress // ignore: cast_nullable_to_non_nullable
 as double,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,mainImageUrl: freezed == mainImageUrl ? _self.mainImageUrl : mainImageUrl // ignore: cast_nullable_to_non_nullable
+as String?,finishedMainImageUrl: freezed == finishedMainImageUrl ? _self.finishedMainImageUrl : finishedMainImageUrl // ignore: cast_nullable_to_non_nullable
+as String?,finishedGalleryUrls: null == finishedGalleryUrls ? _self.finishedGalleryUrls : finishedGalleryUrls // ignore: cast_nullable_to_non_nullable
+as List<String>,finalNotes: freezed == finalNotes ? _self.finalNotes : finalNotes // ignore: cast_nullable_to_non_nullable
 as String?,steps: null == steps ? _self.steps : steps // ignore: cast_nullable_to_non_nullable
 as List<BuildStep>,galleryUrls: null == galleryUrls ? _self.galleryUrls : galleryUrls // ignore: cast_nullable_to_non_nullable
 as List<String>,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -161,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String scale,  double progress,  String status, @JsonKey(name: 'main_image_url')  String? mainImageUrl,  List<BuildStep> steps, @JsonKey(name: 'gallery_urls')  List<String> galleryUrls, @JsonKey(name: 'created_at')  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String scale,  double progress,  String status,  String? mainImageUrl,  String? finishedMainImageUrl,  List<String> finishedGalleryUrls,  String? finalNotes,  List<BuildStep> steps,  List<String> galleryUrls,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ModelProject() when $default != null:
-return $default(_that.id,_that.title,_that.scale,_that.progress,_that.status,_that.mainImageUrl,_that.steps,_that.galleryUrls,_that.createdAt);case _:
+return $default(_that.id,_that.title,_that.scale,_that.progress,_that.status,_that.mainImageUrl,_that.finishedMainImageUrl,_that.finishedGalleryUrls,_that.finalNotes,_that.steps,_that.galleryUrls,_that.createdAt);case _:
   return orElse();
 
 }
@@ -182,10 +185,10 @@ return $default(_that.id,_that.title,_that.scale,_that.progress,_that.status,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String scale,  double progress,  String status, @JsonKey(name: 'main_image_url')  String? mainImageUrl,  List<BuildStep> steps, @JsonKey(name: 'gallery_urls')  List<String> galleryUrls, @JsonKey(name: 'created_at')  DateTime createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String scale,  double progress,  String status,  String? mainImageUrl,  String? finishedMainImageUrl,  List<String> finishedGalleryUrls,  String? finalNotes,  List<BuildStep> steps,  List<String> galleryUrls,  DateTime createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _ModelProject():
-return $default(_that.id,_that.title,_that.scale,_that.progress,_that.status,_that.mainImageUrl,_that.steps,_that.galleryUrls,_that.createdAt);case _:
+return $default(_that.id,_that.title,_that.scale,_that.progress,_that.status,_that.mainImageUrl,_that.finishedMainImageUrl,_that.finishedGalleryUrls,_that.finalNotes,_that.steps,_that.galleryUrls,_that.createdAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -202,10 +205,10 @@ return $default(_that.id,_that.title,_that.scale,_that.progress,_that.status,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String scale,  double progress,  String status, @JsonKey(name: 'main_image_url')  String? mainImageUrl,  List<BuildStep> steps, @JsonKey(name: 'gallery_urls')  List<String> galleryUrls, @JsonKey(name: 'created_at')  DateTime createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String scale,  double progress,  String status,  String? mainImageUrl,  String? finishedMainImageUrl,  List<String> finishedGalleryUrls,  String? finalNotes,  List<BuildStep> steps,  List<String> galleryUrls,  DateTime createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _ModelProject() when $default != null:
-return $default(_that.id,_that.title,_that.scale,_that.progress,_that.status,_that.mainImageUrl,_that.steps,_that.galleryUrls,_that.createdAt);case _:
+return $default(_that.id,_that.title,_that.scale,_that.progress,_that.status,_that.mainImageUrl,_that.finishedMainImageUrl,_that.finishedGalleryUrls,_that.finalNotes,_that.steps,_that.galleryUrls,_that.createdAt);case _:
   return null;
 
 }
@@ -217,7 +220,7 @@ return $default(_that.id,_that.title,_that.scale,_that.progress,_that.status,_th
 @JsonSerializable()
 
 class _ModelProject extends ModelProject {
-  const _ModelProject({required this.id, required this.title, required this.scale, this.progress = 0.0, required this.status, @JsonKey(name: 'main_image_url') this.mainImageUrl, final  List<BuildStep> steps = const [], @JsonKey(name: 'gallery_urls') final  List<String> galleryUrls = const [], @JsonKey(name: 'created_at') required this.createdAt}): _steps = steps,_galleryUrls = galleryUrls,super._();
+  const _ModelProject({required this.id, required this.title, required this.scale, this.progress = 0.0, required this.status, this.mainImageUrl, this.finishedMainImageUrl, final  List<String> finishedGalleryUrls = const [], this.finalNotes, final  List<BuildStep> steps = const [], final  List<String> galleryUrls = const [], required this.createdAt}): _finishedGalleryUrls = finishedGalleryUrls,_steps = steps,_galleryUrls = galleryUrls,super._();
   factory _ModelProject.fromJson(Map<String, dynamic> json) => _$ModelProjectFromJson(json);
 
 @override final  String id;
@@ -225,7 +228,16 @@ class _ModelProject extends ModelProject {
 @override final  String scale;
 @override@JsonKey() final  double progress;
 @override final  String status;
-@override@JsonKey(name: 'main_image_url') final  String? mainImageUrl;
+@override final  String? mainImageUrl;
+@override final  String? finishedMainImageUrl;
+ final  List<String> _finishedGalleryUrls;
+@override@JsonKey() List<String> get finishedGalleryUrls {
+  if (_finishedGalleryUrls is EqualUnmodifiableListView) return _finishedGalleryUrls;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_finishedGalleryUrls);
+}
+
+@override final  String? finalNotes;
  final  List<BuildStep> _steps;
 @override@JsonKey() List<BuildStep> get steps {
   if (_steps is EqualUnmodifiableListView) return _steps;
@@ -234,13 +246,13 @@ class _ModelProject extends ModelProject {
 }
 
  final  List<String> _galleryUrls;
-@override@JsonKey(name: 'gallery_urls') List<String> get galleryUrls {
+@override@JsonKey() List<String> get galleryUrls {
   if (_galleryUrls is EqualUnmodifiableListView) return _galleryUrls;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_galleryUrls);
 }
 
-@override@JsonKey(name: 'created_at') final  DateTime createdAt;
+@override final  DateTime createdAt;
 
 /// Create a copy of ModelProject
 /// with the given fields replaced by the non-null parameter values.
@@ -255,16 +267,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ModelProject&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.scale, scale) || other.scale == scale)&&(identical(other.progress, progress) || other.progress == progress)&&(identical(other.status, status) || other.status == status)&&(identical(other.mainImageUrl, mainImageUrl) || other.mainImageUrl == mainImageUrl)&&const DeepCollectionEquality().equals(other._steps, _steps)&&const DeepCollectionEquality().equals(other._galleryUrls, _galleryUrls)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ModelProject&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.scale, scale) || other.scale == scale)&&(identical(other.progress, progress) || other.progress == progress)&&(identical(other.status, status) || other.status == status)&&(identical(other.mainImageUrl, mainImageUrl) || other.mainImageUrl == mainImageUrl)&&(identical(other.finishedMainImageUrl, finishedMainImageUrl) || other.finishedMainImageUrl == finishedMainImageUrl)&&const DeepCollectionEquality().equals(other._finishedGalleryUrls, _finishedGalleryUrls)&&(identical(other.finalNotes, finalNotes) || other.finalNotes == finalNotes)&&const DeepCollectionEquality().equals(other._steps, _steps)&&const DeepCollectionEquality().equals(other._galleryUrls, _galleryUrls)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,scale,progress,status,mainImageUrl,const DeepCollectionEquality().hash(_steps),const DeepCollectionEquality().hash(_galleryUrls),createdAt);
+int get hashCode => Object.hash(runtimeType,id,title,scale,progress,status,mainImageUrl,finishedMainImageUrl,const DeepCollectionEquality().hash(_finishedGalleryUrls),finalNotes,const DeepCollectionEquality().hash(_steps),const DeepCollectionEquality().hash(_galleryUrls),createdAt);
 
 @override
 String toString() {
-  return 'ModelProject(id: $id, title: $title, scale: $scale, progress: $progress, status: $status, mainImageUrl: $mainImageUrl, steps: $steps, galleryUrls: $galleryUrls, createdAt: $createdAt)';
+  return 'ModelProject(id: $id, title: $title, scale: $scale, progress: $progress, status: $status, mainImageUrl: $mainImageUrl, finishedMainImageUrl: $finishedMainImageUrl, finishedGalleryUrls: $finishedGalleryUrls, finalNotes: $finalNotes, steps: $steps, galleryUrls: $galleryUrls, createdAt: $createdAt)';
 }
 
 
@@ -275,7 +287,7 @@ abstract mixin class _$ModelProjectCopyWith<$Res> implements $ModelProjectCopyWi
   factory _$ModelProjectCopyWith(_ModelProject value, $Res Function(_ModelProject) _then) = __$ModelProjectCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String title, String scale, double progress, String status,@JsonKey(name: 'main_image_url') String? mainImageUrl, List<BuildStep> steps,@JsonKey(name: 'gallery_urls') List<String> galleryUrls,@JsonKey(name: 'created_at') DateTime createdAt
+ String id, String title, String scale, double progress, String status, String? mainImageUrl, String? finishedMainImageUrl, List<String> finishedGalleryUrls, String? finalNotes, List<BuildStep> steps, List<String> galleryUrls, DateTime createdAt
 });
 
 
@@ -292,7 +304,7 @@ class __$ModelProjectCopyWithImpl<$Res>
 
 /// Create a copy of ModelProject
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? scale = null,Object? progress = null,Object? status = null,Object? mainImageUrl = freezed,Object? steps = null,Object? galleryUrls = null,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? scale = null,Object? progress = null,Object? status = null,Object? mainImageUrl = freezed,Object? finishedMainImageUrl = freezed,Object? finishedGalleryUrls = null,Object? finalNotes = freezed,Object? steps = null,Object? galleryUrls = null,Object? createdAt = null,}) {
   return _then(_ModelProject(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -300,6 +312,9 @@ as String,scale: null == scale ? _self.scale : scale // ignore: cast_nullable_to
 as String,progress: null == progress ? _self.progress : progress // ignore: cast_nullable_to_non_nullable
 as double,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,mainImageUrl: freezed == mainImageUrl ? _self.mainImageUrl : mainImageUrl // ignore: cast_nullable_to_non_nullable
+as String?,finishedMainImageUrl: freezed == finishedMainImageUrl ? _self.finishedMainImageUrl : finishedMainImageUrl // ignore: cast_nullable_to_non_nullable
+as String?,finishedGalleryUrls: null == finishedGalleryUrls ? _self._finishedGalleryUrls : finishedGalleryUrls // ignore: cast_nullable_to_non_nullable
+as List<String>,finalNotes: freezed == finalNotes ? _self.finalNotes : finalNotes // ignore: cast_nullable_to_non_nullable
 as String?,steps: null == steps ? _self._steps : steps // ignore: cast_nullable_to_non_nullable
 as List<BuildStep>,galleryUrls: null == galleryUrls ? _self._galleryUrls : galleryUrls // ignore: cast_nullable_to_non_nullable
 as List<String>,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable

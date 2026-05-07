@@ -68,4 +68,10 @@ class LocalModelsRepository implements ModelsRepository {
     }
     return null;
   }
+  @override
+  Future<void> deleteBuildStep(String stepId) async {
+    // For local, build steps are part of the project json, 
+    // so this is usually handled via updateProject.
+    // But we implement it for consistency.
+  }
 }

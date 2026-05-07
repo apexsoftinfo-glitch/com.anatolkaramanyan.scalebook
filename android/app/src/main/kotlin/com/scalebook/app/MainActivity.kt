@@ -1,4 +1,4 @@
-package com.example.twelveappstemplate
+package com.scalebook.app
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

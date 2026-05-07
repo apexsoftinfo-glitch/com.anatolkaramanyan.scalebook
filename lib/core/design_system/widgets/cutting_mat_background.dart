@@ -10,37 +10,39 @@ class CuttingMatBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        // Base technical color
-        Positioned.fill(
-          child: Container(
-            color: const Color(0xFF001F3F), // Deep Navy Blue
+    return SizedBox.expand(
+      child: Stack(
+        children: [
+          // Base technical color
+          Positioned.fill(
+            child: Container(
+              color: const Color(0xFF004C99), // Lighter Technical Blue
+            ),
           ),
-        ),
-        // The Programmatic Technical Mat
-        Positioned.fill(
-          child: CustomPaint(
-            painter: _TechnicalMatPainter(),
+          // The Programmatic Technical Mat
+          Positioned.fill(
+            child: CustomPaint(
+              painter: _TechnicalMatPainter(),
+            ),
           ),
-        ),
-        // Depth gradient
-        Positioned.fill(
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: RadialGradient(
-                center: Alignment.center,
-                radius: 1.5,
-                colors: [
-                  Colors.transparent,
-                  Colors.black.withValues(alpha: 0.5),
-                ],
+          // Depth gradient
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: RadialGradient(
+                  center: Alignment.center,
+                  radius: 1.5,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withValues(alpha: 0.2), // Lighter shadows
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        child,
-      ],
+          child,
+        ],
+      ),
     );
   }
 }
@@ -49,15 +51,15 @@ class _TechnicalMatPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final gridPaint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.05)
+      ..color = Colors.white.withValues(alpha: 0.1)
       ..strokeWidth = 0.5;
 
     final boldGridPaint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.1)
+      ..color = Colors.white.withValues(alpha: 0.2)
       ..strokeWidth = 1.0;
 
     final accentPaint = Paint()
-      ..color = const Color(0xFF00AEEF).withValues(alpha: 0.2) // Accent Sky Blue
+      ..color = const Color(0xFF00AEEF).withValues(alpha: 0.3) // Accent Sky Blue
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.0;
 

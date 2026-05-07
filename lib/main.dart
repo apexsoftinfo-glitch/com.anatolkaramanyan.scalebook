@@ -41,7 +41,7 @@ void main() async {
   }
 
   // Dependency Injection
-  configureDependencies(revenueCatEnabled: rcEnabled);
+  await configureDependencies(revenueCatEnabled: rcEnabled);
 
   runApp(const App());
 }

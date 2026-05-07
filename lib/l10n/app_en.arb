@@ -1,0 +1,253 @@
+{
+  "@@locale": "en",
+  "appTitle": "SCALEBOOK",
+  "welcomeTagline": "Your technical build log and portfolio",
+  "startAsGuest": "START AS GUEST",
+  "login": "LOGIN",
+  "register": "CREATE ACCOUNT",
+  "homeTitle": "YOUR WORKBENCH",
+  "activeProjectsCount": "{count} / {limit} active projects",
+  "@activeProjectsCount": {
+    "description": "Number of active projects relative to the limit",
+    "placeholders": {
+      "count": { "type": "int" },
+      "limit": { "type": "int" }
+    }
+  },
+  "limitReached": "LIMIT REACHED",
+  "guestLimitMessage": "As a Guest you can have up to {limit} projects. Create an account to get unlimited workbench space!",
+  "@guestLimitMessage": {
+    "placeholders": {
+      "limit": { "type": "int" }
+    }
+  },
+  "deleteProjectTitle": "DELETE PROJECT",
+  "deleteProjectConfirm": "Are you sure you want to delete project \"{title}\"? Remember that you won't be able to restore the project or its build history.",
+  "@deleteProjectConfirm": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "deletePermanently": "DELETE PERMANENTLY",
+  "cancel": "CANCEL",
+  "save": "SAVE",
+  "edit": "EDIT",
+  "delete": "DELETE",
+  "settings": "SETTINGS",
+  "profile": "PROFILE",
+  "modeler": "Modeler",
+  "scalebookProfile": "ScaleBook Profile",
+  "dataAndBackup": "DATA & BACKUP",
+  "exportCollection": "Export collection (ZIP)",
+  "exportCollectionSubtitle": "Backup of all photos and entries",
+  "importCollection": "Import collection (ZIP)",
+  "importCollectionSuccess": "Collection imported successfully!",
+  "support": "SUPPORT",
+  "rateScaleBook": "Rate ScaleBook",
+  "rateScaleBookSubtitle": "Your feedback helps me develop the app",
+  "buyMeACoffee": "Buy me a coffee",
+  "buyMeACoffeeSubtitle": "Support ScaleBook development",
+  "application": "APPLICATION",
+  "language": "Language",
+  "polish": "Polish",
+  "english": "English",
+  "logout": "Logout",
+  "deleteAccount": "Delete account",
+  "deleteAccountConfirm": "Are you sure you want to delete your account and all data? This operation cannot be undone.",
+  "techAuth": "TECHNICAL AUTHORIZATION",
+  "email": "E-MAIL",
+  "password": "PASSWORD",
+  "forgotPassword": "Forgot password?",
+  "resetPassword": "Reset password",
+  "resetPasswordTitle": "Recover password",
+  "resetPasswordDescription": "Enter your email address to receive a password reset link.",
+  "sendResetLink": "Send link",
+  "resetLinkSent": "A password reset link has been sent to your email.",
+  "changePassword": "Change password",
+  "changePasswordTitle": "Change password",
+  "changePasswordDescription": "Enter a new password for your account.",
+  "newPasswordLabel": "NEW PASSWORD",
+  "passwordChangedSuccess": "Password has been changed successfully.",
+  "required": "Required",
+  "notes": "NOTES",
+  "newNote": "NEW NOTE",
+  "editNote": "EDIT NOTE",
+  "noteName": "NOTE NAME (REQUIRED)",
+  "noteContent": "NOTE CONTENT (REQUIRED)",
+  "linkOptional": "LINK (OPTIONAL)",
+  "photosOptional": "PHOTOS (OPTIONAL)",
+  "saveNote": "SAVE NOTE",
+  "saveChanges": "SAVE CHANGES",
+  "gallery": "Gallery",
+  "camera": "Camera",
+  "pulpit": "Workbench",
+  "stash": "Stash",
+  "showcase": "Showcase",
+  "showcaseTitle": "MY SHOWCASE",
+  "searchInNotes": "SEARCH IN NOTES...",
+  "noNotes": "NO NOTES",
+  "noNotesFound": "NO NOTES FOUND",
+  "addFirstNote": "Add your first modeling note!",
+  "tryChangingSearch": "Try changing your search query",
+  "deleteNoteTitle": "DELETE NOTE",
+  "deleteNoteConfirm": "Are you sure you want to delete note \"{title}\"?",
+  "@deleteNoteConfirm": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "noteDetail": "NOTE DETAILS",
+  "shareNoteAsPng": "Share as image",
+  "myModelingNote": "My modeling note: {title}",
+  "@myModelingNote": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "error": "Error: {message}",
+  "@error": {
+    "placeholders": {
+      "message": { "type": "String" }
+    }
+  },
+  "deleteAccountTitle": "DELETE ACCOUNT?",
+  "deleteAccountConfirm": "Are you sure you want to delete your account and all data? This operation cannot be undone.",
+  "deletePermanentlyAction": "DELETE PERMANENTLY",
+  "errorDeletingAccount": "Error deleting account: {message}",
+  "@errorDeletingAccount": {
+    "placeholders": {
+      "message": { "type": "String" }
+    }
+  },
+  "editProfile": "EDIT PROFILE",
+  "firstName": "FIRST NAME",
+  "statusInProgress": "IN PROGRESS",
+  "statusPaused": "PAUSED",
+  "statusFinished": "FINISHED",
+  "statusStash": "STASH",
+  "statusSold": "SOLD",
+  "share": "SHARE",
+  "newModel": "NEW MODEL",
+  "boxPhotoRequired": "BOX PHOTO (REQUIRED)",
+  "addToStash": "ADD TO STASH",
+  "stashSectionDescription": "Model will go to the \"Stash\" section",
+  "modelNameLabel": "MODEL NAME",
+  "scaleLabel": "SCALE",
+  "purchaseDate": "PURCHASE DATE",
+  "startDate": "START DATE",
+  "addToWorkshop": "ADD TO WORKSHOP",
+  "modelNameRequired": "Name is required",
+  "scaleRequired": "Scale is required",
+  "addPhotoError": "Add a box photo before saving.",
+  "savingError": "Error while saving: {message}",
+  "@savingError": {
+    "placeholders": {
+      "message": { "type": "String" }
+    }
+  },
+  "scaleMatesLinkText": "Don't have a box photo? Find it on ",
+  "demoModeWarning": "⚠️ DEMO MODE (NO API KEYS) ⚠️",
+  "errorUserAlreadyExists": "Account already exists. Try logging in instead.",
+  "errorInvalidCredentials": "Invalid email or password. Try again.",
+  "errorNetworkProblem": "Connection problem. Check your internet connection.",
+  "errorWeakPassword": "Password is too weak or incorrect.",
+  "errorUnexpectedAuth": "Unexpected authorization error. Try again later.",
+  "deleteStep": "DELETE STEP",
+  "deleteStepConfirm": "Are you sure you want to delete this build step?",
+  "preparingStepPhoto": "Preparing step photo...",
+  "generatingPoster": "Generating progress poster...",
+  "sharingCollection": "Launching share...",
+  "myProgressTitle": "My progress: {title}",
+  "@myProgressTitle": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "buildStepProgressTitle": "Build progress: {title}",
+  "@buildStepProgressTitle": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "addStepDescription": "Add a short description of the build step.",
+  "errorSaving": "Error saving: {error}",
+  "@errorSaving": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "editStepLabel": "EDIT STEP",
+  "newBuildStep": "NEW BUILD STEP",
+  "stepDate": "STEP DATE",
+  "stepDescriptionLabel": "BUILD STEP DESCRIPTION",
+  "stepDescriptionHint": "What was done on the model today?",
+  "saveStep": "SAVE STEP",
+  "addPhoto": "ADD PHOTO",
+  "noteNameLabel": "NOTE NAME (REQUIRED)",
+  "noteNameHint": "e.g. Mixing paint for car body",
+  "noteContentLabel": "NOTE CONTENT (REQUIRED)",
+  "noteContentHint": "Enter your notes...",
+  "noteLinkLabel": "LINK (OPTIONAL)",
+  "noteLinkHint": "e.g. https://youtube.com/...",
+  "notePhotosLabel": "PHOTOS (OPTIONAL)",
+  "nameRequired": "Name is required",
+  "contentRequired": "Content is required",
+  "stashTitle": "STASH",
+  "pdfList": "PDF LIST",
+  "generatingPdfCatalog": "GENERATING PDF CATALOG...",
+  "manyPhotosWarning": "This may take a while with many photos",
+  "sortByDate": "Sort by date",
+  "searchInStash": "SEARCH IN STASH...",
+  "noModelsFound": "NO MODELS FOUND",
+  "modelsInQueue": "{count} MODELS IN QUEUE",
+  "@modelsInQueue": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "stashEmpty": "YOUR STASH IS EMPTY",
+  "stashEmptyHint": "Add models that are waiting for their turn!",
+  "startModel": "START MODEL",
+  "moveToWorkshopHint": "Move to workshop with today's date",
+  "movingToWorkshop": "Moving model to workshop...",
+  "movedToWorkshop": "Model moved to workshop!",
+  "sold": "SOLD",
+  "removeFromCollectionHint": "Permanently remove from collection",
+  "confirmSale": "CONFIRM SALE",
+  "soldConfirmationMessage": "Are you sure you sold project \"{title}\"? It will be permanently removed from the database along with all photos.",
+  "@soldConfirmationMessage": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "deletingModel": "Deleting model...",
+  "modelDeleted": "Model has been removed.",
+  "soldDeleteAction": "SOLD - DELETE",
+  "criticalError": "Critical error: {error}",
+  "@criticalError": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "pdfExportError": "PDF export error: {error}",
+  "@pdfExportError": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "selectProgress": "SELECT PROGRESS",
+  "noBuildSteps": "NO BUILD STEPS",
+  "errorPrefix": "Error: {error}",
+  "@errorPrefix": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "exportError": "Export error: {error}",
+  "close": "CLOSE",
+  "@exportError": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  }
+}

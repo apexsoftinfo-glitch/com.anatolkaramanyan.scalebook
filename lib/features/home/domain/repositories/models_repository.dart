@@ -6,4 +6,5 @@ abstract class ModelsRepository {
   Future<void> updateProject(ModelProject project);
   Future<void> deleteProject(String id);
   Future<ModelProject?> getProjectById(String id);
+  Future<void> deleteBuildStep(String stepId);
 }

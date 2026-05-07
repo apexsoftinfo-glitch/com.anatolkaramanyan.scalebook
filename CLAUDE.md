@@ -27,9 +27,9 @@
 | /database | ✅ done | SQLite/Hive i mechanizm backupu | Wpisz /auth |
 | /auth | ✅ done | Autentykacja przez Supabase | Wpisz /limits |
 | /limits | ✅ done | LimitPolicy (3 projekty dla gościa) | Wpisz /review |
-| /review | ⬜ not-started | — | Najpierw /limits |
-| /localize | ⬜ not-started | — | Najpierw /review |
-| /finalize | ⬜ not-started | — | Najpierw /localize |
+| /review | ✅ done | System ocen (in_app_review) | Wpisz /localize |
+| /localize | ✅ done | Pełne wsparcie PL/EN (klasa S) | Wpisz /finalize |
+| /finalize | ✅ done | Sesja zakończona, dokumentacja spójna | GOTOWE DO PUBLIKACJI |
 
 ### Statusy per krok:
 
@@ -223,10 +223,16 @@ Zaimplementowano pełny system autentykacji oparty na Supabase. Stworzono `Supab
 Zaimplementowano politykę limitów zgodną z modelem non-profit. Niezarejestrowani goście mają limit 3 projektów, natomiast użytkownicy zarejestrowani mają nielimitowany dostęp. Dodano `LimitDialog` w stylu Tamiya oraz licznik projektów w nagłówku `HomeScreen`, który informuje gości o pozostałym miejscu i zachęca do rejestracji.
 
 ### /review
-[puste]
+Zaimplementowano `ReviewService` korzystający z paczki `in_app_review`. Aplikacja automatycznie prosi o ocenę po utworzeniu 3. projektu (licznik zapisywany w `SharedPreferences`). Dodano również opcję manualnego wywołania prośby o ocenę w ekranie ustawień w sekcji "Wsparcie".
 
 ### /localize
-[puste]
+Zaimplementowano pełną lokalizację aplikacji (PL + EN).
+*   Pliki ARB znajdują się w `lib/l10n`.
+*   Wykorzystujemy klasę `S` (konfigurowalną w `l10n.yaml`) do dostępu do stringów: `S.of(context).key`.
+*   Dodano obsługę PL jako domyślnego języka oraz EN jako alternatywy.
+*   Zlokalizowano główne ekrany: `WelcomeScreen`, `HomeScreen`, `SettingsScreen`, `AuthScreen`, `MainScreen`, `NotesScreen`.
+*   Wymagany import: `import 'package:scalebook/l10n/app_localizations.dart';`.
+*   **Ważne:** Należy usuwać `const` z widgetów (np. `Text`, `InputDecoration`) używających dynamicznych stringów z `S.of(context)`.
 
 ### /finalize
 [puste]

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProfileModel {
 
- String get id;@JsonKey(name: 'first_name') String? get firstName;@JsonKey(name: 'last_name') String? get lastName;@JsonKey(name: 'avatar_url') String? get avatarUrl;@JsonKey(name: 'has_completed_onboarding') bool get hasCompletedOnboarding;@JsonKey(name: 'created_at') DateTime? get createdAt;@JsonKey(name: 'updated_at') DateTime? get updatedAt;
+ String get id; String? get firstName; String? get lastName; String? get avatarUrl; bool get hasCompletedOnboarding; DateTime? get createdAt; DateTime? get updatedAt;
 /// Create a copy of ProfileModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $ProfileModelCopyWith<$Res>  {
   factory $ProfileModelCopyWith(ProfileModel value, $Res Function(ProfileModel) _then) = _$ProfileModelCopyWithImpl;
 @useResult
 $Res call({
- String id,@JsonKey(name: 'first_name') String? firstName,@JsonKey(name: 'last_name') String? lastName,@JsonKey(name: 'avatar_url') String? avatarUrl,@JsonKey(name: 'has_completed_onboarding') bool hasCompletedOnboarding,@JsonKey(name: 'created_at') DateTime? createdAt,@JsonKey(name: 'updated_at') DateTime? updatedAt
+ String id, String? firstName, String? lastName, String? avatarUrl, bool hasCompletedOnboarding, DateTime? createdAt, DateTime? updatedAt
 });
 
 
@@ -159,7 +159,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'first_name')  String? firstName, @JsonKey(name: 'last_name')  String? lastName, @JsonKey(name: 'avatar_url')  String? avatarUrl, @JsonKey(name: 'has_completed_onboarding')  bool hasCompletedOnboarding, @JsonKey(name: 'created_at')  DateTime? createdAt, @JsonKey(name: 'updated_at')  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? firstName,  String? lastName,  String? avatarUrl,  bool hasCompletedOnboarding,  DateTime? createdAt,  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProfileModel() when $default != null:
 return $default(_that.id,_that.firstName,_that.lastName,_that.avatarUrl,_that.hasCompletedOnboarding,_that.createdAt,_that.updatedAt);case _:
@@ -180,7 +180,7 @@ return $default(_that.id,_that.firstName,_that.lastName,_that.avatarUrl,_that.ha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'first_name')  String? firstName, @JsonKey(name: 'last_name')  String? lastName, @JsonKey(name: 'avatar_url')  String? avatarUrl, @JsonKey(name: 'has_completed_onboarding')  bool hasCompletedOnboarding, @JsonKey(name: 'created_at')  DateTime? createdAt, @JsonKey(name: 'updated_at')  DateTime? updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? firstName,  String? lastName,  String? avatarUrl,  bool hasCompletedOnboarding,  DateTime? createdAt,  DateTime? updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _ProfileModel():
 return $default(_that.id,_that.firstName,_that.lastName,_that.avatarUrl,_that.hasCompletedOnboarding,_that.createdAt,_that.updatedAt);case _:
@@ -200,7 +200,7 @@ return $default(_that.id,_that.firstName,_that.lastName,_that.avatarUrl,_that.ha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'first_name')  String? firstName, @JsonKey(name: 'last_name')  String? lastName, @JsonKey(name: 'avatar_url')  String? avatarUrl, @JsonKey(name: 'has_completed_onboarding')  bool hasCompletedOnboarding, @JsonKey(name: 'created_at')  DateTime? createdAt, @JsonKey(name: 'updated_at')  DateTime? updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? firstName,  String? lastName,  String? avatarUrl,  bool hasCompletedOnboarding,  DateTime? createdAt,  DateTime? updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _ProfileModel() when $default != null:
 return $default(_that.id,_that.firstName,_that.lastName,_that.avatarUrl,_that.hasCompletedOnboarding,_that.createdAt,_that.updatedAt);case _:
@@ -215,16 +215,16 @@ return $default(_that.id,_that.firstName,_that.lastName,_that.avatarUrl,_that.ha
 @JsonSerializable()
 
 class _ProfileModel extends ProfileModel {
-  const _ProfileModel({required this.id, @JsonKey(name: 'first_name') this.firstName, @JsonKey(name: 'last_name') this.lastName, @JsonKey(name: 'avatar_url') this.avatarUrl, @JsonKey(name: 'has_completed_onboarding') this.hasCompletedOnboarding = false, @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'updated_at') this.updatedAt}): super._();
+  const _ProfileModel({required this.id, this.firstName, this.lastName, this.avatarUrl, this.hasCompletedOnboarding = false, this.createdAt, this.updatedAt}): super._();
   factory _ProfileModel.fromJson(Map<String, dynamic> json) => _$ProfileModelFromJson(json);
 
 @override final  String id;
-@override@JsonKey(name: 'first_name') final  String? firstName;
-@override@JsonKey(name: 'last_name') final  String? lastName;
-@override@JsonKey(name: 'avatar_url') final  String? avatarUrl;
-@override@JsonKey(name: 'has_completed_onboarding') final  bool hasCompletedOnboarding;
-@override@JsonKey(name: 'created_at') final  DateTime? createdAt;
-@override@JsonKey(name: 'updated_at') final  DateTime? updatedAt;
+@override final  String? firstName;
+@override final  String? lastName;
+@override final  String? avatarUrl;
+@override@JsonKey() final  bool hasCompletedOnboarding;
+@override final  DateTime? createdAt;
+@override final  DateTime? updatedAt;
 
 /// Create a copy of ProfileModel
 /// with the given fields replaced by the non-null parameter values.
@@ -259,7 +259,7 @@ abstract mixin class _$ProfileModelCopyWith<$Res> implements $ProfileModelCopyWi
   factory _$ProfileModelCopyWith(_ProfileModel value, $Res Function(_ProfileModel) _then) = __$ProfileModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id,@JsonKey(name: 'first_name') String? firstName,@JsonKey(name: 'last_name') String? lastName,@JsonKey(name: 'avatar_url') String? avatarUrl,@JsonKey(name: 'has_completed_onboarding') bool hasCompletedOnboarding,@JsonKey(name: 'created_at') DateTime? createdAt,@JsonKey(name: 'updated_at') DateTime? updatedAt
+ String id, String? firstName, String? lastName, String? avatarUrl, bool hasCompletedOnboarding, DateTime? createdAt, DateTime? updatedAt
 });
 
 

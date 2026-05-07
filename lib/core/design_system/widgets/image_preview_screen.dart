@@ -1,5 +1,5 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'app_image.dart';
 
 class ImagePreviewScreen extends StatelessWidget {
   final String imageUrl;
@@ -75,17 +75,9 @@ class ImagePreviewScreen extends StatelessWidget {
   }
 
   Widget _buildImage() {
-    if (imageUrl.startsWith('http')) {
-      return Image.network(
-        imageUrl, 
-        fit: BoxFit.contain,
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
-          return const Center(child: CircularProgressIndicator(color: Colors.white));
-        },
-      );
-    } else {
-      return Image.file(File(imageUrl), fit: BoxFit.contain);
-    }
+    return AppImage(
+      imageUrl: imageUrl,
+      fit: BoxFit.contain,
+    );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scalebook/l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import '../../../core/design_system/app_colors.dart';
 import 'auth_screen.dart';
@@ -26,86 +27,103 @@ class WelcomeScreen extends StatelessWidget {
             ),
           ),
           SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                children: [
-                  const Spacer(),
-                  Container(
-                    width: 140,
-                    height: 140,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.2),
-                          blurRadius: 15,
-                          offset: const Offset(0, 5),
+            child: CustomScrollView(
+              slivers: [
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      children: [
+                        const Spacer(),
+                        Container(
+                          width: 140,
+                          height: 140,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.2),
+                                blurRadius: 15,
+                                offset: const Offset(0, 5),
+                              ),
+                            ],
+                            border: Border.all(color: Colors.white, width: 4),
+                          ),
+                          child: ClipOval(
+                            child: Image.asset(
+                              'assets/images/app_logo.png',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
-                      ],
-                      border: Border.all(color: Colors.white, width: 4),
-                    ),
-                    child: ClipOval(
-                      child: Image.asset(
-                        'assets/images/app_logo.png',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    'SCALEBOOK', // L10N
-                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                        const SizedBox(height: 24),
+                        Text(
+                          S.of(context).appTitle, // L10N
+                          style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                                fontSize: (MediaQuery.sizeOf(context).width * 0.09).clamp(24.0, 40.0),
+                                color: Colors.white,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 4,
+                                fontFamily: 'Roboto_regular', // Ensure consistent font
+                              ),
+                        ),
+                        const Text(
+                          'Made in Poland with love for modellers',
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 10,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          S.of(context).welcomeTagline, // L10N
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: Colors.white70, fontSize: 16),
+                        ),
+                        const Spacer(),
+                        _buildActionButton(
+                          context,
+                          label: S.of(context).startAsGuest, // L10N
+                          color: AppColors.red,
+                          onPressed: () async {
+                            await GetIt.I<SessionRepository>().signInAnonymously();
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        _buildActionButton(
+                          context,
+                          label: S.of(context).login, // L10N
                           color: Colors.white,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 4,
+                          isOutlined: true,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const AuthScreen()),
+                            );
+                          },
                         ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Twój techniczny dziennik budowy i portfolio', // L10N
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white70, fontSize: 16),
-                  ),
-                  const Spacer(),
-                  _buildActionButton(
-                    context,
-                    label: 'ZACZNIJ JAKO GOŚĆ', // L10N
-                    color: AppColors.red,
-                    onPressed: () async {
-                      await GetIt.I<SessionRepository>().signInAnonymously();
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  _buildActionButton(
-                    context,
-                    label: 'ZALOGUJ SIĘ', // L10N
-                    color: Colors.white,
-                    isOutlined: true,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const AuthScreen()),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const AuthScreen(isRegister: true)),
-                      );
-                    },
-                    child: const Text(
-                      'STWÓRZ KONTO', // L10N
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        const SizedBox(height: 16),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const AuthScreen(isRegister: true)),
+                            );
+                          },
+                          child: Text(
+                            S.of(context).register, // L10N
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const SizedBox(height: 32),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 32),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],

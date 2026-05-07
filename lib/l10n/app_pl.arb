@@ -1,0 +1,253 @@
+{
+  "@@locale": "pl",
+  "appTitle": "SCALEBOOK",
+  "welcomeTagline": "Twój techniczny dziennik budowy i portfolio",
+  "startAsGuest": "ZACZNIJ JAKO GOŚĆ",
+  "login": "ZALOGUJ SIĘ",
+  "register": "STWÓRZ KONTO",
+  "homeTitle": "TWÓJ WARSZTAT",
+  "activeProjectsCount": "{count} / {limit} aktywne projekty",
+  "@activeProjectsCount": {
+    "description": "Liczba aktywnych projektów w stosunku do limitu",
+    "placeholders": {
+      "count": { "type": "int" },
+      "limit": { "type": "int" }
+    }
+  },
+  "limitReached": "LIMIT OSIĄGNIĘTY",
+  "guestLimitMessage": "Jako Gość możesz mieć maksymalnie {limit} projekty. Załóż konto, aby zyskać nielimitowane miejsce na warsztacie!",
+  "@guestLimitMessage": {
+    "placeholders": {
+      "limit": { "type": "int" }
+    }
+  },
+  "deleteProjectTitle": "USUŃ PROJEKT",
+  "deleteProjectConfirm": "Czy na pewno chcesz usunąć projekt \"{title}\"? Pamiętaj, że nie będzie możliwości przywrócenia projektu ani jego historii budowy.",
+  "@deleteProjectConfirm": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "deletePermanently": "USUŃ NA ZAWSZE",
+  "cancel": "ANULUJ",
+  "save": "ZAPISZ",
+  "edit": "EDYTUJ",
+  "delete": "USUŃ",
+  "settings": "USTAWIENIA",
+  "profile": "PROFIL",
+  "modeler": "Modelarz",
+  "scalebookProfile": "Profil ScaleBook",
+  "dataAndBackup": "DANE I KOPIA ZAPASOWA",
+  "exportCollection": "Eksportuj kolekcję (ZIP)",
+  "exportCollectionSubtitle": "Kopia zapasowa wszystkich zdjęć i wpisów",
+  "importCollection": "Importuj kolekcję (ZIP)",
+  "importCollectionSuccess": "Kolekcja została zaimportowana pomyślnie!",
+  "support": "WSPARCIE",
+  "rateScaleBook": "Oceń ScaleBook",
+  "rateScaleBookSubtitle": "Twoja opinia pomaga mi rozwijać aplikację",
+  "buyMeACoffee": "Postaw mi kawę",
+  "buyMeACoffeeSubtitle": "Wesprzyj rozwój ScaleBook",
+  "application": "APLIKACJA",
+  "language": "Język",
+  "polish": "Polski",
+  "english": "Angielski",
+  "logout": "Wyloguj się",
+  "deleteAccount": "Usuń konto",
+  "deleteAccountConfirm": "Czy na pewno chcesz usunąć konto i wszystkie dane? Tej operacji nie można cofnąć.",
+  "techAuth": "AUTORYZACJA TECHNICZNA",
+  "email": "E-MAIL",
+  "password": "HASŁO",
+  "forgotPassword": "Zapomniałeś hasła?",
+  "resetPassword": "Resetuj hasło",
+  "resetPasswordTitle": "Odzyskiwanie hasła",
+  "resetPasswordDescription": "Podaj swój adres e-mail, aby otrzymać link do zmiany hasła.",
+  "sendResetLink": "Wyślij link",
+  "resetLinkSent": "Link do resetowania hasła został wysłany na Twój e-mail.",
+  "changePassword": "Zmień hasło",
+  "changePasswordTitle": "Zmiana hasła",
+  "changePasswordDescription": "Podaj nowe hasło do swojego konta.",
+  "newPasswordLabel": "NOWE HASŁO",
+  "passwordChangedSuccess": "Hasło zostało pomyślnie zmienione.",
+  "required": "Wymagane",
+  "notes": "NOTATKI",
+  "newNote": "NOWA NOTATKA",
+  "editNote": "EDYTUJ NOTATKĘ",
+  "noteName": "NAZWA NOTATKI (WYMAGANE)",
+  "noteContent": "TREŚĆ NOTATKI (WYMAGANE)",
+  "linkOptional": "LINK (OPCJONALNIE)",
+  "photosOptional": "ZDJĘCIA (OPCJONALNIE)",
+  "saveNote": "ZAPISZ NOTATKĘ",
+  "saveChanges": "ZAPISZ ZMIANY",
+  "gallery": "Galeria",
+  "camera": "Aparat",
+  "pulpit": "Pulpit",
+  "stash": "Garderoba",
+  "showcase": "Gablota",
+  "showcaseTitle": "MOJA GABLOTA",
+  "searchInNotes": "SZUKAJ W NOTATKACH...",
+  "noNotes": "BRAK NOTATEK",
+  "noNotesFound": "NIE ZNALEZIONO NOTATEK",
+  "addFirstNote": "Dodaj swoją pierwszą notatkę modelarską!",
+  "tryChangingSearch": "Spróbuj zmienić frazę wyszukiwania",
+  "deleteNoteTitle": "USUŃ NOTATKĘ",
+  "deleteNoteConfirm": "Czy na pewno chcesz usunąć notatkę \"{title}\"?",
+  "@deleteNoteConfirm": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "noteDetail": "SZCZEGÓŁY NOTATKI",
+  "shareNoteAsPng": "Udostępnij jako grafikę",
+  "myModelingNote": "Moja notatka modelarska: {title}",
+  "@myModelingNote": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "error": "Błąd: {message}",
+  "@error": {
+    "placeholders": {
+      "message": { "type": "String" }
+    }
+  },
+  "deleteAccountTitle": "USUŃ KONTO?",
+  "deleteAccountConfirm": "Czy na pewno chcesz usunąć konto i wszystkie dane? Tej operacji nie można cofnąć.",
+  "deletePermanentlyAction": "USUŃ TRWALE",
+  "errorDeletingAccount": "Błąd podczas usuwania konta: {message}",
+  "@errorDeletingAccount": {
+    "placeholders": {
+      "message": { "type": "String" }
+    }
+  },
+  "editProfile": "EDYTUJ PROFIL",
+  "firstName": "IMIĘ",
+  "statusInProgress": "W TRAKCIE",
+  "statusPaused": "ODŁOŻONE",
+  "statusFinished": "GOTOWY",
+  "statusStash": "GARDEROBA",
+  "statusSold": "SPRZEDANE",
+  "share": "UDOSTĘPNIJ",
+  "newModel": "NOWY MODEL",
+  "boxPhotoRequired": "ZDJĘCIE OPAKOWANIA (WYMAGANE)",
+  "addToStash": "DODAJ DO GARDEROBY",
+  "stashSectionDescription": "Model trafi do sekcji \"Garderoba\"",
+  "modelNameLabel": "NAZWA MODELU",
+  "scaleLabel": "SKALA",
+  "purchaseDate": "DATA ZAKUPU",
+  "startDate": "DATA ROZPOCZĘCIA",
+  "addToWorkshop": "DODAJ DO WARSZTATU",
+  "modelNameRequired": "Nazwa jest obowiązkowa",
+  "scaleRequired": "Skala jest obowiązkowa",
+  "addPhotoError": "Dodaj zdjęcie opakowania przed zapisaniem.",
+  "savingError": "Błąd podczas zapisywania: {message}",
+  "@savingError": {
+    "placeholders": {
+      "message": { "type": "String" }
+    }
+  },
+  "scaleMatesLinkText": "Nie masz zdjęcia pudełka? Znajdź je na ",
+  "demoModeWarning": "⚠️ TRYB DEMO (BRAK KLUCZY API) ⚠️",
+  "errorUserAlreadyExists": "To konto już istnieje. Wybierz opcję logowania zamiast rejestracji.",
+  "errorInvalidCredentials": "Błędny adres e-mail lub hasło. Spróbuj ponownie.",
+  "errorNetworkProblem": "Problem z połączeniem. Sprawdź swoje połączenie z internetem.",
+  "errorWeakPassword": "Hasło jest zbyt słabe lub niepoprawne.",
+  "errorUnexpectedAuth": "Wystąpił nieoczekiwany błąd autoryzacji. Spróbuj ponownie później.",
+  "deleteStep": "USUŃ ETAP",
+  "deleteStepConfirm": "Czy na pewno chcesz usunąć ten etap budowy?",
+  "preparingStepPhoto": "Przygotowywanie zdjęcia etapu...",
+  "generatingPoster": "Generowanie plakatu postępów...",
+  "sharingCollection": "Uruchamiam udostępnianie...",
+  "myProgressTitle": "Moje postępy: {title}",
+  "@myProgressTitle": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "buildStepProgressTitle": "Postęp prac: {title}",
+  "@buildStepProgressTitle": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "addStepDescription": "Dodaj krótki opis etapu prac.",
+  "errorSaving": "Błąd podczas zapisywania: {error}",
+  "@errorSaving": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "editStepLabel": "EDYTUJ ETAP",
+  "newBuildStep": "NOWY ETAP BUDOWY",
+  "stepDate": "DATA ETAPU",
+  "stepDescriptionLabel": "OPIS ETAPU PRAC",
+  "stepDescriptionHint": "Co dziś zrobiono przy modelu?",
+  "saveStep": "ZAPISZ ETAP",
+  "addPhoto": "DODAJ ZDJĘCIE",
+  "noteNameLabel": "NAZWA NOTATKI (WYMAGANE)",
+  "noteNameHint": "np. Mieszanie farb do karoserii",
+  "noteContentLabel": "TREŚĆ NOTATKI (WYMAGANE)",
+  "noteContentHint": "Wpisz swoje uwagi...",
+  "noteLinkLabel": "LINK (OPCJONALNIE)",
+  "noteLinkHint": "np. https://youtube.com/...",
+  "notePhotosLabel": "ZDJĘCIA (OPCJONALNIE)",
+  "nameRequired": "Nazwa jest obowiązkowa",
+  "contentRequired": "Treść jest obowiązkowa",
+  "stashTitle": "GARDEROBA",
+  "pdfList": "LISTA PDF",
+  "generatingPdfCatalog": "GENEROWANIE KATALOGU PDF...",
+  "manyPhotosWarning": "To może chwilę potrwać przy wielu zdjęciach",
+  "sortByDate": "Sortuj według daty",
+  "searchInStash": "SZUKAJ W GARDEROBIE...",
+  "noModelsFound": "NIE ZNALEZIONO MODELI",
+  "modelsInQueue": "{count} MODELE W KOLEJCE",
+  "@modelsInQueue": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "stashEmpty": "TWOJA GARDEROBA JEST PUSTA",
+  "stashEmptyHint": "Dodaj modele, które czekają na swoją kolej!",
+  "startModel": "ZACZĄĆ MODEL",
+  "moveToWorkshopHint": "Przenieś na warsztat z dzisiejszą datą",
+  "movingToWorkshop": "Przenoszenie modelu na warsztat...",
+  "movedToWorkshop": "Model przeniesiony na warsztat!",
+  "sold": "SPRZEDANE",
+  "removeFromCollectionHint": "Usuń trwale z kolekcji",
+  "confirmSale": "POTWIERDŹ SPRZEDAŻ",
+  "soldConfirmationMessage": "Czy na pewno sprzedałeś projekt \"{title}\"? Zostanie on usunięty z bazy na zawsze wraz ze wszystkimi zdjęciami.",
+  "@soldConfirmationMessage": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "deletingModel": "Usuwanie modelu...",
+  "modelDeleted": "Model został usunięty.",
+  "soldDeleteAction": "SPRZEDANE - USUŃ",
+  "criticalError": "Błąd krytyczny: {error}",
+  "@criticalError": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "pdfExportError": "Błąd eksportu PDF: {error}",
+  "@pdfExportError": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "selectProgress": "WYBIERZ POSTĘPY",
+  "noBuildSteps": "BRAK ETAPÓW BUDOWY",
+  "errorPrefix": "Błąd: {error}",
+  "@errorPrefix": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "exportError": "Błąd eksportu: {error}",
+  "close": "ZAMKNIJ",
+  "@exportError": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  }
+}

@@ -10,6 +10,21 @@
 - Pomijaj długie szczegóły implementacyjne, chyba że są kluczowe dla zrozumienia zmiany.
 - Opcjonalnie używaj emoji dla czytelności, ale bez przesady.
 
+## 2026-05-07
+- Dodano sekcję **"O programie"** oraz **"Schemat importu danych"** w ustawieniach aplikacji.
+- Zaimplementowano okno dialogowe prezentujące wymagane kolumny dla poprawnego importu danych (Tytuł, Skala, Status, Data).
+- Zlokalizowano nowe elementy interfejsu w języku polskim i angielskim.
+
+## 2026-05-04
+- Zaimplementowano pełną lokalizację aplikacji (PL + EN) przy użyciu systemu `flutter_gen_l10n`. Wszystkie stringi, dialogi i komunikaty błędów są teraz dynamiczne.
+- Dodano funkcję **"Zapomniałeś hasła?"** na ekranie logowania, umożliwiającą wysłanie linku do resetowania hasła przez Supabase.
+- Dodano opcję **"Zmień hasło"** w Ustawieniach dla zalogowanych użytkowników.
+- Zmodernizowano system kopii zapasowej (Backup) – teraz eksportuje on nie tylko lokalne zdjęcia, ale również wszystkie dane projektów z chmury (Supabase) oraz ustawienia aplikacji do jednego pliku ZIP.
+- Zaimplementowano system ocen aplikacji (`in_app_review`). Aplikacja teraz automatycznie prosi o opinię po utworzeniu trzech projektów.
+- Dodano przycisk "Oceń ScaleBook" w ustawieniach, pozwalający na ręczne wystawienie opinii.
+- Naprawiono błędy analizy statycznej oraz błędy kompilacji związane z błędnym użyciem słowa kluczowego `const` przy dynamicznych tekstach.
+- Zaktualizowano `README.md` oraz `CLAUDE.md` do stanu końcowego obecnego etapu.
+
 ## 2026-05-01
 
 - Wycofano się z zawodnych zewnętrznych zdjęć na rzecz **w pełni programowalnego, technicznego tła maty modelarskiej**.

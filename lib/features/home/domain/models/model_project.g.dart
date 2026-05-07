@@ -14,6 +14,13 @@ _ModelProject _$ModelProjectFromJson(Map<String, dynamic> json) =>
       progress: (json['progress'] as num?)?.toDouble() ?? 0.0,
       status: json['status'] as String,
       mainImageUrl: json['main_image_url'] as String?,
+      finishedMainImageUrl: json['finished_main_image_url'] as String?,
+      finishedGalleryUrls:
+          (json['finished_gallery_urls'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      finalNotes: json['final_notes'] as String?,
       steps:
           (json['steps'] as List<dynamic>?)
               ?.map((e) => BuildStep.fromJson(e as Map<String, dynamic>))
@@ -35,6 +42,9 @@ Map<String, dynamic> _$ModelProjectToJson(_ModelProject instance) =>
       'progress': instance.progress,
       'status': instance.status,
       'main_image_url': instance.mainImageUrl,
+      'finished_main_image_url': instance.finishedMainImageUrl,
+      'finished_gallery_urls': instance.finishedGalleryUrls,
+      'final_notes': instance.finalNotes,
       'steps': instance.steps,
       'gallery_urls': instance.galleryUrls,
       'created_at': instance.createdAt.toIso8601String(),

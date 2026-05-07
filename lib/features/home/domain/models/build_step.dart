@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+// import 'package:json_annotation/json_annotation.dart'; // Removed as unnecessary
 
 part 'build_step.freezed.dart';
 part 'build_step.g.dart';
@@ -7,10 +8,10 @@ part 'build_step.g.dart';
 abstract class BuildStep with _$BuildStep {
   const factory BuildStep({
     required String id,
-    @JsonKey(name: 'project_id') required String projectId,
+    required String projectId,
     required DateTime date,
     required String note,
-    @JsonKey(name: 'image_url') String? imageUrl,
+    String? imageUrl,
   }) = _BuildStep;
 
   const BuildStep._();

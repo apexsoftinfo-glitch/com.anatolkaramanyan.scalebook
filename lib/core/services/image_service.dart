@@ -16,12 +16,33 @@ class ImageService {
   Future<String> saveImage(File sourceFile) async {
     final directory = await _imageDir;
     final fileName = '${const Uuid().v4()}${p.extension(sourceFile.path)}';
-    final savedFile = await sourceFile.copy(p.join(directory.path, fileName));
-    return savedFile.path;
+    await sourceFile.copy(p.join(directory.path, fileName));
+    // Store only the relative part: scalebook_data/images/filename.jpg
+    return p.join('scalebook_data', 'images', fileName);
   }
 
-  Future<void> deleteImage(String path) async {
-    final file = File(path);
+  Future<String> resolvePath(String storedPath) async {
+    // If it's a URL, return as is
+    if (storedPath.startsWith('http')) return storedPath;
+
+    // If it's an absolute path that is now invalid (iOS UUID issue), 
+    // extract the relative part and rebuild it.
+    final docs = await getApplicationDocumentsDirectory();
+    
+    // Find where scalebook_data starts in the stored path
+    final marker = 'scalebook_data';
+    if (storedPath.contains(marker)) {
+      final relativePart = storedPath.substring(storedPath.indexOf(marker));
+      return p.join(docs.path, relativePart);
+    }
+    
+    // Fallback: if it's just a filename
+    return p.join(docs.path, 'scalebook_data', 'images', storedPath);
+  }
+
+  Future<void> deleteImage(String storedPath) async {
+    final absolutePath = await resolvePath(storedPath);
+    final file = File(absolutePath);
     if (await file.exists()) {
       await file.delete();
     }

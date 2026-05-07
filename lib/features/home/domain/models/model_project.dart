@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+// import 'package:json_annotation/json_annotation.dart'; // Removed as unnecessary
 import 'build_step.dart';
 
 part 'model_project.freezed.dart';
@@ -12,10 +13,13 @@ abstract class ModelProject with _$ModelProject {
     required String scale,
     @Default(0.0) double progress,
     required String status,
-    @JsonKey(name: 'main_image_url') String? mainImageUrl,
+    String? mainImageUrl,
+    String? finishedMainImageUrl,
+    @Default([]) List<String> finishedGalleryUrls,
+    String? finalNotes,
     @Default([]) List<BuildStep> steps,
-    @JsonKey(name: 'gallery_urls') @Default([]) List<String> galleryUrls,
-    @JsonKey(name: 'created_at') required DateTime createdAt,
+    @Default([]) List<String> galleryUrls,
+    required DateTime createdAt,
   }) = _ModelProject;
 
   const ModelProject._();

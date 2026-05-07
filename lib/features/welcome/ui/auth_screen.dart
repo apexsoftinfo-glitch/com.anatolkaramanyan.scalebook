@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scalebook/l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import '../../../core/design_system/app_colors.dart';
 import '../../../core/config/api_keys.dart';
@@ -20,7 +21,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final title = widget.isRegister ? 'STWÓRZ KONTO' : 'ZALOGUJ SIĘ'; // L10N
+    final title = widget.isRegister ? S.of(context).register : S.of(context).login; // L10N
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -68,10 +69,10 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                         const SizedBox(height: 12),
                         const SizedBox(height: 12),
-                        const Text(
-                          'AUTORYZACJA TECHNICZNA', // L10N
+                        Text(
+                          S.of(context).techAuth, // L10N
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 2,
@@ -83,8 +84,8 @@ class _AuthScreenState extends State<AuthScreen> {
                             margin: const EdgeInsets.only(top: 8),
                             padding: const EdgeInsets.symmetric(vertical: 4),
                             color: AppColors.red.withValues(alpha: 0.1),
-                            child: const Text(
-                              '⚠️ TRYB DEMO (BRAK KLUCZY API) ⚠️', // L10N
+                            child: Text(
+                              S.of(context).demoModeWarning, // L10N
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 10,
@@ -96,26 +97,43 @@ class _AuthScreenState extends State<AuthScreen> {
                         const SizedBox(height: 32),
                         TextFormField(
                           controller: _emailController,
-                          decoration: const InputDecoration(
-                            labelText: 'E-MAIL', // L10N
-                            border: OutlineInputBorder(),
-                            prefixIcon: Icon(Icons.email_outlined),
+                          decoration: InputDecoration(
+                            labelText: S.of(context).email, // L10N
+                            border: const OutlineInputBorder(),
+                            prefixIcon: const Icon(Icons.email_outlined),
                           ),
                           keyboardType: TextInputType.emailAddress,
-                          validator: (v) => v?.isEmpty ?? true ? 'Wymagane' : null, // L10N
+                          validator: (v) => v?.isEmpty ?? true ? S.of(context).required : null, // L10N
                         ),
                         const SizedBox(height: 16),
                         TextFormField(
                           controller: _passwordController,
-                          decoration: const InputDecoration(
-                            labelText: 'HASŁO', // L10N
-                            border: OutlineInputBorder(),
-                            prefixIcon: Icon(Icons.lock_outline),
+                          decoration: InputDecoration(
+                            labelText: S.of(context).password, // L10N
+                            border: const OutlineInputBorder(),
+                            prefixIcon: const Icon(Icons.lock_outline),
                           ),
                           obscureText: true,
-                          validator: (v) => v?.isEmpty ?? true ? 'Wymagane' : null, // L10N
+                          validator: (v) => v?.isEmpty ?? true ? S.of(context).required : null, // L10N
                         ),
-                        const SizedBox(height: 32),
+                        if (!widget.isRegister) ...[
+                          const SizedBox(height: 8),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: _showResetPasswordDialog,
+                              child: Text(
+                                S.of(context).forgotPassword,
+                                style: const TextStyle(
+                                  color: AppColors.navyBlue,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                        const SizedBox(height: 24),
                         if (_isLoading)
                           const Center(child: CircularProgressIndicator())
                         else
@@ -158,12 +176,97 @@ class _AuthScreenState extends State<AuthScreen> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: $e')),
+            SnackBar(
+              content: Text(_mapAuthError(e.toString())),
+              backgroundColor: AppColors.red,
+            ),
           );
         }
       } finally {
         if (mounted) setState(() => _isLoading = false);
       }
     }
+  }
+
+  String _mapAuthError(String error) {
+    final lowerError = error.toLowerCase();
+    if (lowerError.contains('user_already_exists') || lowerError.contains('user already registered')) {
+      return S.of(context).errorUserAlreadyExists;
+    }
+    if (lowerError.contains('invalid login credentials') || lowerError.contains('invalid_credentials')) {
+      return S.of(context).errorInvalidCredentials;
+    }
+    if (lowerError.contains('network') || lowerError.contains('socketexception')) {
+      return S.of(context).errorNetworkProblem;
+    }
+    if (lowerError.contains('password')) {
+      return S.of(context).errorWeakPassword;
+    }
+    return S.of(context).errorUnexpectedAuth;
+  }
+
+  void _showResetPasswordDialog() {
+    final emailController = TextEditingController(text: _emailController.text);
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(S.of(context).resetPasswordTitle),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(S.of(context).resetPasswordDescription),
+            const SizedBox(height: 16),
+            TextField(
+              controller: emailController,
+              decoration: InputDecoration(
+                labelText: S.of(context).email,
+                border: const OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.emailAddress,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(S.of(context).cancel),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final email = emailController.text.trim();
+              if (email.isEmpty) return;
+
+              try {
+                final repo = GetIt.I<SessionRepository>();
+                await repo.resetPassword(email);
+                if (context.mounted) {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(S.of(context).resetLinkSent),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(S.of(context).error(e.toString())),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.navyBlue,
+              foregroundColor: Colors.white,
+            ),
+            child: Text(S.of(context).sendResetLink),
+          ),
+        ],
+      ),
+    );
   }
 }

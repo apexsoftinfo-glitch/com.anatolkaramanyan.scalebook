@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import '../../../../core/services/review_service.dart';
 import '../../domain/models/model_project.dart';
 import '../../domain/repositories/models_repository.dart';
 import 'home_state.dart';
@@ -27,9 +29,22 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       await _repository.addProject(project);
       await loadProjects(); // Refresh list
+      
+      // Track project creation for review prompt
+      GetIt.I<ReviewService>().recordProjectCreated();
     } catch (e) {
       emit(HomeState.error(e.toString()));
       rethrow; // Allow UI to catch this
+    }
+  }
+
+  Future<void> updateProject(ModelProject project) async {
+    try {
+      await _repository.updateProject(project);
+      await loadProjects(); // Refresh list
+    } catch (e) {
+      emit(HomeState.error(e.toString()));
+      rethrow;
     }
   }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:scalebook/l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import '../../../../core/design_system/widgets/cutting_mat_background.dart';
 import '../../../../core/design_system/app_colors.dart';
 import '../presentation/cubit/home_cubit.dart';
@@ -19,19 +19,19 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GetIt.I<HomeCubit>()..loadProjects(),
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
-          title: Row(
+          automaticallyImplyLeading: false,
+          centerTitle: false,
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(
-                'assets/images/app_logo.png',
-                height: 32,
-                fit: BoxFit.contain,
+              Text(S.of(context).appTitle), // L10N
+              const Text(
+                'Made in Poland with love for modellers',
+                style: TextStyle(fontSize: 8, color: Colors.white70, fontWeight: FontWeight.normal),
               ),
-              const SizedBox(width: 12),
-              const Text('SCALEBOOK'), // L10N
             ],
           ),
           actions: [
@@ -50,7 +50,10 @@ class HomeScreen extends StatelessWidget {
           child: BlocBuilder<HomeCubit, HomeState>(
             builder: (context, state) {
               return state.maybeMap(
-                loaded: (s) => _buildGrid(context, s.projects),
+                loaded: (s) {
+                  final activeProjects = s.projects.where((p) => p.status != 'GARDEROBA' && p.status != 'FINISHED').toList();
+                  return _buildGrid(context, activeProjects);
+                },
                 error: (s) => Center(child: Text(s.message)),
                 orElse: () => const Center(child: CircularProgressIndicator()),
               );
@@ -60,6 +63,7 @@ class HomeScreen extends StatelessWidget {
         floatingActionButton: BlocBuilder<SessionCubit, UserSession>(
           builder: (context, session) {
             return FloatingActionButton(
+              heroTag: 'home_fab',
               onPressed: () {
                 final count = context.read<HomeCubit>().projectCount;
                 final limit = session.limit;
@@ -68,10 +72,10 @@ class HomeScreen extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (dialogContext) => LimitDialog(
-                      title: 'LIMIT OSIĄGNIĘTY', // L10N
+                      title: S.of(context).limitReached, // L10N
                       message:
-                          'Jako Gość możesz mieć maksymalnie $limit projekty. Załóż konto, aby zyskać nielimitowane miejsce na warsztacie!', // L10N
-                      actionLabel: 'STWÓRZ KONTO', // L10N
+                          S.of(context).guestLimitMessage(limit), // L10N
+                      actionLabel: S.of(context).register, // L10N
                       onAction: () {
                         Navigator.push(
                           context,
@@ -97,8 +101,7 @@ class HomeScreen extends StatelessWidget {
             );
           },
         ),
-      ),
-    );
+      );
   }
 
   Widget _buildGrid(BuildContext context, List<dynamic> projects) {
@@ -114,7 +117,7 @@ class HomeScreen extends StatelessWidget {
             child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 0.85,
+                childAspectRatio: 0.98,
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
               ),
@@ -122,8 +125,8 @@ class HomeScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 final model = projects[index];
                 return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () async {
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => ModelDetailScreen(
@@ -132,6 +135,9 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                     );
+                    if (context.mounted) {
+                      context.read<HomeCubit>().loadProjects();
+                    }
                   },
                   onLongPress: () {
                     _showDeleteConfirmation(context, model.id, model.title);
@@ -166,12 +172,12 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'TWÓJ WARSZTAT', // L10N
+                    S.of(context).homeTitle, // L10N
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   if (limit != null)
                     Text(
-                      '$count / $limit aktywne projekty', // L10N
+                      S.of(context).activeProjectsCount(count, limit), // L10N
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: isGuest && count >= limit ? AppColors.red : AppColors.grey,
                             fontWeight: isGuest ? FontWeight.bold : FontWeight.normal,
@@ -194,8 +200,8 @@ class HomeScreen extends StatelessWidget {
                     color: AppColors.red,
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  child: const Text(
-                    'ZAREJESTRUJ SIĘ', // L10N
+                  child: Text(
+                    S.of(context).register, // L10N
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 12,
@@ -215,9 +221,9 @@ class HomeScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (dialogContext) => LimitDialog(
-        title: 'USUŃ PROJEKT', // L10N
-        message: 'Czy na pewno chcesz usunąć projekt "$title"? Pamiętaj, że nie będzie możliwości przywrócenia projektu ani jego historii budowy.', // L10N
-        actionLabel: 'USUŃ NA ZAWSZE', // L10N
+        title: S.of(context).deleteProjectTitle, // L10N
+        message: S.of(context).deleteProjectConfirm(title), // L10N
+        actionLabel: S.of(context).deletePermanently, // L10N
         onAction: () {
           context.read<HomeCubit>().deleteProject(id);
         },

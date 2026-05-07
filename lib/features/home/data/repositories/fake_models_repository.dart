@@ -51,4 +51,9 @@ class FakeModelsRepository implements ModelsRepository {
   Future<ModelProject?> getProjectById(String id) async {
     return _projects.firstWhere((p) => p.id == id);
   }
+
+  @override
+  Future<void> deleteBuildStep(String stepId) async {
+    // Fake implementation
+  }
 }
