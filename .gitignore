@@ -67,7 +67,7 @@ ios/Flutter/Flutter.podspec
 
 # Secrets
 .env
-api_keys.dart
+config/api-keys.json
 
 # ScaleBook Data
 scalebook_data/

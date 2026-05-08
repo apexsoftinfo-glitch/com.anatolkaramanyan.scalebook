@@ -1,0 +1,70 @@
+workflows:
+  flutter-ios-build:
+    name: ScaleBook iOS Build
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+      groups:
+        - api_keys # Group for SUPABASE_URL, SUPABASE_ANON_KEY, etc.
+    scripts:
+      - name: Set up config/api-keys.json
+        script: |
+          mkdir -p config
+          cat <<EOF > config/api-keys.json
+          {
+            "SUPABASE_URL": "$SUPABASE_URL",
+            "SUPABASE_ANON_KEY": "$SUPABASE_ANON_KEY",
+            "REVENUECAT_APPLE_API_KEY": "$REVENUECAT_APPLE_API_KEY",
+            "REVENUECAT_GOOGLE_API_KEY": "$REVENUECAT_GOOGLE_API_KEY"
+          }
+          EOF
+      - name: Flutter build-runner
+        script: |
+          flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
+      - name: Flutter build ipa
+        script: |
+          flutter build ipa --release --no-codesign --dart-define-from-file=config/api-keys.json
+    artifacts:
+      - build/ios/ipa/*.ipa
+    publishing:
+      email:
+        recipients:
+          - $USER_EMAIL
+
+  flutter-android-build:
+    name: ScaleBook Android Build
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    environment:
+      flutter: stable
+      groups:
+        - api_keys
+    scripts:
+      - name: Set up config/api-keys.json
+        script: |
+          mkdir -p config
+          cat <<EOF > config/api-keys.json
+          {
+            "SUPABASE_URL": "$SUPABASE_URL",
+            "SUPABASE_ANON_KEY": "$SUPABASE_ANON_KEY",
+            "REVENUECAT_APPLE_API_KEY": "$REVENUECAT_APPLE_API_KEY",
+            "REVENUECAT_GOOGLE_API_KEY": "$REVENUECAT_GOOGLE_API_KEY"
+          }
+          EOF
+      - name: Flutter build-runner
+        script: |
+          flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
+      - name: Flutter build appbundle
+        script: |
+          flutter build appbundle --release --dart-define-from-file=config/api-keys.json
+    artifacts:
+      - build/app/outputs/bundle/release/*.aab
+    publishing:
+      email:
+        recipients:
+          - $USER_EMAIL
