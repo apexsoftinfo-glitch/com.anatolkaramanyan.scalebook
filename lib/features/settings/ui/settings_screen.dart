@@ -128,6 +128,18 @@ class SettingsScreen extends StatelessWidget {
                 onTap: () => _showSupportDialog(context),
               ),
               const Divider(),
+              _buildSectionHeader(context, S.of(context).legal), // L10N
+              ListTile(
+                leading: const Icon(Icons.privacy_tip_outlined, color: AppColors.navyBlue),
+                title: Text(S.of(context).privacyPolicy), // L10N
+                onTap: () => _launchUrl('https://twelveappschallenge-platform.web.app/legal/9005dcce-ef33-4054-81d6-25da5802738b/privacy-policy'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.description_outlined, color: AppColors.navyBlue),
+                title: Text(S.of(context).termsOfUse), // L10N
+                onTap: () => _launchUrl('https://twelveappschallenge-platform.web.app/legal/9005dcce-ef33-4054-81d6-25da5802738b/terms-of-use'), // Using likely URL for Terms
+              ),
+              const Divider(),
               _buildSectionHeader(context, S.of(context).application), // L10N
               BlocBuilder<LocaleCubit, Locale>(
                 builder: (context, locale) {
@@ -416,4 +428,10 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
+  Future<void> _launchUrl(String urlString) async {
+    final url = Uri.parse(urlString);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    }
+  }
 }
