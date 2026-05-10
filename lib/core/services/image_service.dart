@@ -22,12 +22,37 @@ class ImageService {
   }
 
   Future<String> resolvePath(String storedPath) async {
-    // If it's a URL, return as is
-    if (storedPath.startsWith('http')) return storedPath;
-
     final docs = await getApplicationDocumentsDirectory();
     final marker = 'scalebook_data';
     
+    // If it's a URL, extract the filename to check for a local copy
+    if (storedPath.startsWith('http')) {
+      try {
+        final uri = Uri.parse(storedPath);
+        String fileName = p.basename(uri.path);
+        final imagesDir = p.join(docs.path, 'scalebook_data', 'images');
+        
+        // 1. Try exact match
+        final exactPath = p.join(imagesDir, fileName);
+        if (await File(exactPath).exists()) return exactPath;
+        
+        // 2. Try matching without the timestamp prefix (e.g. "1715340000_uuid.jpg" -> "uuid.jpg")
+        if (fileName.contains('_')) {
+          final parts = fileName.split('_');
+          // Check if first part is a timestamp (digits only and looks like a timestamp)
+          if (parts.length > 1 && int.tryParse(parts[0]) != null && parts[0].length > 8) {
+            final strippedName = parts.sublist(1).join('_');
+            final strippedPath = p.join(imagesDir, strippedName);
+            if (await File(strippedPath).exists()) return strippedPath;
+          }
+        }
+        
+        return p.join(imagesDir, fileName); // Default fallback (won't exist)
+      } catch (e) {
+        return storedPath; // Fallback
+      }
+    }
+
     if (storedPath.contains(marker)) {
       final relativePart = storedPath.substring(storedPath.indexOf(marker));
       return p.join(docs.path, relativePart);

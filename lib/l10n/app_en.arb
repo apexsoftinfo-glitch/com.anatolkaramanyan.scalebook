@@ -249,9 +249,12 @@
   },
   "exportError": "Export error: {error}",
   "close": "CLOSE",
-  "@exportError": {
+  "changePhoto": "CHANGE PHOTO",
+  "editProject": "EDIT PROJECT",
+  "buildStepsCount": "{count} steps",
+  "@buildStepsCount": {
     "placeholders": {
-      "error": { "type": "String" }
+      "count": { "type": "int" }
     }
   }
 }

@@ -543,10 +543,21 @@ class SPl extends S {
   }
 
   @override
-  String exportError(String error) {
+  String exportError(Object error) {
     return 'Błąd eksportu: $error';
   }
 
   @override
   String get close => 'ZAMKNIJ';
+
+  @override
+  String get changePhoto => 'ZMIEŃ ZDJĘCIE';
+
+  @override
+  String get editProject => 'EDYTUJ PROJEKT';
+
+  @override
+  String buildStepsCount(int count) {
+    return '$count etapów';
+  }
 }

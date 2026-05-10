@@ -8,7 +8,10 @@ import 'package:share_plus/share_plus.dart';
 import 'dart:convert';
 import 'package:scalebook/features/home/domain/repositories/models_repository.dart';
 import 'package:scalebook/features/home/domain/models/model_project.dart';
+import 'package:scalebook/features/session/domain/models/user_session.dart';
+import 'package:scalebook/features/session/presentation/cubit/session_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get_it/get_it.dart';
 
 class BackupService {
   final ModelsRepository _modelsRepository;
@@ -21,7 +24,7 @@ class BackupService {
     final dataDir = Directory(p.join(docs.path, 'scalebook_data'));
     
     if (!await dataDir.exists()) {
-      throw Exception('No data to backup');
+      await dataDir.create(recursive: true);
     }
 
     final tempDir = await getTemporaryDirectory();
@@ -31,9 +34,14 @@ class BackupService {
     final encoder = ZipFileEncoder();
     encoder.create(zipFile.path);
     
-    // 1. Add images
-    if (await dataDir.exists()) {
-      encoder.addDirectory(dataDir);
+    // 1. Add ALL local data files recursively (Photos, etc.)
+    final List<FileSystemEntity> allFiles = dataDir.listSync(recursive: true);
+    for (final entity in allFiles) {
+      if (entity is File) {
+        // We store with relative path from documents root (e.g. scalebook_data/images/xxx.jpg)
+        final relativePath = p.relative(entity.path, from: docs.path);
+        encoder.addFile(entity, relativePath);
+      }
     }
 
     // 2. Add Database (Projects + Build Steps)
@@ -43,9 +51,22 @@ class BackupService {
     await projectsFile.writeAsString(jsonEncode(projectsJson));
     encoder.addFile(projectsFile, 'projects_export.json');
 
-    // 3. Add Settings
+    // 3. Add Profile Info (especially for Supabase users)
+    final sessionCubit = GetIt.I<SessionCubit>();
+    final profile = sessionCubit.state.mapOrNull(
+      (s) => s.profile,
+    );
+    if (profile != null) {
+      final profileFile = File(p.join(tempDir.path, 'profile_export.json'));
+      await profileFile.writeAsString(jsonEncode(profile.toJson()));
+      encoder.addFile(profileFile, 'profile_export.json');
+    }
+
+    // 4. Add Settings (SharedPreferences)
     final settings = <String, dynamic>{};
     for (final key in _prefs.getKeys()) {
+      // Exclude session-specific keys if they shouldn't be moved
+      if (key.contains('supabase')) continue; 
       settings[key] = _prefs.get(key);
     }
     final settingsFile = File(p.join(tempDir.path, 'settings_export.json'));

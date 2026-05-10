@@ -249,9 +249,12 @@
   },
   "exportError": "Błąd eksportu: {error}",
   "close": "ZAMKNIJ",
-  "@exportError": {
+  "changePhoto": "ZMIEŃ ZDJĘCIE",
+  "editProject": "EDYTUJ PROJEKT",
+  "buildStepsCount": "{count} etapów",
+  "@buildStepsCount": {
     "placeholders": {
-      "error": { "type": "String" }
+      "count": { "type": "int" }
     }
   }
 }

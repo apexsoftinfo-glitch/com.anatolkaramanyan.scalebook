@@ -543,10 +543,21 @@ class SEn extends S {
   }
 
   @override
-  String exportError(String error) {
+  String exportError(Object error) {
     return 'Export error: $error';
   }
 
   @override
   String get close => 'CLOSE';
+
+  @override
+  String get changePhoto => 'CHANGE PHOTO';
+
+  @override
+  String get editProject => 'EDIT PROJECT';
+
+  @override
+  String buildStepsCount(int count) {
+    return '$count steps';
+  }
 }

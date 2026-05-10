@@ -72,11 +72,23 @@ class SettingsScreen extends StatelessWidget {
                       subtitle: Text(S.of(context).exportCollectionSubtitle), // L10N
                       onTap: () async {
                         try {
+                          // Show loading
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) => const Center(child: CircularProgressIndicator()),
+                          );
+
                           final renderObject = tileContext.findRenderObject();
                           final rect = renderObject is RenderBox ? renderObject.localToGlobal(Offset.zero) & renderObject.size : null;
                           await GetIt.I<BackupService>().shareBackup(sharePositionOrigin: rect);
+
+                          if (context.mounted) {
+                            Navigator.pop(context); // Close loading
+                          }
                         } catch (e) {
                           if (context.mounted) {
+                            Navigator.pop(context); // Close loading if open
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(S.of(context).error(e.toString()))), // L10N
                             );

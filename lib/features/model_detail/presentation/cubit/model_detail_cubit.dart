@@ -98,4 +98,34 @@ class ModelDetailCubit extends Cubit<ModelDetailState> {
       orElse: () {},
     );
   }
+
+  Future<void> updateMainImage(String imageUrl) async {
+    state.maybeMap(
+      loaded: (s) async {
+        final updatedProject = s.project.copyWith(mainImageUrl: imageUrl);
+        try {
+          await _repository.updateProject(updatedProject);
+          emit(ModelDetailState.loaded(updatedProject));
+        } catch (e) {
+          emit(ModelDetailState.error(e.toString()));
+        }
+      },
+      orElse: () {},
+    );
+  }
+
+  Future<void> updateProjectDetails(String title, String scale) async {
+    state.maybeMap(
+      loaded: (s) async {
+        final updatedProject = s.project.copyWith(title: title, scale: scale);
+        try {
+          await _repository.updateProject(updatedProject);
+          emit(ModelDetailState.loaded(updatedProject));
+        } catch (e) {
+          emit(ModelDetailState.error(e.toString()));
+        }
+      },
+      orElse: () {},
+    );
+  }
 }

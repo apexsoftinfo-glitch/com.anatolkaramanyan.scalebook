@@ -26,12 +26,30 @@ class AppImage extends StatelessWidget {
     }
 
     if (imageUrl!.startsWith('http')) {
-      return Image.network(
-        imageUrl!,
-        fit: fit,
-        width: width,
-        height: height,
-        errorBuilder: (context, error, stackTrace) => _buildPlaceholder(),
+      return FutureBuilder<String>(
+        future: GetIt.I<ImageService>().resolvePath(imageUrl!),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final file = File(snapshot.data!);
+            if (file.existsSync()) {
+              return Image.file(
+                file,
+                fit: fit,
+                width: width,
+                height: height,
+                errorBuilder: (context, error, stackTrace) => _buildPlaceholder(),
+              );
+            }
+          }
+          // If no local file found, use network
+          return Image.network(
+            imageUrl!,
+            fit: fit,
+            width: width,
+            height: height,
+            errorBuilder: (context, error, stackTrace) => _buildPlaceholder(),
+          );
+        },
       );
     }
 

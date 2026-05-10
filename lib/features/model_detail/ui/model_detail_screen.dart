@@ -8,6 +8,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../../core/services/image_service.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../session/presentation/cubit/session_cubit.dart';
 import '../../../core/design_system/app_colors.dart';
@@ -314,9 +316,10 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
                 TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('ANULUJ')),
                 ElevatedButton(
                   onPressed: selectedIds.isEmpty ? null : () async {
-                    final selectedSteps = sortedSteps.where((s) => selectedIds.contains(s.id)).toList();
+                    final selectedSteps = sortedSteps.where((s) => selectedIds.contains(s.id)).toList()
+                      ..sort((a, b) => a.date.compareTo(b.date)); // Chronological order for export
                     Navigator.pop(dialogContext);
-                    await Future.delayed(const Duration(milliseconds: 200)); // Small delay to allow dialog to close
+                    await Future.delayed(const Duration(milliseconds: 200)); 
                     if (context.mounted) {
                       await _generateProgressImages(context, project, selectedSteps);
                     }
@@ -367,6 +370,186 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
     );
   }
 
+  Future<void> _pickMainImage() async {
+    final picker = ImagePicker();
+    final source = await showModalBottomSheet<ImageSource>(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: Text(S.of(context).gallery),
+              onTap: () => Navigator.pop(context, ImageSource.gallery),
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_camera),
+              title: Text(S.of(context).camera),
+              onTap: () => Navigator.pop(context, ImageSource.camera),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (source != null) {
+      final XFile? image = await picker.pickImage(source: source, imageQuality: 80);
+      if (image != null) {
+        final savedPath = await GetIt.I<ImageService>().saveImage(File(image.path));
+        _cubit.updateMainImage(savedPath);
+      }
+    }
+  }
+
+  void _showEditDetailsDialog(ModelProject project) {
+    final titleController = TextEditingController(text: project.title);
+    final scaleController = TextEditingController(text: project.scale);
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.navyBlue,
+        title: Text(S.of(context).editProject, style: const TextStyle(color: Colors.white, fontSize: 16)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: titleController,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: S.of(context).modelNameLabel,
+                labelStyle: const TextStyle(color: Colors.white70, fontSize: 12),
+                enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white24)),
+                focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: AppColors.red)),
+              ),
+              autofocus: true,
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: scaleController,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: S.of(context).scaleLabel,
+                labelStyle: const TextStyle(color: Colors.white70, fontSize: 12),
+                enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white24)),
+                focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: AppColors.red)),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(S.of(context).cancel, style: const TextStyle(color: Colors.white70)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: AppColors.red),
+            onPressed: () {
+              if (titleController.text.isNotEmpty) {
+                _cubit.updateProjectDetails(titleController.text, scaleController.text);
+                Navigator.pop(context);
+              }
+            },
+            child: Text(S.of(context).save),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProjectHeader(BuildContext context, ModelProject project) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            GestureDetector(
+              onTap: _pickMainImage,
+              child: Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.3),
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: AppImage(
+                    imageUrl: project.mainImageUrl,
+                    fit: BoxFit.cover,
+                    width: 80,
+                    height: 80,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    project.title.toUpperCase(),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 1.1,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    project.scale,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: AppColors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.edit_note_outlined, color: Colors.white60, size: 22),
+                        onPressed: () => _showEditDetailsDialog(project),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        tooltip: S.of(context).editProject,
+                      ),
+                      const SizedBox(width: 16),
+                      Text(
+                        S.of(context).buildStepsCount(project.steps.length).toUpperCase(),
+                        style: const TextStyle(
+                          color: Colors.white38,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.1,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        const Divider(color: Colors.white12, height: 1),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
@@ -375,9 +558,17 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
         builder: (context) {
           return Scaffold(
             appBar: AppBar(
-              title: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(widget.title.toUpperCase()),
+              title: BlocBuilder<ModelDetailCubit, ModelDetailState>(
+                builder: (context, state) {
+                  final title = state.maybeMap(
+                    loaded: (s) => s.project.title,
+                    orElse: () => widget.title,
+                  );
+                  return FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(title.toUpperCase()),
+                  );
+                },
               ),
               actions: [
                 IconButton(
@@ -469,20 +660,24 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
     final steps = project.steps;
     final sortedSteps = List<BuildStep>.from(steps)..sort((a, b) => b.date.compareTo(a.date));
 
-    if (sortedSteps.isEmpty) {
-      return Center(child: Text(S.of(context).noBuildSteps, style: const TextStyle(color: Colors.white54)));
-    }
-
-    return ListView.builder(
+    return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-      itemCount: sortedSteps.length,
-      itemBuilder: (context, index) {
-        final step = sortedSteps[index];
-        final bool isLast = index == sortedSteps.length - 1;
+      children: [
+        _buildProjectHeader(context, project),
+        if (sortedSteps.isEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: 40.0),
+            child: Center(child: Text(S.of(context).noBuildSteps, style: const TextStyle(color: Colors.white54))),
+          )
+        else
+          ...sortedSteps.asMap().entries.map((entry) {
+            final index = entry.key;
+            final step = entry.value;
+            final bool isLast = index == sortedSteps.length - 1;
 
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
             // Timeline line and dot
             SizedBox(
               width: 20,
@@ -513,62 +708,88 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 24),
-                child: Card(
-                  margin: EdgeInsets.zero,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1E242C),
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.2),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${step.date.day}.${step.date.month}.${step.date.year}',
-                                    style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.red, fontSize: 11),
+                        // Left side: Content
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${step.date.day}.${step.date.month}.${step.date.year}',
+                                  style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.red, fontSize: 10, letterSpacing: 1),
+                                ),
+                                const SizedBox(height: 10),
+                                if (step.imageUrl != null)
+                                  GestureDetector(
+                                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImagePreviewScreen(imageUrl: step.imageUrl!))),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: AppImage(imageUrl: step.imageUrl, fit: BoxFit.cover, width: double.infinity, height: 160),
+                                    ),
                                   ),
-                                  const SizedBox(height: 6),
+                                if (step.note.isNotEmpty) ...[
+                                  const SizedBox(height: 10),
                                   Text(
                                     step.note,
-                                    style: const TextStyle(fontSize: 13, height: 1.3),
+                                    style: const TextStyle(fontSize: 12, height: 1.4, color: Colors.white70),
                                   ),
                                 ],
-                              ),
+                              ],
                             ),
-                            if (step.imageUrl != null) ...[
-                              const SizedBox(width: 12),
-                              GestureDetector(
-                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImagePreviewScreen(imageUrl: step.imageUrl!))),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(6),
-                                  child: AppImage(imageUrl: step.imageUrl, fit: BoxFit.cover, width: 100, height: 70),
+                          ),
+                        ),
+                        // Right side: Vertical Action Bar
+                        Container(
+                          width: 48,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF15191F),
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(12),
+                              bottomRight: Radius.circular(12),
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Builder(
+                                builder: (buttonContext) => IconButton(
+                                  icon: const Icon(Icons.ios_share, size: 18, color: Colors.white60),
+                                  onPressed: () => _shareSingleStep(buttonContext, step),
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
                                 ),
                               ),
-                            ],
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Builder(
-                              builder: (buttonContext) => IconButton(
-                                icon: const Icon(Icons.ios_share, size: 16, color: AppColors.grey),
-                                onPressed: () => _shareSingleStep(buttonContext, step),
+                              IconButton(
+                                icon: const Icon(Icons.edit_note, size: 20, color: Colors.white60),
+                                onPressed: () => _editStep(context, step),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
                               ),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.edit_outlined, size: 16, color: AppColors.grey),
-                              onPressed: () => _editStep(context, step),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.delete_outline, size: 16, color: AppColors.grey),
-                              onPressed: () => _showDeleteStepConfirmation(context, step.id),
-                            ),
-                          ],
+                              IconButton(
+                                icon: const Icon(Icons.delete_outline, size: 18, color: Colors.white60),
+                                onPressed: () => _showDeleteStepConfirmation(context, step.id),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -578,7 +799,8 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
             ),
           ],
         );
-      },
+      }),
+      ],
     );
   }
 

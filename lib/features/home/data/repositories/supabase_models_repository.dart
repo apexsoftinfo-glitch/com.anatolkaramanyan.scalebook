@@ -24,11 +24,27 @@ class SupabaseModelsRepository implements ModelsRepository {
         .order('created_at', ascending: false);
 
     return (response as List).map((json) {
-      final stepsData = json['build_steps'] as List;
-      final steps = stepsData.map((s) => BuildStep.fromJson(s as Map<String, dynamic>)).toList();
+      final Map<String, dynamic> data = Map<String, dynamic>.from(json);
+      
+      // Map Supabase snake_case to Model camelCase
+      if (data.containsKey('main_image_url')) data['mainImageUrl'] = data['main_image_url'];
+      if (data.containsKey('gallery_urls')) data['galleryUrls'] = data['gallery_urls'];
+      if (data.containsKey('finished_main_image_url')) data['finishedMainImageUrl'] = data['finished_main_image_url'];
+      if (data.containsKey('finished_gallery_urls')) data['finishedGalleryUrls'] = data['finished_gallery_urls'];
+      if (data.containsKey('final_notes')) data['finalNotes'] = data['final_notes'];
+      if (data.containsKey('created_at')) data['createdAt'] = data['created_at'];
+
+      final stepsData = data['build_steps'] as List;
+      final steps = stepsData.map((s) {
+        final Map<String, dynamic> stepData = Map<String, dynamic>.from(s as Map<String, dynamic>);
+        if (stepData.containsKey('project_id')) stepData['projectId'] = stepData['project_id'];
+        if (stepData.containsKey('image_url')) stepData['imageUrl'] = stepData['image_url'];
+        return BuildStep.fromJson(stepData);
+      }).toList();
+      
       steps.sort((a, b) => b.date.compareTo(a.date));
       
-      return ModelProject.fromJson(json as Map<String, dynamic>).copyWith(steps: steps);
+      return ModelProject.fromJson(data).copyWith(steps: steps);
     }).toList();
   }
 
@@ -103,11 +119,27 @@ class SupabaseModelsRepository implements ModelsRepository {
       }
       
       debugPrint('REPO: Przetwarzam JSON na obiekt ModelProject...');
-      final stepsData = response['build_steps'] as List;
-      final steps = stepsData.map((s) => BuildStep.fromJson(s as Map<String, dynamic>)).toList();
+      final Map<String, dynamic> data = Map<String, dynamic>.from(response);
+      
+      // Map Supabase snake_case to Model camelCase
+      if (data.containsKey('main_image_url')) data['mainImageUrl'] = data['main_image_url'];
+      if (data.containsKey('gallery_urls')) data['galleryUrls'] = data['gallery_urls'];
+      if (data.containsKey('finished_main_image_url')) data['finishedMainImageUrl'] = data['finished_main_image_url'];
+      if (data.containsKey('finished_gallery_urls')) data['finishedGalleryUrls'] = data['finished_gallery_urls'];
+      if (data.containsKey('final_notes')) data['finalNotes'] = data['final_notes'];
+      if (data.containsKey('created_at')) data['createdAt'] = data['created_at'];
+
+      final stepsData = data['build_steps'] as List;
+      final steps = stepsData.map((s) {
+        final Map<String, dynamic> stepData = Map<String, dynamic>.from(s as Map<String, dynamic>);
+        if (stepData.containsKey('project_id')) stepData['projectId'] = stepData['project_id'];
+        if (stepData.containsKey('image_url')) stepData['imageUrl'] = stepData['image_url'];
+        return BuildStep.fromJson(stepData);
+      }).toList();
+
       steps.sort((a, b) => b.date.compareTo(a.date));
 
-      final project = ModelProject.fromJson(response).copyWith(steps: steps);
+      final project = ModelProject.fromJson(data).copyWith(steps: steps);
       debugPrint('REPO: Sukces! Zwracam projekt: ${project.title}');
       return project;
     } catch (e, stack) {

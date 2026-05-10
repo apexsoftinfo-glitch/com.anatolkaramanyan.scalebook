@@ -1085,13 +1085,31 @@ abstract class S {
   ///
   /// In pl, this message translates to:
   /// **'Błąd eksportu: {error}'**
-  String exportError(String error);
+  String exportError(Object error);
 
   /// No description provided for @close.
   ///
   /// In pl, this message translates to:
   /// **'ZAMKNIJ'**
   String get close;
+
+  /// No description provided for @changePhoto.
+  ///
+  /// In pl, this message translates to:
+  /// **'ZMIEŃ ZDJĘCIE'**
+  String get changePhoto;
+
+  /// No description provided for @editProject.
+  ///
+  /// In pl, this message translates to:
+  /// **'EDYTUJ PROJEKT'**
+  String get editProject;
+
+  /// No description provided for @buildStepsCount.
+  ///
+  /// In pl, this message translates to:
+  /// **'{count} etapów'**
+  String buildStepsCount(int count);
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {
