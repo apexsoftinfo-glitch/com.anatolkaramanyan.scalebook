@@ -41,6 +41,7 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
   late ModelDetailCubit _cubit;
   bool _isExporting = false;
   String _exportStatus = '';
+  double _exportProgress = 0.0;
 
   @override
   void initState() {
@@ -52,6 +53,7 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
     setState(() {
       _isExporting = true;
       _exportStatus = 'Przygotowywanie... (1/4)';
+      _exportProgress = 0.1;
     });
 
     try {
@@ -75,7 +77,10 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
             : start + stepsPerPage;
         final pageSteps = selectedSteps.sublist(start, end);
         
-        setState(() => _exportStatus = 'Przygotowywanie strony ${i + 1} z $totalPages...');
+        setState(() {
+          _exportStatus = 'Przygotowywanie strony ${i + 1} z $totalPages...';
+          _exportProgress = (i + 1) / (totalPages + 1);
+        });
 
         final boundaryKey = GlobalKey();
         final poster = _ProgressPoster(
@@ -111,7 +116,7 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
         if (contextForBoundary != null) {
           final RenderRepaintBoundary? boundary = contextForBoundary.findRenderObject() as RenderRepaintBoundary?;
           if (boundary != null) {
-            final ui.Image image = await boundary.toImage(pixelRatio: 2.0); 
+            final ui.Image image = await boundary.toImage(pixelRatio: 3.0); 
             final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
             if (byteData != null) {
               final sanitizedTitle = widget.title.replaceAll(RegExp(r'[/\?%*:|"<>]'), '_');
@@ -130,6 +135,7 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
       setState(() {
         _isExporting = false;
         _exportStatus = '';
+        _exportProgress = 0.0;
       });
 
       if (exportedFiles.isNotEmpty && context.mounted) {
@@ -147,6 +153,7 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
       setState(() {
         _isExporting = false;
         _exportStatus = '';
+        _exportProgress = 0.0;
       });
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -160,6 +167,7 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
     setState(() {
       _isExporting = true;
       _exportStatus = S.of(context).preparingStepPhoto;
+      _exportProgress = 0.3;
     });
 
     try {
@@ -205,7 +213,8 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
         retry++;
       }
 
-      final ui.Image image = await boundary.toImage(pixelRatio: 1.0);
+      setState(() => _exportProgress = 0.7);
+      final ui.Image image = await boundary.toImage(pixelRatio: 3.0);
       final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       overlayEntry.remove();
       
@@ -220,6 +229,7 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
       setState(() {
         _isExporting = false;
         _exportStatus = '';
+        _exportProgress = 0.0;
       });
 
       if (context.mounted) {
@@ -237,6 +247,7 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
       setState(() {
         _isExporting = false;
         _exportStatus = '';
+        _exportProgress = 0.0;
       });
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -620,8 +631,8 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const CircularProgressIndicator(color: AppColors.red),
-                          const SizedBox(height: 24),
+                          TamiyaGlueProgress(progress: _exportProgress),
+                          const SizedBox(height: 32),
                           Text(
                             _exportStatus,
                             style: const TextStyle(
@@ -629,6 +640,7 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
+                            textAlign: TextAlign.center,
                           ),
                         ],
                       ),
@@ -1138,7 +1150,7 @@ class _SingleStepSharePoster extends StatelessWidget {
     return RepaintBoundary(
       key: boundaryKey,
       child: Container(
-        width: 600,
+        width: 1000,
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
@@ -1150,21 +1162,21 @@ class _SingleStepSharePoster extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.all(48),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
                     children: [
-                      Image.asset('assets/images/app_logo.png', width: 40, height: 40),
-                      const SizedBox(width: 12),
+                      Image.asset('assets/images/app_logo.png', width: 60, height: 60),
+                      const SizedBox(width: 16),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'SCALEBOOK - ${modelerName.toUpperCase()}',
                             style: const TextStyle(
-                              fontSize: 14,
+                              fontSize: 18,
                               fontWeight: FontWeight.w900,
                               letterSpacing: 1.5,
                               color: AppColors.navyBlue,
@@ -1174,7 +1186,7 @@ class _SingleStepSharePoster extends StatelessWidget {
                           const Text(
                             'Made in Poland with love for modellers',
                             style: TextStyle(
-                              fontSize: 6,
+                              fontSize: 10,
                               color: AppColors.grey,
                               decoration: TextDecoration.none,
                             ),
@@ -1183,55 +1195,55 @@ class _SingleStepSharePoster extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 32),
                   Text(
                     projectTitle.toUpperCase(),
                     style: const TextStyle(
                       color: AppColors.navyBlue,
-                      fontSize: 20,
+                      fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.none,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  if (step.imageUrl != null)
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: AppImage(
-                        imageUrl: step.imageUrl,
-                        width: double.infinity,
-                        height: 300,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  const SizedBox(height: 16),
-                  Text(
-                    '${step.date.day}.${step.date.month}.${step.date.year}',
-                    style: const TextStyle(
-                      color: AppColors.red,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.none,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    step.note,
-                    style: const TextStyle(
-                      color: AppColors.navyBlue,
-                      fontSize: 14,
                       decoration: TextDecoration.none,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),
+                  if (step.imageUrl != null)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: AppImage(
+                        imageUrl: step.imageUrl,
+                        width: double.infinity,
+                        height: 600,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  const SizedBox(height: 24),
+                  Text(
+                    '${step.date.day}.${step.date.month}.${step.date.year}',
+                    style: const TextStyle(
+                      color: AppColors.red,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.none,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    step.note,
+                    style: const TextStyle(
+                      color: AppColors.navyBlue,
+                      fontSize: 22,
+                      decoration: TextDecoration.none,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 32),
                   const Align(
                     alignment: Alignment.centerRight,
                     child: Text(
                       'Wygenerowano w aplikacji ScaleBook',
                       style: TextStyle(
-                        fontSize: 8,
+                        fontSize: 12,
                         color: AppColors.grey,
                         fontStyle: FontStyle.italic,
                         decoration: TextDecoration.none,
@@ -1289,4 +1301,115 @@ class _PosterGridPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class TamiyaGlueProgress extends StatelessWidget {
+  final double progress; // 0.0 to 1.0
+
+  const TamiyaGlueProgress({super.key, required this.progress});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 100,
+      height: 140,
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          // Bottle Body (Glass)
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.1),
+              border: Border.all(color: Colors.white, width: 2),
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          // Liquid filling
+          Positioned(
+            bottom: 2,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 500),
+              width: 76,
+              height: (76 * progress).clamp(0.0, 76.0),
+              decoration: BoxDecoration(
+                color: const Color(0xFFC8E6C9).withValues(alpha: 0.6), // Light green liquid
+                borderRadius: BorderRadius.only(
+                  bottomLeft: const Radius.circular(6),
+                  bottomRight: const Radius.circular(6),
+                  topLeft: Radius.circular(progress > 0.9 ? 6 : 0),
+                  topRight: Radius.circular(progress > 0.9 ? 6 : 0),
+                ),
+              ),
+            ),
+          ),
+          // Bottle Neck
+          Positioned(
+            bottom: 80,
+            child: Container(
+              width: 40,
+              height: 20,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.1),
+                border: Border.all(color: Colors.white, width: 2),
+              ),
+            ),
+          ),
+          // Green Cap (Tamiya style)
+          Positioned(
+            bottom: 100,
+            child: Container(
+              width: 50,
+              height: 30,
+              decoration: BoxDecoration(
+                color: const Color(0xFF2E7D32), // Dark green cap
+                borderRadius: BorderRadius.circular(4),
+                boxShadow: [
+                  BoxShadow(color: Colors.black.withValues(alpha: 0.3), blurRadius: 4),
+                ],
+              ),
+            ),
+          ),
+          // Label (Tamiya look)
+          Positioned(
+            bottom: 20,
+            child: Container(
+              width: 60,
+              height: 40,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(2),
+              ),
+              child: const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'TAMIYA',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 8,
+                        fontWeight: FontWeight.w900,
+                        decoration: TextDecoration.none,
+                      ),
+                    ),
+                    Text(
+                      'CEMENT',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 6,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.none,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

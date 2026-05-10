@@ -256,5 +256,7 @@
     "placeholders": {
       "count": { "type": "int" }
     }
-  }
+  },
+  "backingUp": "TWORZENIE KOPII ZAPASOWEJ...",
+  "restoring": "PRZYWRACANIE DANYCH..."
 }

@@ -256,5 +256,7 @@
     "placeholders": {
       "count": { "type": "int" }
     }
-  }
+  },
+  "backingUp": "CREATING BACKUP...",
+  "restoring": "RESTORING DATA..."
 }

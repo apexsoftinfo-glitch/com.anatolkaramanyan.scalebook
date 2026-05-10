@@ -19,7 +19,7 @@ class BackupService {
 
   BackupService(this._modelsRepository, this._prefs);
 
-  Future<String> createBackup() async {
+  Future<String> createBackup({Function(double)? onProgress}) async {
     final docs = await getApplicationDocumentsDirectory();
     final dataDir = Directory(p.join(docs.path, 'scalebook_data'));
     
@@ -35,13 +35,19 @@ class BackupService {
     encoder.create(zipFile.path);
     
     // 1. Add ALL local data files recursively (Photos, etc.)
-    final List<FileSystemEntity> allFiles = dataDir.listSync(recursive: true);
-    for (final entity in allFiles) {
-      if (entity is File) {
-        // We store with relative path from documents root (e.g. scalebook_data/images/xxx.jpg)
-        final relativePath = p.relative(entity.path, from: docs.path);
-        encoder.addFile(entity, relativePath);
-      }
+    final List<FileSystemEntity> entities = await dataDir.list(recursive: true).toList();
+    final List<File> allFiles = entities.whereType<File>().toList();
+    
+    final totalSteps = allFiles.length + 3; // +3 for Projects, Profile, Settings
+    int currentStep = 0;
+
+    for (final File entity in allFiles) {
+      // We store with relative path from documents root (e.g. scalebook_data/images/xxx.jpg)
+      final relativePath = p.relative(entity.path, from: docs.path);
+      encoder.addFile(entity, relativePath);
+      
+      currentStep++;
+      onProgress?.call(currentStep / totalSteps);
     }
 
     // 2. Add Database (Projects + Build Steps)
@@ -50,6 +56,8 @@ class BackupService {
     final projectsFile = File(p.join(tempDir.path, 'projects_export.json'));
     await projectsFile.writeAsString(jsonEncode(projectsJson));
     encoder.addFile(projectsFile, 'projects_export.json');
+    currentStep++;
+    onProgress?.call(currentStep / totalSteps);
 
     // 3. Add Profile Info (especially for Supabase users)
     final sessionCubit = GetIt.I<SessionCubit>();
@@ -61,6 +69,8 @@ class BackupService {
       await profileFile.writeAsString(jsonEncode(profile.toJson()));
       encoder.addFile(profileFile, 'profile_export.json');
     }
+    currentStep++;
+    onProgress?.call(currentStep / totalSteps);
 
     // 4. Add Settings (SharedPreferences)
     final settings = <String, dynamic>{};
@@ -72,14 +82,17 @@ class BackupService {
     final settingsFile = File(p.join(tempDir.path, 'settings_export.json'));
     await settingsFile.writeAsString(jsonEncode(settings));
     encoder.addFile(settingsFile, 'settings_export.json');
+    currentStep++;
+    onProgress?.call(currentStep / totalSteps);
 
     encoder.close();
+    onProgress?.call(1.0);
 
     return zipFile.path;
   }
 
-  Future<void> shareBackup({Rect? sharePositionOrigin}) async {
-    final path = await createBackup();
+  Future<void> shareBackup({Rect? sharePositionOrigin, Function(double)? onProgress}) async {
+    final path = await createBackup(onProgress: onProgress);
     await Share.shareXFiles(
       [XFile(path)],
       text: 'My ScaleBook Collection Backup',
@@ -87,12 +100,15 @@ class BackupService {
     );
   }
 
-  Future<void> restoreBackup(File zipFile) async {
+  Future<void> restoreBackup(File zipFile, {Function(double)? onProgress}) async {
     final docs = await getApplicationDocumentsDirectory();
 
     // Extract ZIP
     final bytes = await zipFile.readAsBytes();
     final archive = ZipDecoder().decodeBytes(bytes);
+
+    final total = archive.length;
+    int count = 0;
 
     // 1. Extract all files to disk
     for (final file in archive) {
@@ -105,6 +121,8 @@ class BackupService {
       } else {
         await Directory(p.join(docs.path, filename)).create(recursive: true);
       }
+      count++;
+      onProgress?.call(count / total);
     }
 
     // 2. Restore Settings from settings_export.json

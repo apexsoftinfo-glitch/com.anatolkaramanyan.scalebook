@@ -1110,6 +1110,18 @@ abstract class S {
   /// In pl, this message translates to:
   /// **'{count} etapów'**
   String buildStepsCount(int count);
+
+  /// No description provided for @backingUp.
+  ///
+  /// In pl, this message translates to:
+  /// **'TWORZENIE KOPII ZAPASOWEJ...'**
+  String get backingUp;
+
+  /// No description provided for @restoring.
+  ///
+  /// In pl, this message translates to:
+  /// **'PRZYWRACANIE DANYCH...'**
+  String get restoring;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

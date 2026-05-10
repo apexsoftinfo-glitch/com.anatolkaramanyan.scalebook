@@ -560,4 +560,10 @@ class SEn extends S {
   String buildStepsCount(int count) {
     return '$count steps';
   }
+
+  @override
+  String get backingUp => 'CREATING BACKUP...';
+
+  @override
+  String get restoring => 'RESTORING DATA...';
 }

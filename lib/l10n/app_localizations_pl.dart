@@ -560,4 +560,10 @@ class SPl extends S {
   String buildStepsCount(int count) {
     return '$count etapów';
   }
+
+  @override
+  String get backingUp => 'TWORZENIE KOPII ZAPASOWEJ...';
+
+  @override
+  String get restoring => 'PRZYWRACANIE DANYCH...';
 }

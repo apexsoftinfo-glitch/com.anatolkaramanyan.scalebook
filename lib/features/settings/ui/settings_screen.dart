@@ -13,6 +13,7 @@ import '../../session/presentation/cubit/session_cubit.dart';
 import '../../profiles/models/profile_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
+import 'dart:async';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -71,28 +72,34 @@ class SettingsScreen extends StatelessWidget {
                       title: Text(S.of(context).exportCollection), // L10N
                       subtitle: Text(S.of(context).exportCollectionSubtitle), // L10N
                       onTap: () async {
+                        final progressController = StreamController<double>();
                         try {
-                          // Show loading
-                          showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (context) => const Center(child: CircularProgressIndicator()),
-                          );
+                          _showProgressDialog(context, S.of(context).backingUp, progressController.stream);
+
+                          // Give UI time to render the dialog before heavy processing
+                          await Future.delayed(const Duration(milliseconds: 150));
+                          if (!context.mounted) return;
 
                           final renderObject = tileContext.findRenderObject();
                           final rect = renderObject is RenderBox ? renderObject.localToGlobal(Offset.zero) & renderObject.size : null;
-                          await GetIt.I<BackupService>().shareBackup(sharePositionOrigin: rect);
+                          
+                          await GetIt.I<BackupService>().shareBackup(
+                            sharePositionOrigin: rect,
+                            onProgress: (p) => progressController.add(p),
+                          );
 
                           if (context.mounted) {
-                            Navigator.pop(context); // Close loading
+                            Navigator.pop(context); // Close dialog
                           }
                         } catch (e) {
                           if (context.mounted) {
-                            Navigator.pop(context); // Close loading if open
+                            Navigator.pop(context); // Close dialog if open
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(S.of(context).error(e.toString()))), // L10N
                             );
                           }
+                        } finally {
+                          progressController.close();
                         }
                       },
                     ),
@@ -108,27 +115,33 @@ class SettingsScreen extends StatelessWidget {
 
                       if (result != null && result.files.single.path != null) {
                         final file = File(result.files.single.path!);
+                        final progressController = StreamController<double>();
                         if (context.mounted) {
                           try {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) => const Center(child: CircularProgressIndicator()),
+                            _showProgressDialog(context, S.of(context).restoring, progressController.stream);
+                            
+                            // Give UI time to render the dialog before heavy processing
+                            await Future.delayed(const Duration(milliseconds: 150));
+                            if (!context.mounted) return;
+
+                            await GetIt.I<BackupService>().restoreBackup(
+                              file,
+                              onProgress: (p) => progressController.add(p),
                             );
-                            await GetIt.I<BackupService>().restoreBackup(file);
+
                             if (context.mounted) {
-                              Navigator.pop(context); // Close loading
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(S.of(context).importCollectionSuccess)), // L10N
-                              );
+                              Navigator.pop(context); // Close dialog
+                              _showSuccessDialog(context, S.of(context).importCollectionSuccess);
                             }
                           } catch (e) {
                             if (context.mounted) {
-                              Navigator.pop(context); // Close loading
+                              Navigator.pop(context); // Close dialog
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text(S.of(context).error(e.toString()))), // L10N
                               );
                             }
+                          } finally {
+                            progressController.close();
                           }
                         }
                       }
@@ -469,6 +482,97 @@ class SettingsScreen extends StatelessWidget {
             child: Text(S.of(context).cancel),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showProgressDialog(BuildContext context, String title, Stream<double> progressStream) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => StreamBuilder<double>(
+        stream: progressStream,
+        initialData: 0.0,
+        builder: (context, snapshot) {
+          final progress = snapshot.data ?? 0.0;
+          return AlertDialog(
+            backgroundColor: AppColors.navyBlue,
+            title: Text(title, style: const TextStyle(color: Colors.white, fontSize: 14)),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 16),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: LinearProgressIndicator(
+                    value: progress,
+                    backgroundColor: Colors.white10,
+                    valueColor: const AlwaysStoppedAnimation<Color>(AppColors.red),
+                    minHeight: 10,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  '${(progress * 100).toInt()}%',
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                const SizedBox(height: 8),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  void _showSuccessDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.navyBlue,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.green.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.check_circle_outline, color: Colors.green, size: 64),
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'SUCCESS!',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 2,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white70, fontSize: 14),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.red,
+                foregroundColor: Colors.white,
+                minimumSize: const Size(double.infinity, 48),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              child: Text(S.of(context).close),
+            ),
+            const SizedBox(height: 8),
+          ],
+        ),
       ),
     );
   }
