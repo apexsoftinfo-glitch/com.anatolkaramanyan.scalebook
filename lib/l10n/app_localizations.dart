@@ -319,6 +319,24 @@ abstract class S {
   /// **'Czy na pewno chcesz usunąć konto i wszystkie dane? Tej operacji nie można cofnąć.'**
   String get deleteAccountConfirm;
 
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In pl, this message translates to:
+  /// **'Polityka Prywatności'**
+  String get privacyPolicy;
+
+  /// No description provided for @termsOfUse.
+  ///
+  /// In pl, this message translates to:
+  /// **'Warunki Użytkowania'**
+  String get termsOfUse;
+
+  /// No description provided for @legal.
+  ///
+  /// In pl, this message translates to:
+  /// **'PRAWNE'**
+  String get legal;
+
   /// No description provided for @techAuth.
   ///
   /// In pl, this message translates to:
@@ -930,6 +948,12 @@ abstract class S {
   /// In pl, this message translates to:
   /// **'Sortuj według daty'**
   String get sortByDate;
+
+  /// No description provided for @sortByStatus.
+  ///
+  /// In pl, this message translates to:
+  /// **'Sortuj według statusu'**
+  String get sortByStatus;
 
   /// No description provided for @searchInStash.
   ///

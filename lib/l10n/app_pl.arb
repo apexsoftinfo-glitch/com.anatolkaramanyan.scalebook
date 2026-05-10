@@ -200,6 +200,7 @@
   "generatingPdfCatalog": "GENEROWANIE KATALOGU PDF...",
   "manyPhotosWarning": "To może chwilę potrwać przy wielu zdjęciach",
   "sortByDate": "Sortuj według daty",
+  "sortByStatus": "Sortuj według statusu",
   "searchInStash": "SZUKAJ W GARDEROBIE...",
   "noModelsFound": "NIE ZNALEZIONO MODELI",
   "modelsInQueue": "{count} MODELE W KOLEJCE",

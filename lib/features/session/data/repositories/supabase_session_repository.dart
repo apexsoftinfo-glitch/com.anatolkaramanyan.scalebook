@@ -78,6 +78,7 @@ class SupabaseSessionRepository implements SessionRepository {
         _updateSession(
           userId: user.id,
           isAnonymous: user.isAnonymous,
+          email: user.email,
           profile: profile,
         );
       }
@@ -90,6 +91,7 @@ class SupabaseSessionRepository implements SessionRepository {
       _updateSession(
         userId: initialUser.id,
         isAnonymous: initialUser.isAnonymous,
+        email: initialUser.email,
         profile: profile,
       );
     } else {
@@ -117,6 +119,7 @@ class SupabaseSessionRepository implements SessionRepository {
       _updateSession(
         userId: user.id,
         isAnonymous: user.isAnonymous,
+        email: user.email,
         profile: profile,
         isPro: isPro,
       );
@@ -205,6 +208,7 @@ class SupabaseSessionRepository implements SessionRepository {
     bool? isAnonymous,
     bool? isOffline,
     ProfileModel? profile,
+    String? email,
     bool? isPro,
   }) {
     final prev = current.map(
@@ -220,6 +224,7 @@ class SupabaseSessionRepository implements SessionRepository {
       isAnonymous: isAnonymous ?? prev?.isAnonymous ?? true,
       isOffline: isOffline ?? prev?.isOffline ?? false,
       profile: profile ?? prev?.profile,
+      email: email ?? prev?.email,
       isPro: isPro ?? prev?.isPro ?? false,
     ));
   }

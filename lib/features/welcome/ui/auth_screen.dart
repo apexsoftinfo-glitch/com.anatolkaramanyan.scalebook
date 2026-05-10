@@ -116,23 +116,6 @@ class _AuthScreenState extends State<AuthScreen> {
                           obscureText: true,
                           validator: (v) => v?.isEmpty ?? true ? S.of(context).required : null, // L10N
                         ),
-                        if (!widget.isRegister) ...[
-                          const SizedBox(height: 8),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                              onPressed: _showResetPasswordDialog,
-                              child: Text(
-                                S.of(context).forgotPassword,
-                                style: const TextStyle(
-                                  color: AppColors.navyBlue,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
                         const SizedBox(height: 24),
                         if (_isLoading)
                           const Center(child: CircularProgressIndicator())
@@ -150,6 +133,23 @@ class _AuthScreenState extends State<AuthScreen> {
                               style: const TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
+                        if (!widget.isRegister) ...[
+                          const SizedBox(height: 16),
+                          Center(
+                            child: TextButton.icon(
+                              onPressed: _showResetPasswordDialog,
+                              icon: const Icon(Icons.help_outline, size: 16, color: AppColors.navyBlue),
+                              label: Text(
+                                S.of(context).forgotPassword,
+                                style: const TextStyle(
+                                  color: AppColors.navyBlue,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ),

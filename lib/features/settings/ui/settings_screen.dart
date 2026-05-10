@@ -34,92 +34,115 @@ class SettingsScreen extends StatelessWidget {
           return ListView(
             children: [
               const SizedBox(height: 16),
-              _buildSectionHeader(context, S.of(context).profile), // L10N
-              ListTile(
-                leading: const Icon(Icons.person, color: AppColors.navyBlue),
-                title: Text(profile?.firstName ?? 'Modelarz'), // L10N
-                subtitle: Text(S.of(context).scalebookProfile), // L10N
-                trailing: const Icon(Icons.edit, size: 20),
-                onTap: () => _showEditProfileDialog(context, sessionRepo, profile),
+              
+              // 1. PROFILE
+              _buildExpandableSection(
+                context: context,
+                title: S.of(context).profile,
+                icon: Icons.person_outline,
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.person, color: AppColors.navyBlue),
+                    title: Text(profile?.firstName ?? 'Modelarz'), // L10N
+                    subtitle: Text(state.email ?? S.of(context).scalebookProfile), // L10N
+                    trailing: const Icon(Icons.edit, size: 20),
+                    onTap: () => _showEditProfileDialog(context, sessionRepo, profile),
+                  ),
+                  if (state.userId != null && !state.isAnonymous)
+                    ListTile(
+                      leading: const Icon(Icons.lock_outline, color: AppColors.navyBlue),
+                      title: Text(S.of(context).changePassword),
+                      onTap: () => _showChangePasswordDialog(context, sessionRepo),
+                    ),
+                ],
               ),
-              if (state.userId != null && !state.isAnonymous)
-                ListTile(
-                  leading: const Icon(Icons.lock_outline, color: AppColors.navyBlue),
-                  title: Text(S.of(context).changePassword),
-                  onTap: () => _showChangePasswordDialog(context, sessionRepo),
-                ),
-              const Divider(),
-              _buildSectionHeader(context, S.of(context).dataAndBackup), // L10N
-              Builder(
-                builder: (tileContext) => ListTile(
-                  leading: const Icon(Icons.archive, color: AppColors.navyBlue),
-                  title: Text(S.of(context).exportCollection), // L10N
-                  subtitle: Text(S.of(context).exportCollectionSubtitle), // L10N
-                  onTap: () async {
-                    try {
-                      final renderObject = tileContext.findRenderObject();
-                      final rect = renderObject is RenderBox ? renderObject.localToGlobal(Offset.zero) & renderObject.size : null;
-                      await GetIt.I<BackupService>().shareBackup(sharePositionOrigin: rect);
-                    } catch (e) {
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(S.of(context).error(e.toString()))), // L10N
-                        );
-                      }
-                    }
-                  },
-                ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.unarchive, color: AppColors.navyBlue),
-                title: Text(S.of(context).importCollection), // L10N
-                onTap: () async {
-                  final result = await FilePicker.pickFiles(
-                    type: FileType.custom,
-                    allowedExtensions: ['zip'],
-                  );
-
-                  if (result != null && result.files.single.path != null) {
-                    final file = File(result.files.single.path!);
-                    if (context.mounted) {
-                      try {
-                        // Show loading dialog
-                        showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) => const Center(child: CircularProgressIndicator()),
-                        );
-                        
-                        await GetIt.I<BackupService>().restoreBackup(file);
-                        
-                        if (context.mounted) {
-                          Navigator.pop(context); // Close loading
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(S.of(context).importCollectionSuccess)), // L10N
-                          );
-                        }
-                      } catch (e) {
-                        if (context.mounted) {
-                          Navigator.pop(context); // Close loading
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(S.of(context).error(e.toString()))), // L10N
-                          );
-                        }
-                      }
-                    }
-                  }
-                },
-              ),
-
 
               const Divider(),
-              _buildSectionHeader(context, S.of(context).support), // L10N
-              ListTile(
-                leading: const Icon(Icons.star_rate_rounded, color: AppColors.navyBlue),
-                title: Text(S.of(context).rateScaleBook), // L10N
-                subtitle: Text(S.of(context).rateScaleBookSubtitle), // L10N
-                onTap: () => GetIt.I<ReviewService>().requestReview(force: true),
+
+              // 2. DATA AND BACKUP
+              _buildExpandableSection(
+                context: context,
+                title: S.of(context).dataAndBackup,
+                icon: Icons.storage_outlined,
+                children: [
+                  Builder(
+                    builder: (tileContext) => ListTile(
+                      leading: const Icon(Icons.archive, color: AppColors.navyBlue),
+                      title: Text(S.of(context).exportCollection), // L10N
+                      subtitle: Text(S.of(context).exportCollectionSubtitle), // L10N
+                      onTap: () async {
+                        try {
+                          final renderObject = tileContext.findRenderObject();
+                          final rect = renderObject is RenderBox ? renderObject.localToGlobal(Offset.zero) & renderObject.size : null;
+                          await GetIt.I<BackupService>().shareBackup(sharePositionOrigin: rect);
+                        } catch (e) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(S.of(context).error(e.toString()))), // L10N
+                            );
+                          }
+                        }
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.unarchive, color: AppColors.navyBlue),
+                    title: Text(S.of(context).importCollection), // L10N
+                    onTap: () async {
+                      final result = await FilePicker.pickFiles(
+                        type: FileType.custom,
+                        allowedExtensions: ['zip'],
+                      );
+
+                      if (result != null && result.files.single.path != null) {
+                        final file = File(result.files.single.path!);
+                        if (context.mounted) {
+                          try {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) => const Center(child: CircularProgressIndicator()),
+                            );
+                            await GetIt.I<BackupService>().restoreBackup(file);
+                            if (context.mounted) {
+                              Navigator.pop(context); // Close loading
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(S.of(context).importCollectionSuccess)), // L10N
+                              );
+                            }
+                          } catch (e) {
+                            if (context.mounted) {
+                              Navigator.pop(context); // Close loading
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(S.of(context).error(e.toString()))), // L10N
+                              );
+                            }
+                          }
+                        }
+                      }
+                    },
+                  ),
+                ],
               ),
+
+              const Divider(),
+
+              // 3. SUPPORT (Expandable for Rate, but Coffee visible)
+              _buildExpandableSection(
+                context: context,
+                title: S.of(context).support,
+                icon: Icons.favorite_border,
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.star_rate_rounded, color: AppColors.navyBlue),
+                    title: Text(S.of(context).rateScaleBook), // L10N
+                    subtitle: Text(S.of(context).rateScaleBookSubtitle), // L10N
+                    onTap: () => GetIt.I<ReviewService>().requestReview(force: true),
+                  ),
+                ],
+              ),
+
+              // ALWAYS VISIBLE: Buy Me A Coffee
               ListTile(
                 leading: const Icon(Icons.coffee, color: AppColors.red),
                 title: Text(S.of(context).buyMeACoffee), // L10N
@@ -127,43 +150,41 @@ class SettingsScreen extends StatelessWidget {
                 trailing: const Icon(Icons.qr_code_2, size: 24, color: AppColors.navyBlue),
                 onTap: () => _showSupportDialog(context),
               ),
+
               const Divider(),
-              _buildSectionHeader(context, S.of(context).legal), // L10N
-              ListTile(
-                leading: const Icon(Icons.privacy_tip_outlined, color: AppColors.navyBlue),
-                title: Text(S.of(context).privacyPolicy), // L10N
-                onTap: () => _launchUrl('https://twelveappschallenge-platform.web.app/legal/9005dcce-ef33-4054-81d6-25da5802738b/privacy-policy'),
+
+              // 4. APPLICATION
+              _buildExpandableSection(
+                context: context,
+                title: S.of(context).application,
+                icon: Icons.settings_applications_outlined,
+                children: [
+                  BlocBuilder<LocaleCubit, Locale>(
+                    builder: (context, locale) {
+                      return ListTile(
+                        leading: const Icon(Icons.language, color: AppColors.navyBlue),
+                        title: Text(S.of(context).language), // L10N
+                        trailing: Text(locale.languageCode == 'pl' ? S.of(context).polish : S.of(context).english), // L10N
+                        onTap: () => _showLanguageDialog(context),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.logout, color: AppColors.grey),
+                    title: Text(S.of(context).logout), // L10N
+                    onTap: () async {
+                      await sessionRepo.signOut();
+                      if (context.mounted) Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.delete_forever, color: Colors.red),
+                    title: Text(S.of(context).deleteAccount), // L10N
+                    onTap: () => _showDeleteConfirmation(context, sessionRepo),
+                  ),
+                ],
               ),
-              ListTile(
-                leading: const Icon(Icons.description_outlined, color: AppColors.navyBlue),
-                title: Text(S.of(context).termsOfUse), // L10N
-                onTap: () => _launchUrl('https://twelveappschallenge-platform.web.app/legal/9005dcce-ef33-4054-81d6-25da5802738b/terms-of-use'), // Using likely URL for Terms
-              ),
-              const Divider(),
-              _buildSectionHeader(context, S.of(context).application), // L10N
-              BlocBuilder<LocaleCubit, Locale>(
-                builder: (context, locale) {
-                  return ListTile(
-                    leading: const Icon(Icons.language, color: AppColors.navyBlue),
-                    title: Text(S.of(context).language), // L10N
-                    trailing: Text(locale.languageCode == 'pl' ? S.of(context).polish : S.of(context).english), // L10N
-                    onTap: () => _showLanguageDialog(context),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.logout, color: AppColors.grey),
-                title: Text(S.of(context).logout), // L10N
-                onTap: () async {
-                  await sessionRepo.signOut();
-                  if (context.mounted) Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.delete_forever, color: Colors.red),
-                title: Text(S.of(context).deleteAccount), // L10N
-                onTap: () => _showDeleteConfirmation(context, sessionRepo),
-              ),
+              const SizedBox(height: 32),
             ],
           );
         },
@@ -334,19 +355,31 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionHeader(BuildContext context, String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Text(
-        title,
-        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: AppColors.red,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.5,
-            ),
+  Widget _buildExpandableSection({
+    required BuildContext context,
+    required String title,
+    required IconData icon,
+    required List<Widget> children,
+    bool initiallyExpanded = false,
+  }) {
+    return Theme(
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ExpansionTile(
+        initiallyExpanded: initiallyExpanded,
+        leading: Icon(icon, color: AppColors.navyBlue),
+        title: Text(
+          title,
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: AppColors.red,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.5,
+              ),
+        ),
+        children: children,
       ),
     );
   }
+
 
   void _showSupportDialog(BuildContext context) {
     const String supportUrl = 'https://buycoffee.to/scalebook';
@@ -426,12 +459,5 @@ class SettingsScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Future<void> _launchUrl(String urlString) async {
-    final url = Uri.parse(urlString);
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
-    }
   }
 }

@@ -130,6 +130,15 @@ class SPl extends S {
       'Czy na pewno chcesz usunąć konto i wszystkie dane? Tej operacji nie można cofnąć.';
 
   @override
+  String get privacyPolicy => 'Polityka Prywatności';
+
+  @override
+  String get termsOfUse => 'Warunki Użytkowania';
+
+  @override
+  String get legal => 'PRAWNE';
+
+  @override
   String get techAuth => 'AUTORYZACJA TECHNICZNA';
 
   @override
@@ -456,6 +465,9 @@ class SPl extends S {
 
   @override
   String get sortByDate => 'Sortuj według daty';
+
+  @override
+  String get sortByStatus => 'Sortuj według statusu';
 
   @override
   String get searchInStash => 'SZUKAJ W GARDEROBIE...';

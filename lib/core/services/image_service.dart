@@ -25,18 +25,14 @@ class ImageService {
     // If it's a URL, return as is
     if (storedPath.startsWith('http')) return storedPath;
 
-    // If it's an absolute path that is now invalid (iOS UUID issue), 
-    // extract the relative part and rebuild it.
     final docs = await getApplicationDocumentsDirectory();
-    
-    // Find where scalebook_data starts in the stored path
     final marker = 'scalebook_data';
+    
     if (storedPath.contains(marker)) {
       final relativePart = storedPath.substring(storedPath.indexOf(marker));
       return p.join(docs.path, relativePart);
     }
     
-    // Fallback: if it's just a filename
     return p.join(docs.path, 'scalebook_data', 'images', storedPath);
   }
 

@@ -202,7 +202,7 @@ class _StashScreenState extends State<StashScreen> {
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 0.85,
+                  childAspectRatio: 1.0,
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
                 ),

@@ -125,10 +125,10 @@ return initializing(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? userId,  bool isAnonymous,  bool isOffline,  ProfileModel? profile,  bool isPro)?  $default,{TResult Function()?  unauthenticated,TResult Function()?  initializing,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? userId,  bool isAnonymous,  bool isOffline,  ProfileModel? profile,  String? email,  bool isPro)?  $default,{TResult Function()?  unauthenticated,TResult Function()?  initializing,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserSession() when $default != null:
-return $default(_that.userId,_that.isAnonymous,_that.isOffline,_that.profile,_that.isPro);case _Unauthenticated() when unauthenticated != null:
+return $default(_that.userId,_that.isAnonymous,_that.isOffline,_that.profile,_that.email,_that.isPro);case _Unauthenticated() when unauthenticated != null:
 return unauthenticated();case _Initializing() when initializing != null:
 return initializing();case _:
   return orElse();
@@ -148,10 +148,10 @@ return initializing();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? userId,  bool isAnonymous,  bool isOffline,  ProfileModel? profile,  bool isPro)  $default,{required TResult Function()  unauthenticated,required TResult Function()  initializing,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? userId,  bool isAnonymous,  bool isOffline,  ProfileModel? profile,  String? email,  bool isPro)  $default,{required TResult Function()  unauthenticated,required TResult Function()  initializing,}) {final _that = this;
 switch (_that) {
 case _UserSession():
-return $default(_that.userId,_that.isAnonymous,_that.isOffline,_that.profile,_that.isPro);case _Unauthenticated():
+return $default(_that.userId,_that.isAnonymous,_that.isOffline,_that.profile,_that.email,_that.isPro);case _Unauthenticated():
 return unauthenticated();case _Initializing():
 return initializing();case _:
   throw StateError('Unexpected subclass');
@@ -170,10 +170,10 @@ return initializing();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? userId,  bool isAnonymous,  bool isOffline,  ProfileModel? profile,  bool isPro)?  $default,{TResult? Function()?  unauthenticated,TResult? Function()?  initializing,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? userId,  bool isAnonymous,  bool isOffline,  ProfileModel? profile,  String? email,  bool isPro)?  $default,{TResult? Function()?  unauthenticated,TResult? Function()?  initializing,}) {final _that = this;
 switch (_that) {
 case _UserSession() when $default != null:
-return $default(_that.userId,_that.isAnonymous,_that.isOffline,_that.profile,_that.isPro);case _Unauthenticated() when unauthenticated != null:
+return $default(_that.userId,_that.isAnonymous,_that.isOffline,_that.profile,_that.email,_that.isPro);case _Unauthenticated() when unauthenticated != null:
 return unauthenticated();case _Initializing() when initializing != null:
 return initializing();case _:
   return null;
@@ -187,13 +187,14 @@ return initializing();case _:
 
 
 class _UserSession extends UserSession {
-  const _UserSession({required this.userId, required this.isAnonymous, required this.isOffline, required this.profile, this.isPro = false}): super._();
+  const _UserSession({required this.userId, required this.isAnonymous, required this.isOffline, required this.profile, this.email, this.isPro = false}): super._();
   
 
  final  String? userId;
  final  bool isAnonymous;
  final  bool isOffline;
  final  ProfileModel? profile;
+ final  String? email;
 /// Whether user has active "pro" entitlement.
 /// Always false until /subscription step adds RevenueCat.
 @JsonKey() final  bool isPro;
@@ -208,16 +209,16 @@ _$UserSessionCopyWith<_UserSession> get copyWith => __$UserSessionCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserSession&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.isAnonymous, isAnonymous) || other.isAnonymous == isAnonymous)&&(identical(other.isOffline, isOffline) || other.isOffline == isOffline)&&(identical(other.profile, profile) || other.profile == profile)&&(identical(other.isPro, isPro) || other.isPro == isPro));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserSession&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.isAnonymous, isAnonymous) || other.isAnonymous == isAnonymous)&&(identical(other.isOffline, isOffline) || other.isOffline == isOffline)&&(identical(other.profile, profile) || other.profile == profile)&&(identical(other.email, email) || other.email == email)&&(identical(other.isPro, isPro) || other.isPro == isPro));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userId,isAnonymous,isOffline,profile,isPro);
+int get hashCode => Object.hash(runtimeType,userId,isAnonymous,isOffline,profile,email,isPro);
 
 @override
 String toString() {
-  return 'UserSession(userId: $userId, isAnonymous: $isAnonymous, isOffline: $isOffline, profile: $profile, isPro: $isPro)';
+  return 'UserSession(userId: $userId, isAnonymous: $isAnonymous, isOffline: $isOffline, profile: $profile, email: $email, isPro: $isPro)';
 }
 
 
@@ -228,7 +229,7 @@ abstract mixin class _$UserSessionCopyWith<$Res> implements $UserSessionCopyWith
   factory _$UserSessionCopyWith(_UserSession value, $Res Function(_UserSession) _then) = __$UserSessionCopyWithImpl;
 @useResult
 $Res call({
- String? userId, bool isAnonymous, bool isOffline, ProfileModel? profile, bool isPro
+ String? userId, bool isAnonymous, bool isOffline, ProfileModel? profile, String? email, bool isPro
 });
 
 
@@ -245,13 +246,14 @@ class __$UserSessionCopyWithImpl<$Res>
 
 /// Create a copy of UserSession
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? userId = freezed,Object? isAnonymous = null,Object? isOffline = null,Object? profile = freezed,Object? isPro = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? userId = freezed,Object? isAnonymous = null,Object? isOffline = null,Object? profile = freezed,Object? email = freezed,Object? isPro = null,}) {
   return _then(_UserSession(
 userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String?,isAnonymous: null == isAnonymous ? _self.isAnonymous : isAnonymous // ignore: cast_nullable_to_non_nullable
 as bool,isOffline: null == isOffline ? _self.isOffline : isOffline // ignore: cast_nullable_to_non_nullable
 as bool,profile: freezed == profile ? _self.profile : profile // ignore: cast_nullable_to_non_nullable
-as ProfileModel?,isPro: null == isPro ? _self.isPro : isPro // ignore: cast_nullable_to_non_nullable
+as ProfileModel?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,isPro: null == isPro ? _self.isPro : isPro // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

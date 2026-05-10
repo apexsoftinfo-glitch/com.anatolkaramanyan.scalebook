@@ -57,4 +57,8 @@ class HomeCubit extends Cubit<HomeState> {
       rethrow;
     }
   }
+
+  void clear() {
+    emit(const HomeState.initial());
+  }
 }

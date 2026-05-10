@@ -14,8 +14,17 @@ import '../../session/presentation/cubit/session_cubit.dart';
 import '../../../../core/design_system/widgets/limit_dialog.dart';
 import '../../welcome/ui/auth_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+enum HomeSortMode { date, status }
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  HomeSortMode _sortMode = HomeSortMode.date;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +45,18 @@ class HomeScreen extends StatelessWidget {
           ),
           actions: [
             IconButton(
+              icon: Icon(Icons.calendar_today, 
+                color: _sortMode == HomeSortMode.date ? AppColors.red : Colors.white),
+              tooltip: S.of(context).sortByDate,
+              onPressed: () => setState(() => _sortMode = HomeSortMode.date),
+            ),
+            IconButton(
+              icon: Icon(Icons.playlist_add_check, 
+                color: _sortMode == HomeSortMode.status ? AppColors.red : Colors.white),
+              tooltip: S.of(context).sortByStatus,
+              onPressed: () => setState(() => _sortMode = HomeSortMode.status),
+            ),
+            IconButton(
               icon: const Icon(Icons.settings),
               onPressed: () {
                 Navigator.push(
@@ -52,6 +73,22 @@ class HomeScreen extends StatelessWidget {
               return state.maybeMap(
                 loaded: (s) {
                   final activeProjects = s.projects.where((p) => p.status != 'GARDEROBA' && p.status != 'FINISHED').toList();
+                  
+                  // Apply Sorting
+                  activeProjects.sort((a, b) {
+                    if (_sortMode == HomeSortMode.date) {
+                      return b.createdAt.compareTo(a.createdAt);
+                    } else {
+                      // Status: WARSZTAT first, then others (PAUSED)
+                      if (a.status == b.status) {
+                        return b.createdAt.compareTo(a.createdAt);
+                      }
+                      if (a.status == 'WARSZTAT') return -1;
+                      if (b.status == 'WARSZTAT') return 1;
+                      return 0;
+                    }
+                  });
+
                   return _buildGrid(context, activeProjects);
                 },
                 error: (s) => Center(child: Text(s.message)),

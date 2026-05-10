@@ -14,8 +14,10 @@
 
 - *"Przechowywać zdjęcia z budowy modelu i układać je chronologicznie, razem z własnymi uwagami"*
 - *"Oddzielić zdjęcia modelarskie od prywatnych zdjęć w telefonie"*
-- *"Eksportować historię budowy do social mediów (kolaże)"*
-- *"Projekt non-profit, wspierany wyłącznie przez serwis buycoffee.to"*
+- *"Prowadzić Magazyn (Stash) modeli oczekujących na budowę"*
+- *"Prezentować ukończone dzieła w wirtualnej Gablocie (Showcase)"*
+- *"Eksportować historię budowy i gotowe modele do social mediów (kolaże, plakaty)"*
+- *"Projekt non-profit, darmowy dla wszystkich, z limitem 3 projektów dla gości zachęcającym do rejestracji"*
 - *"Pełna synchronizacja projektów z chmurą (Supabase) przy zachowaniu lokalnego przechowywania zdjęć. Backup ZIP zawiera komplet danych."*
 
 ---
@@ -42,13 +44,14 @@
 |-------|-----|-----------|
 | Welcome | Pierwsze wrażenie, wejście w tryb gościa | CORE |
 | Onboarding (8 stron) | Wprowadzenie w świat modelarstwa | CORE |
-| Home | Lista/Grid modeli (W budowie / Gotowe) | CORE |
+| Home (Pulpit) | Aktywne projekty ("W budowie") | CORE |
+| Showcase (Gablota) | Galeria ukończonych modeli | CORE |
+| Notes (Notatki) | Notatki warsztatowe i techniczne | CORE |
+| Stash (Magazyn) | Modele czekające w kolejce | CORE |
 | Model Detail | Historia budowy + Galeria końcowa | CORE |
-| Add/Edit Model | Formularz modelu (Nazwa, Skala, Producent) | CORE |
-| Add Build Step | Dodawanie zdjęć + notatek do logu | CORE |
-| Collage Preview | Generowanie i podgląd kolażu do eksportu | CORE |
-| Settings | Backup ZIP, Język, BuyCoffee link | CORE |
-| Login / Register | Opcjonalna synchronizacja konta | AUTH |
+| Present Model | Generowanie plakatu/kolażu do eksportu | CORE |
+| Settings | Backup ZIP, Język, Profil | CORE |
+| Login / Register | Synchronizacja chmury (Supabase) | AUTH |
 
 ---
 
@@ -65,6 +68,8 @@
 **Empty State:** Ilustracja pustej maty modelarskiej z tekstem "Twój warsztat czeka na pierwszy model".
 
 **CTA:** FAB (Floating Action Button) "+" do dodania nowego modelu.
+
+**Sortowanie:** Ikonki w AppBarze pozwalające na sortowanie według daty stworzenia oraz statusu (W trakcie -> Odłożone).
 
 ---
 
@@ -101,22 +106,17 @@ Onboarding (8 stron)
 ├── 5. Experience: Dodaj wirtualny model
 ├── 6. Bridge: Gotowy na pierwszy projekt?
 ├── 7. Minimal Setup: Twój pierwszy model (nazwa)
-└── 8. → Home (z dodanym pierwszym modelem)
+└── 8. → Main Screen (Home)
 
-Home
-├── Tap na model → Model Detail
-├── FAB → Add Model
-└── Menu (Ikona profilu/śrubki) → Settings
-
-Model Detail
-├── Tab 1: Build Log (chronologiczna lista kroków)
-├── Tab 2: Gallery (zdjęcia gotowego modelu)
-└── FAB/CTA → Add Build Step
+Main Screen (Bottom Navigation)
+├── Pulpit (Home) → Aktywne budowy
+├── Gablota (Showcase) → Gotowe modele → Present Model
+├── Notatki (Notes) → Szybkie notatki
+└── Magazyn (Stash) → Modele do zbudowania
 
 Settings
-├── Backup & Restore (Eksport Kompleksowy ZIP: Zdjęcia + Baza + Ustawienia)
+├── Backup & Restore (Eksport Kompleksowy ZIP)
 ├── Zmień język (PL/EN)
-├── "Zmień hasło" (dla zalogowanych)
 ├── "Wesprzyj ScaleBook" (BuyCoffee.to)
 └── Wyloguj / Usuń konto
 ```
@@ -154,13 +154,10 @@ Settings
 
 ### System limitów
 
-**Projekt non-profit: Brak twardych limitów ilościowych.**
-
 | Tier | Limit | Jak uzyskać |
 |------|-------|-------------|
-| Guest | Pełna funkcjonalność (lokalnie) | Start (Anonymously) |
-| Registered | Sync konta (jeśli dodamy) | Rejestracja email |
-| Pro | Brak (ScaleBook jest darmowy) | — |
+| Guest | Max 3 projekty (lokalnie) | Start (Anonymously) |
+| Registered | Nielimitowane projekty + Cloud Sync | Rejestracja email |
 
 ---
 
@@ -168,9 +165,10 @@ Settings
 
 **Model:** Donationware (buycoffee.to).
 
-**Pro Features (jako podziękowanie za wsparcie lub po prostu dostępne):**
+**Wszystkie funkcje są dostępne za darmo:**
 - Nielimitowane zdjęcia na krok budowy.
-- Zaawansowane szablony kolaży (więcej układów).
+- Zaawansowane szablony "Present Model".
+- Brak reklam.
 - Dark Mode / Premium Themes.
 
 ---
@@ -191,9 +189,9 @@ Settings
 
 ## Out of Scope (v1)
 
-- [ ] Automatyczny sync w chmurze (tylko ZIP backup).
 - [ ] Funkcje społecznościowe wewnątrz apki (feed innych modelarzy).
 - [ ] Zaawansowana edycja zdjęć (filtry, retusz).
+- [ ] Marketplace z modelami.
 
 ---
 

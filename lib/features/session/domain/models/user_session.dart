@@ -26,6 +26,7 @@ class UserSession with _$UserSession {
     required bool isAnonymous,
     required bool isOffline,
     required ProfileModel? profile,
+    String? email,
     /// Whether user has active "pro" entitlement.
     /// Always false until /subscription step adds RevenueCat.
     @Default(false) bool isPro,
@@ -44,6 +45,12 @@ class UserSession with _$UserSession {
         (s) => s.isAnonymous,
         unauthenticated: (_) => true,
         initializing: (_) => true,
+      );
+
+  String? get email => map(
+        (s) => s.email,
+        unauthenticated: (_) => null,
+        initializing: (_) => null,
       );
 
   // === COMPUTED PROPERTIES ===

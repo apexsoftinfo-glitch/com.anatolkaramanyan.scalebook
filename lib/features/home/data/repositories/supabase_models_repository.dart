@@ -26,7 +26,6 @@ class SupabaseModelsRepository implements ModelsRepository {
     return (response as List).map((json) {
       final stepsData = json['build_steps'] as List;
       final steps = stepsData.map((s) => BuildStep.fromJson(s as Map<String, dynamic>)).toList();
-      // Sort steps by date descending
       steps.sort((a, b) => b.date.compareTo(a.date));
       
       return ModelProject.fromJson(json as Map<String, dynamic>).copyWith(steps: steps);

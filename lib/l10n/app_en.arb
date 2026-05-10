@@ -200,6 +200,7 @@
   "generatingPdfCatalog": "GENERATING PDF CATALOG...",
   "manyPhotosWarning": "This may take a while with many photos",
   "sortByDate": "Sort by date",
+  "sortByStatus": "Sort by status",
   "searchInStash": "SEARCH IN STASH...",
   "noModelsFound": "NO MODELS FOUND",
   "modelsInQueue": "{count} MODELS IN QUEUE",

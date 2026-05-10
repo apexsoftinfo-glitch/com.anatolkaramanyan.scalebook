@@ -10,6 +10,14 @@
 - Pomijaj długie szczegóły implementacyjne, chyba że są kluczowe dla zrozumienia zmiany.
 - Opcjonalnie używaj emoji dla czytelności, ale bez przesady.
 
+## 2026-05-10
+- Zaimplementowano funkcję sortowania projektów na Pulpicie (według daty oraz statusu).
+- Dodano ikonki sortowania w AppBarze z wizualnym wskaźnikiem aktywnego trybu.
+- Dodano wyświetlanie adresu e-mail zalogowanego użytkownika w ustawieniach profilu.
+- Zaktualizowano `IDEA.md` oraz lokalizację (PL/EN) o nowe funkcje.
+- Skrócono karty w Garderobie (Magazynie), redukując nadmiar pustawej przestrzeni pod tytułem modelu.
+- Usunięto nieaktualne wzmianki o RevenueCat i planie Pro z dokumentacji `IDEA.md`.
+
 ## 2026-05-07
 - Dodano sekcję **"O programie"** oraz **"Schemat importu danych"** w ustawieniach aplikacji.
 - Zaimplementowano okno dialogowe prezentujące wymagane kolumny dla poprawnego importu danych (Tytuł, Skala, Status, Data).

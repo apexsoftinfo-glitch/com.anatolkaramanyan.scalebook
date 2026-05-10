@@ -127,6 +127,15 @@ class SEn extends S {
       'Are you sure you want to delete your account and all data? This operation cannot be undone.';
 
   @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get termsOfUse => 'Terms of Use';
+
+  @override
+  String get legal => 'LEGAL';
+
+  @override
   String get techAuth => 'TECHNICAL AUTHORIZATION';
 
   @override
@@ -456,6 +465,9 @@ class SEn extends S {
 
   @override
   String get sortByDate => 'Sort by date';
+
+  @override
+  String get sortByStatus => 'Sort by status';
 
   @override
   String get searchInStash => 'SEARCH IN STASH...';

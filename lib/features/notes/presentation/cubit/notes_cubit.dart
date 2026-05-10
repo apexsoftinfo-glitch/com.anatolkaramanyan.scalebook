@@ -52,4 +52,8 @@ class NotesCubit extends Cubit<NotesState> {
       emit(state.copyWith(errorMessage: e.toString()));
     }
   }
+
+  void clear() {
+    emit(const NotesState.initial());
+  }
 }
