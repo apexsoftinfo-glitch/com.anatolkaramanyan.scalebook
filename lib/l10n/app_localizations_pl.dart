@@ -566,4 +566,36 @@ class SPl extends S {
 
   @override
   String get restoring => 'PRZYWRACANIE DANYCH...';
+
+  @override
+  String get addProjectDialogTitle => 'CO CHCESZ ZROBIĆ?';
+
+  @override
+  String get addNewProjectOption => 'DODAJ NOWY MODEL';
+
+  @override
+  String get chooseFromStashOption => 'WYBIERZ Z GARDEROBY';
+
+  @override
+  String get selectFromStashTitle => 'WYBIERZ MODEL';
+
+  @override
+  String get noModelsInStash => 'GARDEROBA JEST PUSTA';
+
+  @override
+  String get movingFromStashToWorkshop => 'Przenoszenie do warsztatu...';
+
+  @override
+  String get aboutApp => 'O aplikacji';
+
+  @override
+  String get aboutAppTitle => 'O SCALEBOOK';
+
+  @override
+  String get aboutAppDescription =>
+      'ScaleBook to techniczny dziennik budowy stworzony przez pasjonata dla pasjonatów. Aplikacja pomaga śledzić postępy prac nad modelami, przechowywać dokumentację fotograficzną oraz dzielić się gotowymi projektami z innymi.';
+
+  @override
+  String get donationInfo =>
+      'Projekt jest rozwijany pro bono i utrzymywany dzięki dobrowolnym datkom użytkowników. Twoje wsparcie pozwala na pokrycie kosztów serwerów i dalszy rozwój nowych funkcji.';
 }

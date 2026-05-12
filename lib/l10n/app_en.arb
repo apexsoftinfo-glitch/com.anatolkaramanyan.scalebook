@@ -258,5 +258,15 @@
     }
   },
   "backingUp": "CREATING BACKUP...",
-  "restoring": "RESTORING DATA..."
+  "restoring": "RESTORING DATA...",
+  "addProjectDialogTitle": "WHAT DO YOU WANT TO DO?",
+  "addNewProjectOption": "ADD NEW MODEL",
+  "chooseFromStashOption": "CHOOSE FROM STASH",
+  "selectFromStashTitle": "SELECT MODEL",
+  "noModelsInStash": "STASH IS EMPTY",
+  "movingFromStashToWorkshop": "Moving to workshop...",
+  "aboutApp": "About App",
+  "aboutAppTitle": "ABOUT SCALEBOOK",
+  "aboutAppDescription": "ScaleBook is a technical build log created by a hobbyist for hobbyists. The app helps track progress on models, store photographic documentation, and share finished projects with others.",
+  "donationInfo": "The project is developed pro bono and maintained thanks to voluntary user donations. Your support covers server costs and the further development of new features."
 }

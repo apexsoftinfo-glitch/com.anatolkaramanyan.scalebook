@@ -195,6 +195,11 @@ class SettingsScreen extends StatelessWidget {
                     },
                   ),
                   ListTile(
+                    leading: const Icon(Icons.info_outline, color: AppColors.navyBlue),
+                    title: Text(S.of(context).aboutApp),
+                    onTap: () => _showAboutDialog(context),
+                  ),
+                  ListTile(
                     leading: const Icon(Icons.logout, color: AppColors.grey),
                     title: Text(S.of(context).logout), // L10N
                     onTap: () async {
@@ -480,6 +485,53 @@ class SettingsScreen extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(S.of(context).cancel),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showAboutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(S.of(context).aboutAppTitle),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              S.of(context).aboutAppDescription,
+              textAlign: TextAlign.justify,
+              style: const TextStyle(fontSize: 14),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              S.of(context).donationInfo,
+              style: const TextStyle(fontSize: 12, color: AppColors.grey, fontStyle: FontStyle.italic),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton.icon(
+              onPressed: () async {
+                const String supportUrl = 'https://buycoffee.to/scalebook';
+                final url = Uri.parse(supportUrl);
+                if (await canLaunchUrl(url)) {
+                  await launchUrl(url, mode: LaunchMode.externalApplication);
+                }
+              },
+              icon: const Icon(Icons.coffee),
+              label: Text(S.of(context).buyMeACoffee),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.red,
+                foregroundColor: Colors.white,
+                minimumSize: const Size(double.infinity, 48),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(S.of(context).close),
           ),
         ],
       ),

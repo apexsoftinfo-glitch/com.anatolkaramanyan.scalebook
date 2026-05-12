@@ -46,6 +46,77 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
     super.dispose();
   }
 
+  void _insertAtCursor(String text) {
+    final selection = _contentController.selection;
+    final content = _contentController.text;
+
+    int start = selection.start;
+    int end = selection.end;
+    
+    if (start == -1) {
+      start = content.length;
+      end = content.length;
+    }
+
+    // Check if we need a newline before the list item
+    String prefix = '';
+    if (start > 0 && content[start - 1] != '\n') {
+      prefix = '\n';
+    }
+
+    final fullText = prefix + text;
+    final newText = content.replaceRange(start, end, fullText);
+
+    _contentController.value = TextEditingValue(
+      text: newText,
+      selection: TextSelection.collapsed(offset: start + fullText.length),
+    );
+  }
+
+  Widget _buildNoteToolbar() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.grey.withAlpha(50)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _toolbarButton(
+            icon: Icons.format_list_bulleted,
+            onPressed: () => _insertAtCursor('• '),
+            tooltip: 'Lista punktowa',
+          ),
+          _toolbarButton(
+            icon: Icons.check_box_outlined,
+            onPressed: () => _insertAtCursor('[ ] '),
+            tooltip: 'Lista zadań',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _toolbarButton({
+    required IconData icon,
+    required VoidCallback onPressed,
+    required String tooltip,
+  }) {
+    return Tooltip(
+      message: tooltip,
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(4),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          child: Icon(icon, size: 20, color: AppColors.navyBlue),
+        ),
+      ),
+    );
+  }
+
   Future<void> _pickImage(ImageSource source) async {
     if (source == ImageSource.gallery) {
       final List<XFile> images = await _imagePicker.pickMultiImage(
@@ -135,7 +206,8 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                 label: S.of(context).noteContentLabel, // L10N
                 controller: _contentController,
                 hint: S.of(context).noteContentHint,
-                maxLines: 5,
+                maxLines: 10,
+                toolbar: _buildNoteToolbar(),
                 validator: (v) => v?.isEmpty ?? true ? S.of(context).contentRequired : null,
               ),
               const SizedBox(height: 16),
@@ -252,18 +324,26 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
     required String hint,
     int maxLines = 1,
     String? Function(String?)? validator,
+    Widget? toolbar,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            color: AppColors.grey,
-            letterSpacing: 1.2,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: AppColors.grey,
+                letterSpacing: 1.2,
+              ),
+            ),
+            if (toolbar != null) toolbar,
+          ],
         ),
         const SizedBox(height: 8),
         TextFormField(

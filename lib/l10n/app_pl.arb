@@ -258,5 +258,15 @@
     }
   },
   "backingUp": "TWORZENIE KOPII ZAPASOWEJ...",
-  "restoring": "PRZYWRACANIE DANYCH..."
+  "restoring": "PRZYWRACANIE DANYCH...",
+  "addProjectDialogTitle": "CO CHCESZ ZROBIĆ?",
+  "addNewProjectOption": "DODAJ NOWY MODEL",
+  "chooseFromStashOption": "WYBIERZ Z GARDEROBY",
+  "selectFromStashTitle": "WYBIERZ MODEL",
+  "noModelsInStash": "GARDEROBA JEST PUSTA",
+  "movingFromStashToWorkshop": "Przenoszenie do warsztatu...",
+  "aboutApp": "O aplikacji",
+  "aboutAppTitle": "O SCALEBOOK",
+  "aboutAppDescription": "ScaleBook to techniczny dziennik budowy stworzony przez pasjonata dla pasjonatów. Aplikacja pomaga śledzić postępy prac nad modelami, przechowywać dokumentację fotograficzną oraz dzielić się gotowymi projektami z innymi.",
+  "donationInfo": "Projekt jest rozwijany pro bono i utrzymywany dzięki dobrowolnym datkom użytkowników. Twoje wsparcie pozwala na pokrycie kosztów serwerów i dalszy rozwój nowych funkcji."
 }

@@ -566,4 +566,36 @@ class SEn extends S {
 
   @override
   String get restoring => 'RESTORING DATA...';
+
+  @override
+  String get addProjectDialogTitle => 'WHAT DO YOU WANT TO DO?';
+
+  @override
+  String get addNewProjectOption => 'ADD NEW MODEL';
+
+  @override
+  String get chooseFromStashOption => 'CHOOSE FROM STASH';
+
+  @override
+  String get selectFromStashTitle => 'SELECT MODEL';
+
+  @override
+  String get noModelsInStash => 'STASH IS EMPTY';
+
+  @override
+  String get movingFromStashToWorkshop => 'Moving to workshop...';
+
+  @override
+  String get aboutApp => 'About App';
+
+  @override
+  String get aboutAppTitle => 'ABOUT SCALEBOOK';
+
+  @override
+  String get aboutAppDescription =>
+      'ScaleBook is a technical build log created by a hobbyist for hobbyists. The app helps track progress on models, store photographic documentation, and share finished projects with others.';
+
+  @override
+  String get donationInfo =>
+      'The project is developed pro bono and maintained thanks to voluntary user donations. Your support covers server costs and the further development of new features.';
 }

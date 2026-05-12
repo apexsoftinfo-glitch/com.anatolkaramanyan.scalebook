@@ -10,6 +10,10 @@ import '../../home/domain/models/model_project.dart';
 import '../../home/presentation/cubit/home_cubit.dart';
 import '../../home/presentation/cubit/home_state.dart';
 import '../../home/ui/widgets/model_card.dart';
+import '../../home/ui/add_model_screen.dart';
+import '../../session/domain/models/user_session.dart';
+import '../../../../core/design_system/widgets/limit_dialog.dart';
+import '../../welcome/ui/auth_screen.dart';
 
 class StashScreen extends StatefulWidget {
   const StashScreen({super.key});
@@ -151,6 +155,46 @@ class _StashScreenState extends State<StashScreen> {
             );
           },
         ),
+      ),
+      floatingActionButton: BlocBuilder<SessionCubit, UserSession>(
+        builder: (context, session) {
+          return FloatingActionButton(
+            heroTag: 'stash_fab',
+            onPressed: () {
+              final count = context.read<HomeCubit>().projectCount;
+              final limit = session.limit;
+
+              if (limit != null && count >= limit) {
+                showDialog(
+                  context: context,
+                  builder: (dialogContext) => LimitDialog(
+                    title: S.of(context).limitReached,
+                    message: S.of(context).guestLimitMessage(limit),
+                    actionLabel: S.of(context).register,
+                    onAction: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const AuthScreen(isRegister: true)),
+                      );
+                    },
+                  ),
+                );
+                return;
+              }
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (childContext) => BlocProvider.value(
+                    value: context.read<HomeCubit>(),
+                    child: const AddModelScreen(initialIsStash: true),
+                  ),
+                ),
+              );
+            },
+            child: const Icon(Icons.add),
+          );
+        },
       ),
     );
   }

@@ -13,6 +13,8 @@ import '../../session/domain/models/user_session.dart';
 import '../../session/presentation/cubit/session_cubit.dart';
 import '../../../../core/design_system/widgets/limit_dialog.dart';
 import '../../welcome/ui/auth_screen.dart';
+import '../../../../core/design_system/widgets/app_image.dart';
+import '../domain/models/model_project.dart';
 
 enum HomeSortMode { date, status }
 
@@ -101,44 +103,189 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context, session) {
             return FloatingActionButton(
               heroTag: 'home_fab',
-              onPressed: () {
-                final count = context.read<HomeCubit>().projectCount;
-                final limit = session.limit;
-
-                if (limit != null && count >= limit) {
-                  showDialog(
-                    context: context,
-                    builder: (dialogContext) => LimitDialog(
-                      title: S.of(context).limitReached, // L10N
-                      message:
-                          S.of(context).guestLimitMessage(limit), // L10N
-                      actionLabel: S.of(context).register, // L10N
-                      onAction: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const AuthScreen(isRegister: true)),
-                        );
-                      },
-                    ),
-                  );
-                  return;
-                }
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (childContext) => BlocProvider.value(
-                      value: context.read<HomeCubit>(),
-                      child: const AddModelScreen(),
-                    ),
-                  ),
-                );
-              },
+              onPressed: () => _showAddSelectionDialog(context, session),
               child: const Icon(Icons.add),
             );
           },
         ),
       );
+  }
+
+  void _showAddSelectionDialog(BuildContext context, UserSession session) {
+    showModalBottomSheet(
+      context: context,
+      builder: (modalContext) => SafeArea(
+        child: Wrap(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                S.of(context).addProjectDialogTitle,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: AppColors.navyBlue,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.add_circle_outline, color: AppColors.red),
+              title: Text(S.of(context).addNewProjectOption),
+              onTap: () {
+                Navigator.pop(modalContext);
+                _navigateToAddModel(context, session);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.shelves, color: AppColors.navyBlue),
+              title: Text(S.of(context).chooseFromStashOption),
+              onTap: () {
+                Navigator.pop(modalContext);
+                _showStashSelectionDialog(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _navigateToAddModel(BuildContext context, UserSession session) {
+    final count = context.read<HomeCubit>().projectCount;
+    final limit = session.limit;
+
+    if (limit != null && count >= limit) {
+      showDialog(
+        context: context,
+        builder: (dialogContext) => LimitDialog(
+          title: S.of(context).limitReached,
+          message: S.of(context).guestLimitMessage(limit),
+          actionLabel: S.of(context).register,
+          onAction: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AuthScreen(isRegister: true)),
+            );
+          },
+        ),
+      );
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (childContext) => BlocProvider.value(
+          value: context.read<HomeCubit>(),
+          child: const AddModelScreen(),
+        ),
+      ),
+    );
+  }
+
+  void _showStashSelectionDialog(BuildContext context) {
+    final homeCubit = context.read<HomeCubit>();
+    final stashProjects = homeCubit.state.maybeMap(
+      loaded: (s) => s.projects.where((p) => p.status == 'GARDEROBA').toList(),
+      orElse: () => [],
+    );
+
+    if (stashProjects.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(S.of(context).noModelsInStash)),
+      );
+      return;
+    }
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (modalContext) => Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: DraggableScrollableSheet(
+          initialChildSize: 0.6,
+          maxChildSize: 0.9,
+          minChildSize: 0.4,
+          expand: false,
+          builder: (context, scrollController) => Column(
+            children: [
+              Container(
+                width: 40,
+                height: 4,
+                margin: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  S.of(context).selectFromStashTitle,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: AppColors.navyBlue,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  controller: scrollController,
+                  itemCount: stashProjects.length,
+                  itemBuilder: (context, index) {
+                    final model = stashProjects[index];
+                    return ListTile(
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: AppImage(
+                          imageUrl: model.mainImageUrl,
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      title: Text(
+                        model.title,
+                        style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.navyBlue),
+                      ),
+                      subtitle: Text(model.scale),
+                      onTap: () => _moveModelToWorkshop(context, model, homeCubit),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _moveModelToWorkshop(BuildContext context, dynamic model, HomeCubit cubit) async {
+    Navigator.pop(context); // Close selection sheet
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(S.of(context).movingFromStashToWorkshop)),
+    );
+
+    final updated = (model as ModelProject).copyWith(
+      status: 'WARSZTAT',
+      createdAt: DateTime.now(),
+    );
+    
+    await cubit.updateProject(updated);
+    
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(S.of(context).movedToWorkshop)),
+      );
+    }
   }
 
   Widget _buildGrid(BuildContext context, List<dynamic> projects) {

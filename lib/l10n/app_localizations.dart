@@ -1122,6 +1122,66 @@ abstract class S {
   /// In pl, this message translates to:
   /// **'PRZYWRACANIE DANYCH...'**
   String get restoring;
+
+  /// No description provided for @addProjectDialogTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'CO CHCESZ ZROBIĆ?'**
+  String get addProjectDialogTitle;
+
+  /// No description provided for @addNewProjectOption.
+  ///
+  /// In pl, this message translates to:
+  /// **'DODAJ NOWY MODEL'**
+  String get addNewProjectOption;
+
+  /// No description provided for @chooseFromStashOption.
+  ///
+  /// In pl, this message translates to:
+  /// **'WYBIERZ Z GARDEROBY'**
+  String get chooseFromStashOption;
+
+  /// No description provided for @selectFromStashTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'WYBIERZ MODEL'**
+  String get selectFromStashTitle;
+
+  /// No description provided for @noModelsInStash.
+  ///
+  /// In pl, this message translates to:
+  /// **'GARDEROBA JEST PUSTA'**
+  String get noModelsInStash;
+
+  /// No description provided for @movingFromStashToWorkshop.
+  ///
+  /// In pl, this message translates to:
+  /// **'Przenoszenie do warsztatu...'**
+  String get movingFromStashToWorkshop;
+
+  /// No description provided for @aboutApp.
+  ///
+  /// In pl, this message translates to:
+  /// **'O aplikacji'**
+  String get aboutApp;
+
+  /// No description provided for @aboutAppTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'O SCALEBOOK'**
+  String get aboutAppTitle;
+
+  /// No description provided for @aboutAppDescription.
+  ///
+  /// In pl, this message translates to:
+  /// **'ScaleBook to techniczny dziennik budowy stworzony przez pasjonata dla pasjonatów. Aplikacja pomaga śledzić postępy prac nad modelami, przechowywać dokumentację fotograficzną oraz dzielić się gotowymi projektami z innymi.'**
+  String get aboutAppDescription;
+
+  /// No description provided for @donationInfo.
+  ///
+  /// In pl, this message translates to:
+  /// **'Projekt jest rozwijany pro bono i utrzymywany dzięki dobrowolnym datkom użytkowników. Twoje wsparcie pozwala na pokrycie kosztów serwerów i dalszy rozwój nowych funkcji.'**
+  String get donationInfo;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

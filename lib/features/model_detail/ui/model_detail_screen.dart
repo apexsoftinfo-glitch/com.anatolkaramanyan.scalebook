@@ -709,7 +709,7 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
                   if (!isLast)
                     Container(
                       width: 2,
-                      height: 150, // Fixed height or similar to avoid IntrinsicHeight
+                      height: 100, // Reduced to match smaller card
                       color: Colors.white.withAlpha(40),
                     ),
                 ],
@@ -753,7 +753,7 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
                                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImagePreviewScreen(imageUrl: step.imageUrl!))),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
-                                      child: AppImage(imageUrl: step.imageUrl, fit: BoxFit.cover, width: double.infinity, height: 160),
+                                      child: AppImage(imageUrl: step.imageUrl, fit: BoxFit.cover, width: double.infinity, height: 110),
                                     ),
                                   ),
                                 if (step.note.isNotEmpty) ...[

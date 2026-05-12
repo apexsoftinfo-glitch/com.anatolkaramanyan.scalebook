@@ -12,7 +12,8 @@ import '../domain/models/model_project.dart';
 import '../presentation/cubit/home_cubit.dart';
 
 class AddModelScreen extends StatefulWidget {
-  const AddModelScreen({super.key});
+  final bool initialIsStash;
+  const AddModelScreen({super.key, this.initialIsStash = false});
 
   @override
   State<AddModelScreen> createState() => _AddModelScreenState();
@@ -27,6 +28,12 @@ class _AddModelScreenState extends State<AddModelScreen> {
   DateTime _startDate = DateTime.now();
   bool _isStash = false;
   bool _isSaving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isStash = widget.initialIsStash;
+  }
 
   @override
   void dispose() {
