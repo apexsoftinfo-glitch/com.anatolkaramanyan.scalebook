@@ -182,6 +182,7 @@ class SettingsScreen extends StatelessWidget {
               _buildExpandableSection(
                 context: context,
                 title: S.of(context).application,
+                subtitle: 'v1.0.0+2',
                 icon: Icons.settings_applications_outlined,
                 children: [
                   BlocBuilder<LocaleCubit, Locale>(
@@ -388,6 +389,7 @@ class SettingsScreen extends StatelessWidget {
   Widget _buildExpandableSection({
     required BuildContext context,
     required String title,
+    String? subtitle,
     required IconData icon,
     required List<Widget> children,
     bool initiallyExpanded = false,
@@ -397,13 +399,28 @@ class SettingsScreen extends StatelessWidget {
       child: ExpansionTile(
         initiallyExpanded: initiallyExpanded,
         leading: Icon(icon, color: AppColors.navyBlue),
-        title: Text(
-          title,
-          style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: AppColors.red,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.5,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: AppColors.red,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.5,
+                  ),
+            ),
+            if (subtitle != null)
+              Text(
+                subtitle,
+                style: const TextStyle(
+                  color: AppColors.grey,
+                  fontSize: 10,
+                  fontWeight: FontWeight.normal,
+                  letterSpacing: 0.5,
+                ),
               ),
+          ],
         ),
         children: children,
       ),
