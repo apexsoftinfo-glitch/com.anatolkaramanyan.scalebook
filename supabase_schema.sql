@@ -11,6 +11,11 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   updatedAt TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Grant access for profiles
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.profiles TO authenticated;
+GRANT SELECT ON public.profiles TO anon;
+GRANT ALL ON public.profiles TO service_role;
+
 -- Enable RLS for profiles
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
@@ -44,6 +49,11 @@ CREATE TABLE IF NOT EXISTS public.projects (
   updatedAt TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Grant access for projects
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.projects TO authenticated;
+GRANT SELECT ON public.projects TO anon;
+GRANT ALL ON public.projects TO service_role;
+
 -- Enable RLS for projects
 ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
 
@@ -62,6 +72,11 @@ CREATE TABLE IF NOT EXISTS public.build_steps (
   createdAt TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Grant access for build_steps
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.build_steps TO authenticated;
+GRANT SELECT ON public.build_steps TO anon;
+GRANT ALL ON public.build_steps TO service_role;
+
 -- Enable RLS for build steps
 ALTER TABLE public.build_steps ENABLE ROW LEVEL SECURITY;
 
@@ -76,7 +91,11 @@ RETURNS void AS $$
 BEGIN
   DELETE FROM auth.users WHERE id = auth.uid();
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
+
+-- Grant access for RPC functions
+GRANT EXECUTE ON FUNCTION public.delete_user() TO authenticated;
+GRANT EXECUTE ON FUNCTION public.delete_user() TO anon;
 
 -- 5. STORAGE BUCKET
 -- Run these in your Storage dashboard:

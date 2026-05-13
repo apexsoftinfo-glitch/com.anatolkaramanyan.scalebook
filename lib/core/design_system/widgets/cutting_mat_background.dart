@@ -1,12 +1,36 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
-class CuttingMatBackground extends StatelessWidget {
+class CuttingMatBackground extends StatefulWidget {
   final Widget child;
 
   const CuttingMatBackground({
     super.key,
     required this.child,
   });
+
+  @override
+  State<CuttingMatBackground> createState() => _CuttingMatBackgroundState();
+}
+
+class _CuttingMatBackgroundState extends State<CuttingMatBackground> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  final List<_Particle> _particles = List.generate(15, (_) => _Particle());
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 10),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +49,17 @@ class CuttingMatBackground extends StatelessWidget {
               painter: _TechnicalMatPainter(),
             ),
           ),
+          // Animated Particles
+          Positioned.fill(
+            child: AnimatedBuilder(
+              animation: _controller,
+              builder: (context, child) {
+                return CustomPaint(
+                  painter: _ParticlePainter(_particles, _controller.value),
+                );
+              },
+            ),
+          ),
           // Depth gradient
           Positioned.fill(
             child: Container(
@@ -40,11 +75,47 @@ class CuttingMatBackground extends StatelessWidget {
               ),
             ),
           ),
-          child,
+          widget.child,
         ],
       ),
     );
   }
+}
+
+class _Particle {
+  double x = Random().nextDouble();
+  double y = Random().nextDouble();
+  double size = Random().nextDouble() * 2 + 1;
+  double speed = Random().nextDouble() * 0.05 + 0.01;
+  double opacity = Random().nextDouble() * 0.3 + 0.1;
+}
+
+class _ParticlePainter extends CustomPainter {
+  final List<_Particle> particles;
+  final double animationValue;
+
+  _ParticlePainter(this.particles, this.animationValue);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint();
+
+    for (var particle in particles) {
+      // Calculate current position with animation
+      double currentY = (particle.y - (animationValue * particle.speed)) % 1.0;
+      double currentX = (particle.x + (sin(animationValue * 2 * pi + particle.y * 10) * 0.02)) % 1.0;
+
+      paint.color = Colors.white.withValues(alpha: particle.opacity);
+      canvas.drawCircle(
+        Offset(currentX * size.width, currentY * size.height),
+        particle.size,
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _ParticlePainter oldDelegate) => true;
 }
 
 class _TechnicalMatPainter extends CustomPainter {

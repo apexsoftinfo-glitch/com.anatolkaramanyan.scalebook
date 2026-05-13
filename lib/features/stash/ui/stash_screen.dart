@@ -15,6 +15,8 @@ import '../../session/domain/models/user_session.dart';
 import '../../../../core/design_system/widgets/limit_dialog.dart';
 import '../../welcome/ui/auth_screen.dart';
 
+import 'widgets/stash_model_list_tile.dart';
+
 class StashScreen extends StatefulWidget {
   const StashScreen({super.key});
 
@@ -25,6 +27,7 @@ class StashScreen extends StatefulWidget {
 class _StashScreenState extends State<StashScreen> {
   String _searchQuery = '';
   bool _isNewestFirst = true;
+  bool _isGridView = true;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +36,11 @@ class _StashScreenState extends State<StashScreen> {
         automaticallyImplyLeading: false,
         title: Text(S.of(context).stashTitle), // L10N
         actions: [
+          IconButton(
+            icon: Icon(_isGridView ? Icons.view_list : Icons.grid_view),
+            onPressed: () => setState(() => _isGridView = !_isGridView),
+            tooltip: _isGridView ? 'Widok listy' : 'Widok siatki',
+          ),
           TextButton.icon(
             icon: const Icon(Icons.list_alt, color: Colors.white, size: 20),
             label: Text(S.of(context).pdfList, style: const TextStyle(color: Colors.white, fontSize: 12)),
@@ -243,28 +251,41 @@ class _StashScreenState extends State<StashScreen> {
             ),
             const SizedBox(height: 16),
             Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1.0,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                ),
-                itemCount: projects.length,
-                itemBuilder: (context, index) {
-                  final model = projects[index];
-                  return GestureDetector(
-                    onTap: () => _showActionMenu(context, model),
-                    child: ModelCard(
-                      title: model.title,
-                      scale: model.scale,
-                      progress: model.progress,
-                      status: model.status,
-                      imageUrl: model.mainImageUrl,
+              child: _isGridView 
+                ? GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1.0,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
                     ),
-                  );
-                },
-              ),
+                    itemCount: projects.length,
+                    itemBuilder: (context, index) {
+                      final model = projects[index];
+                      return GestureDetector(
+                        onTap: () => _showActionMenu(context, model),
+                        child: ModelCard(
+                          title: model.title,
+                          scale: model.scale,
+                          progress: model.progress,
+                          status: model.status,
+                          imageUrl: model.mainImageUrl,
+                        ),
+                      );
+                    },
+                  )
+                : ListView.builder(
+                    itemCount: projects.length,
+                    itemBuilder: (context, index) {
+                      final model = projects[index];
+                      return StashModelListTile(
+                        title: model.title,
+                        scale: model.scale,
+                        imageUrl: model.mainImageUrl,
+                        onTap: () => _showActionMenu(context, model),
+                      );
+                    },
+                  ),
             ),
           ],
         ],
