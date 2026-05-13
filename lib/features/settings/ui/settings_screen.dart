@@ -55,6 +55,19 @@ class SettingsScreen extends StatelessWidget {
                       title: Text(S.of(context).changePassword),
                       onTap: () => _showChangePasswordDialog(context, sessionRepo),
                     ),
+                  ListTile(
+                    leading: const Icon(Icons.logout, color: AppColors.grey),
+                    title: Text(S.of(context).logout), // L10N
+                    onTap: () async {
+                      await sessionRepo.signOut();
+                      if (context.mounted) Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.delete_forever, color: Colors.red),
+                    title: Text(S.of(context).deleteAccount), // L10N
+                    onTap: () => _showDeleteConfirmation(context, sessionRepo),
+                  ),
                 ],
               ),
 
@@ -199,19 +212,6 @@ class SettingsScreen extends StatelessWidget {
                     leading: const Icon(Icons.info_outline, color: AppColors.navyBlue),
                     title: Text(S.of(context).aboutApp),
                     onTap: () => _showAboutDialog(context),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.logout, color: AppColors.grey),
-                    title: Text(S.of(context).logout), // L10N
-                    onTap: () async {
-                      await sessionRepo.signOut();
-                      if (context.mounted) Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.delete_forever, color: Colors.red),
-                    title: Text(S.of(context).deleteAccount), // L10N
-                    onTap: () => _showDeleteConfirmation(context, sessionRepo),
                   ),
                 ],
               ),

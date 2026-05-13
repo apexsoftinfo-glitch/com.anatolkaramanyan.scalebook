@@ -99,6 +99,7 @@ class _EditFinishedProjectScreenState extends State<EditFinishedProjectScreen> {
         finishedMainImageUrl: mainUrl,
         finishedGalleryUrls: finalGalleryUrls,
         finalNotes: _notesController.text,
+        finishedAt: DateTime.now(),
       );
       
       if (mounted) {

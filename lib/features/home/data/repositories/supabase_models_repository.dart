@@ -33,6 +33,7 @@ class SupabaseModelsRepository implements ModelsRepository {
       if (data.containsKey('finished_gallery_urls')) data['finishedGalleryUrls'] = data['finished_gallery_urls'];
       if (data.containsKey('final_notes')) data['finalNotes'] = data['final_notes'];
       if (data.containsKey('created_at')) data['createdAt'] = data['created_at'];
+      if (data.containsKey('finished_at')) data['finishedAt'] = data['finished_at'];
 
       final stepsData = data['build_steps'] as List;
       final steps = stepsData.map((s) {
@@ -81,6 +82,7 @@ class SupabaseModelsRepository implements ModelsRepository {
       'finished_gallery_urls': project.finishedGalleryUrls,
       'final_notes': project.finalNotes,
       'created_at': project.createdAt.toIso8601String(),
+      'finished_at': project.finishedAt?.toIso8601String(),
       'updated_at': DateTime.now().toIso8601String(),
     });
 
@@ -128,6 +130,7 @@ class SupabaseModelsRepository implements ModelsRepository {
       if (data.containsKey('finished_gallery_urls')) data['finishedGalleryUrls'] = data['finished_gallery_urls'];
       if (data.containsKey('final_notes')) data['finalNotes'] = data['final_notes'];
       if (data.containsKey('created_at')) data['createdAt'] = data['created_at'];
+      if (data.containsKey('finished_at')) data['finishedAt'] = data['finished_at'];
 
       final stepsData = data['build_steps'] as List;
       final steps = stepsData.map((s) {

@@ -20,6 +20,7 @@ abstract class ModelProject with _$ModelProject {
     @Default([]) List<BuildStep> steps,
     @Default([]) List<String> galleryUrls,
     required DateTime createdAt,
+    DateTime? finishedAt,
   }) = _ModelProject;
 
   const ModelProject._();

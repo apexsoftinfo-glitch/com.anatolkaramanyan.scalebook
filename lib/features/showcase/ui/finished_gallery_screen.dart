@@ -15,6 +15,7 @@ import '../../home/presentation/cubit/home_state.dart';
 import '../../session/domain/repositories/session_repository.dart';
 import 'edit_finished_project_screen.dart';
 import '../../model_detail/ui/model_detail_screen.dart';
+import '../../../../core/design_system/widgets/image_preview_screen.dart';
 import 'package:share_plus/share_plus.dart';
 
 class FinishedGalleryScreen extends StatefulWidget {
@@ -156,9 +157,20 @@ class _FinishedGalleryScreenState extends State<FinishedGalleryScreen> {
                     ),
                   ],
                 ),
-                child: AppImage(
-                  imageUrl: project.finishedMainImageUrl,
-                  fit: BoxFit.cover,
+                child: GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ImagePreviewScreen(
+                        imageUrl: project.finishedMainImageUrl!,
+                        title: project.title,
+                      ),
+                    ),
+                  ),
+                  child: AppImage(
+                    imageUrl: project.finishedMainImageUrl,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
@@ -187,9 +199,20 @@ class _FinishedGalleryScreenState extends State<FinishedGalleryScreen> {
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.white12),
                   ),
-                  child: AppImage(
-                    imageUrl: project.finishedGalleryUrls[index],
-                    fit: BoxFit.cover,
+                  child: GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ImagePreviewScreen(
+                          imageUrl: project.finishedGalleryUrls[index],
+                          title: project.title,
+                        ),
+                      ),
+                    ),
+                    child: AppImage(
+                      imageUrl: project.finishedGalleryUrls[index],
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 );
               },
@@ -286,7 +309,14 @@ class _FinishedGalleryScreenState extends State<FinishedGalleryScreen> {
   }
 
   Widget _buildStatsRow(BuildContext context, ModelProject project) {
-    final duration = DateTime.now().difference(project.createdAt).inDays;
+    int duration = 0;
+    if (project.steps.isNotEmpty) {
+      final stepDates = project.steps.map((s) => s.date).toList();
+      final firstDate = stepDates.reduce((a, b) => a.isBefore(b) ? a : b);
+      final lastDate = stepDates.reduce((a, b) => a.isAfter(b) ? a : b);
+      // Duration in days from first to last step (inclusive)
+      duration = lastDate.difference(DateTime(firstDate.year, firstDate.month, firstDate.day)).inDays + 1;
+    }
     final stepsCount = project.steps.length;
 
     return Container(
@@ -444,7 +474,13 @@ class _ShowcasePoster extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double width = 1200;
-    final duration = DateTime.now().difference(project.createdAt).inDays;
+    int duration = 0;
+    if (project.steps.isNotEmpty) {
+      final stepDates = project.steps.map((s) => s.date).toList();
+      final firstDate = stepDates.reduce((a, b) => a.isBefore(b) ? a : b);
+      final lastDate = stepDates.reduce((a, b) => a.isAfter(b) ? a : b);
+      duration = lastDate.difference(DateTime(firstDate.year, firstDate.month, firstDate.day)).inDays + 1;
+    }
     final stepsCount = project.steps.length;
 
     return RepaintBoundary(
@@ -588,8 +624,8 @@ class _ShowcasePoster extends StatelessWidget {
                             ),
                             child: AppImage(
                               imageUrl: url,
-                              width: 250,
-                              height: 180,
+                              width: 288,
+                              height: 207,
                               fit: BoxFit.cover,
                             ),
                           );

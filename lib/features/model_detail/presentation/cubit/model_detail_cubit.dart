@@ -87,7 +87,11 @@ class ModelDetailCubit extends Cubit<ModelDetailState> {
   Future<void> updateStatus(String status) async {
     state.maybeMap(
       loaded: (s) async {
-        final updatedProject = s.project.copyWith(status: status);
+        final now = DateTime.now();
+        final updatedProject = s.project.copyWith(
+          status: status,
+          finishedAt: status == 'FINISHED' ? now : null,
+        );
         try {
           await _repository.updateProject(updatedProject);
           emit(ModelDetailState.loaded(updatedProject));
