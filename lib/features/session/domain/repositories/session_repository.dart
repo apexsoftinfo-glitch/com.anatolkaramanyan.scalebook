@@ -29,6 +29,9 @@ abstract class SessionRepository {
   /// Reset password for email
   Future<void> resetPassword(String email);
 
+  /// Verify reset code and set new password
+  Future<void> verifyResetCode(String email, String code, String newPassword);
+
   /// Change password for current user
   Future<void> changePassword(String newPassword);
 

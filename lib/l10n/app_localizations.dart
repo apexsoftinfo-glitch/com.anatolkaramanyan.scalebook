@@ -340,7 +340,7 @@ abstract class S {
   /// No description provided for @techAuth.
   ///
   /// In pl, this message translates to:
-  /// **'AUTORYZACJA TECHNICZNA'**
+  /// **'AUTORYZACJA UŻYTKOWNIKA'**
   String get techAuth;
 
   /// No description provided for @email.
@@ -388,8 +388,26 @@ abstract class S {
   /// No description provided for @resetLinkSent.
   ///
   /// In pl, this message translates to:
-  /// **'Link do resetowania hasła został wysłany na Twój e-mail.'**
+  /// **'Kod lub link do resetowania hasła został wysłany na Twój e-mail.'**
   String get resetLinkSent;
+
+  /// No description provided for @resetCode.
+  ///
+  /// In pl, this message translates to:
+  /// **'KOD Z WIADOMOŚCI E-MAIL'**
+  String get resetCode;
+
+  /// No description provided for @verifyAndReset.
+  ///
+  /// In pl, this message translates to:
+  /// **'ZWERYFIKUJ I ZMIEŃ HASŁO'**
+  String get verifyAndReset;
+
+  /// No description provided for @passwordResetSuccess.
+  ///
+  /// In pl, this message translates to:
+  /// **'Hasło zostało zmienione. Możesz się teraz zalogować.'**
+  String get passwordResetSuccess;
 
   /// No description provided for @changePassword.
   ///
@@ -630,6 +648,24 @@ abstract class S {
   /// In pl, this message translates to:
   /// **'GOTOWY'**
   String get statusFinished;
+
+  /// No description provided for @congratulations.
+  ///
+  /// In pl, this message translates to:
+  /// **'GRATULACJE!'**
+  String get congratulations;
+
+  /// No description provided for @projectFinishedMessage.
+  ///
+  /// In pl, this message translates to:
+  /// **'Twój projekt został ukończony i przeniesiony z warsztatu do Twojej Gabloty! Pamiętaj, aby dodać tam zdjęcie końcowe gotowego modelu.'**
+  String get projectFinishedMessage;
+
+  /// No description provided for @backToWorkshop.
+  ///
+  /// In pl, this message translates to:
+  /// **'WRÓĆ NA WARSZTAT'**
+  String get backToWorkshop;
 
   /// No description provided for @statusStash.
   ///

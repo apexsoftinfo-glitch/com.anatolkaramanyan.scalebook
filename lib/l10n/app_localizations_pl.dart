@@ -139,7 +139,7 @@ class SPl extends S {
   String get legal => 'PRAWNE';
 
   @override
-  String get techAuth => 'AUTORYZACJA TECHNICZNA';
+  String get techAuth => 'AUTORYZACJA UŻYTKOWNIKA';
 
   @override
   String get email => 'E-MAIL';
@@ -165,7 +165,17 @@ class SPl extends S {
 
   @override
   String get resetLinkSent =>
-      'Link do resetowania hasła został wysłany na Twój e-mail.';
+      'Kod lub link do resetowania hasła został wysłany na Twój e-mail.';
+
+  @override
+  String get resetCode => 'KOD Z WIADOMOŚCI E-MAIL';
+
+  @override
+  String get verifyAndReset => 'ZWERYFIKUJ I ZMIEŃ HASŁO';
+
+  @override
+  String get passwordResetSuccess =>
+      'Hasło zostało zmienione. Możesz się teraz zalogować.';
 
   @override
   String get changePassword => 'Zmień hasło';
@@ -294,6 +304,16 @@ class SPl extends S {
 
   @override
   String get statusFinished => 'GOTOWY';
+
+  @override
+  String get congratulations => 'GRATULACJE!';
+
+  @override
+  String get projectFinishedMessage =>
+      'Twój projekt został ukończony i przeniesiony z warsztatu do Twojej Gabloty! Pamiętaj, aby dodać tam zdjęcie końcowe gotowego modelu.';
+
+  @override
+  String get backToWorkshop => 'WRÓĆ NA WARSZTAT';
 
   @override
   String get statusStash => 'GARDEROBA';

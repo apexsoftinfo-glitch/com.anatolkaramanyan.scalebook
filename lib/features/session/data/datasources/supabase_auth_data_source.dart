@@ -36,6 +36,11 @@ class SupabaseAuthDataSource implements AuthDataSource {
   }
 
   @override
+  Future<void> verifyOTP(String email, String token, OtpType type) async {
+    await _client.auth.verifyOTP(email: email, token: token, type: type);
+  }
+
+  @override
   Future<void> linkEmailToAnonymous(String email, String password) async {
     await _client.auth.updateUser(UserAttributes(email: email, password: password));
   }

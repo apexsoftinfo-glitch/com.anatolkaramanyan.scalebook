@@ -153,6 +153,15 @@ class SupabaseSessionRepository implements SessionRepository {
   }
 
   @override
+  Future<void> verifyResetCode(String email, String code, String newPassword) async {
+    // 1. Verify OTP
+    await _authDataSource.verifyOTP(email, code, OtpType.recovery);
+    
+    // 2. Once verified, the user is logged in. Update the password.
+    await changePassword(newPassword);
+  }
+
+  @override
   Future<void> changePassword(String newPassword) async {
     await Supabase.instance.client.auth.updateUser(UserAttributes(password: newPassword));
   }

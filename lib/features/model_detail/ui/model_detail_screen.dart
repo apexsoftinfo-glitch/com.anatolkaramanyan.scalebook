@@ -373,10 +373,56 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
               onTap: () {
                 _cubit.updateStatus('FINISHED');
                 Navigator.pop(childContext);
+                _showFinishedCongratulationsDialog();
               },
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showFinishedCongratulationsDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.navyBlue,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Column(
+          children: [
+            const Icon(Icons.workspace_premium, color: Colors.amber, size: 60),
+            const SizedBox(height: 16),
+            Text(
+              S.of(context).congratulations,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 2),
+            ),
+          ],
+        ),
+        content: Text(
+          S.of(context).projectFinishedMessage,
+          textAlign: TextAlign.center,
+          style: const TextStyle(color: Colors.white70, fontSize: 14, height: 1.5),
+        ),
+        actions: [
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.red,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              onPressed: () {
+                Navigator.pop(context); // Close dialog
+                Navigator.pop(this.context); // Go back to Workshop (list)
+              },
+              child: Text(S.of(context).backToWorkshop.toUpperCase(), style: const TextStyle(fontWeight: FontWeight.bold)),
+            ),
+          ),
+        ],
       ),
     );
   }

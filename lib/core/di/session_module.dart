@@ -108,6 +108,8 @@ class _MockAuthDataSource implements AuthDataSource {
   @override
   Future<void> resetPassword(String e) async {}
   @override
+  Future<void> verifyOTP(String e, String t, OtpType type) async {}
+  @override
   Future<void> linkEmailToAnonymous(String e, String p) async {}
   @override
   Future<void> deleteAccount() async => _controller.add(null);

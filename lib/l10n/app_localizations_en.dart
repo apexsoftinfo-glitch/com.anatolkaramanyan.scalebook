@@ -136,7 +136,7 @@ class SEn extends S {
   String get legal => 'LEGAL';
 
   @override
-  String get techAuth => 'TECHNICAL AUTHORIZATION';
+  String get techAuth => 'USER AUTHORIZATION';
 
   @override
   String get email => 'E-MAIL';
@@ -162,7 +162,17 @@ class SEn extends S {
 
   @override
   String get resetLinkSent =>
-      'A password reset link has been sent to your email.';
+      'A reset code or link has been sent to your email.';
+
+  @override
+  String get resetCode => 'RESET CODE FROM EMAIL';
+
+  @override
+  String get verifyAndReset => 'VERIFY AND RESET PASSWORD';
+
+  @override
+  String get passwordResetSuccess =>
+      'Password has been reset. You can now log in.';
 
   @override
   String get changePassword => 'Change password';
@@ -293,6 +303,16 @@ class SEn extends S {
 
   @override
   String get statusFinished => 'FINISHED';
+
+  @override
+  String get congratulations => 'CONGRATULATIONS!';
+
+  @override
+  String get projectFinishedMessage =>
+      'Your project is finished and has been moved from the workshop to your Showcase! Don\'t forget to add a final photo of the completed model there.';
+
+  @override
+  String get backToWorkshop => 'BACK TO WORKBENCH';
 
   @override
   String get statusStash => 'STASH';

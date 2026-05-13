@@ -207,65 +207,118 @@ class _AuthScreenState extends State<AuthScreen> {
 
   void _showResetPasswordDialog() {
     final emailController = TextEditingController(text: _emailController.text);
+    final codeController = TextEditingController();
+    final newPasswordController = TextEditingController();
+    bool codeSent = false;
+    bool isDialogLoading = false;
+
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(S.of(context).resetPasswordTitle),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(S.of(context).resetPasswordDescription),
-            const SizedBox(height: 16),
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(
-                labelText: S.of(context).email,
-                border: const OutlineInputBorder(),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: Text(S.of(context).resetPasswordTitle),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (!codeSent) ...[
+                Text(S.of(context).resetPasswordDescription),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    labelText: S.of(context).email,
+                    border: const OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+              ] else ...[
+                Text(S.of(context).resetLinkSent),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: codeController,
+                  decoration: InputDecoration(
+                    labelText: S.of(context).resetCode,
+                    border: const OutlineInputBorder(),
+                    hintText: '123456',
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: newPasswordController,
+                  decoration: InputDecoration(
+                    labelText: S.of(context).newPasswordLabel,
+                    border: const OutlineInputBorder(),
+                  ),
+                  obscureText: true,
+                ),
+              ],
+              if (isDialogLoading)
+                const Padding(
+                  padding: EdgeInsets.only(top: 16.0),
+                  child: CircularProgressIndicator(),
+                ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(S.of(context).cancel),
+            ),
+            ElevatedButton(
+              onPressed: isDialogLoading
+                  ? null
+                  : () async {
+                      final email = emailController.text.trim();
+                      if (email.isEmpty) return;
+
+                      setDialogState(() => isDialogLoading = true);
+                      try {
+                        final repo = GetIt.I<SessionRepository>();
+                        if (!codeSent) {
+                          await repo.resetPassword(email);
+                          setDialogState(() {
+                            codeSent = true;
+                            isDialogLoading = false;
+                          });
+                        } else {
+                          final code = codeController.text.trim();
+                          final newPassword = newPasswordController.text.trim();
+                          if (code.isEmpty || newPassword.isEmpty) {
+                            setDialogState(() => isDialogLoading = false);
+                            return;
+                          }
+                          await repo.verifyResetCode(email, code, newPassword);
+                          if (context.mounted) {
+                            Navigator.pop(context);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(S.of(context).passwordResetSuccess),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          }
+                        }
+                      } catch (e) {
+                        setDialogState(() => isDialogLoading = false);
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(S.of(context).error(e.toString())),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      }
+                    },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.navyBlue,
+                foregroundColor: Colors.white,
               ),
-              keyboardType: TextInputType.emailAddress,
+              child: Text(codeSent ? S.of(context).verifyAndReset : S.of(context).sendResetLink),
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(S.of(context).cancel),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              final email = emailController.text.trim();
-              if (email.isEmpty) return;
-
-              try {
-                final repo = GetIt.I<SessionRepository>();
-                await repo.resetPassword(email);
-                if (context.mounted) {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(S.of(context).resetLinkSent),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-                }
-              } catch (e) {
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(S.of(context).error(e.toString())),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.navyBlue,
-              foregroundColor: Colors.white,
-            ),
-            child: Text(S.of(context).sendResetLink),
-          ),
-        ],
       ),
     );
   }

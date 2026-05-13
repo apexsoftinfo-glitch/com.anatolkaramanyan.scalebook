@@ -9,6 +9,7 @@ abstract class AuthDataSource {
   Future<void> signUpWithEmail(String email, String password);
   Future<void> signOut();
   Future<void> resetPassword(String email);
+  Future<void> verifyOTP(String email, String token, OtpType type);
   Future<void> linkEmailToAnonymous(String email, String password);
   Future<void> deleteAccount();
 }
