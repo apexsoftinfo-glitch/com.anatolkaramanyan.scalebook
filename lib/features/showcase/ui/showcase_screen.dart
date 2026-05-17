@@ -79,20 +79,34 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
         children: [
           const SizedBox(height: 8),
           // Search Field
-          TextField(
-            onChanged: (value) => setState(() => _searchQuery = value),
-            style: const TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-              hintText: 'SZUKAJ W GABLOCIE...',
-              hintStyle: const TextStyle(color: Colors.white24, fontSize: 12),
-              prefixIcon: const Icon(Icons.search, color: Colors.white24),
-              filled: true,
-              fillColor: Colors.white.withValues(alpha: 0.05),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide.none,
+          TweenAnimationBuilder<double>(
+            tween: Tween<double>(begin: 0.0, end: 1.0),
+            duration: const Duration(milliseconds: 600),
+            curve: Curves.easeOutCubic,
+            builder: (context, value, child) {
+              return Transform.translate(
+                offset: Offset(0, -20 * (1 - value)),
+                child: Opacity(
+                  opacity: value.clamp(0.0, 1.0),
+                  child: child,
+                ),
+              );
+            },
+            child: TextField(
+              onChanged: (value) => setState(() => _searchQuery = value),
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: 'SZUKAJ W GABLOCIE...',
+                hintStyle: const TextStyle(color: Colors.white24, fontSize: 12),
+                prefixIcon: const Icon(Icons.search, color: Colors.white24),
+                filled: true,
+                fillColor: Colors.white.withValues(alpha: 0.05),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: const EdgeInsets.symmetric(vertical: 0),
               ),
-              contentPadding: const EdgeInsets.symmetric(vertical: 0),
             ),
           ),
           const SizedBox(height: 24),
@@ -109,13 +123,23 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
             )
           else ...[
             Center(
-              child: Text(
-                '${projects.length} UKOŃCZONE PROJEKTY',
-                style: const TextStyle(
-                  color: Colors.white54,
-                  fontWeight: FontWeight.w300,
-                  letterSpacing: 4,
-                  fontSize: 10,
+              child: TweenAnimationBuilder<double>(
+                tween: Tween<double>(begin: 0.0, end: 1.0),
+                duration: const Duration(milliseconds: 700),
+                builder: (context, value, child) {
+                  return Opacity(
+                    opacity: value,
+                    child: child,
+                  );
+                },
+                child: Text(
+                  '${projects.length} UKOŃCZONE PROJEKTY',
+                  style: const TextStyle(
+                    color: Colors.white54,
+                    fontWeight: FontWeight.w300,
+                    letterSpacing: 4,
+                    fontSize: 10,
+                  ),
                 ),
               ),
             ),
@@ -179,15 +203,18 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
     required Widget child,
   }) {
     return TweenAnimationBuilder<double>(
-      duration: Duration(milliseconds: 400 + (index * 100)),
+      duration: Duration(milliseconds: 400 + (index * 100).clamp(0, 800)),
       tween: Tween(begin: 0.0, end: 1.0),
       curve: Curves.easeOutCubic,
       builder: (context, value, child) {
         return Transform.translate(
-          offset: Offset(0, 30 * (1 - value)),
+          offset: Offset(0, 40 * (1 - value)),
           child: Opacity(
-            opacity: value,
-            child: child,
+            opacity: value.clamp(0.0, 1.0),
+            child: Transform.scale(
+              scale: 0.95 + (0.05 * value),
+              child: child,
+            ),
           ),
         );
       },
@@ -214,22 +241,36 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
   Widget _buildEmptyState() {
     return Expanded(
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.emoji_events_outlined, size: 80, color: Colors.white.withValues(alpha: 0.1)),
-            const SizedBox(height: 24),
-            const Text(
-              'TWOJA GABLOTA JEST PUSTA',
-              style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w200, letterSpacing: 3),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'Dokończ model na warsztacie, aby tu trafił!',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white24, fontSize: 12),
-            ),
-          ],
+        child: TweenAnimationBuilder<double>(
+          tween: Tween<double>(begin: 0.0, end: 1.0),
+          duration: const Duration(milliseconds: 800),
+          curve: Curves.easeOutCubic,
+          builder: (context, value, child) {
+            return Transform.translate(
+              offset: Offset(0, 20 * (1 - value)),
+              child: Opacity(
+                opacity: value.clamp(0.0, 1.0),
+                child: child,
+              ),
+            );
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.emoji_events_outlined, size: 80, color: Colors.white.withValues(alpha: 0.1)),
+              const SizedBox(height: 24),
+              const Text(
+                'TWOJA GABLOTA JEST PUSTA',
+                style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w200, letterSpacing: 3),
+              ),
+              const SizedBox(height: 12),
+              const Text(
+                'Dokończ model na warsztacie, aby tu trafił!',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white24, fontSize: 12),
+              ),
+            ],
+          ),
         ),
       ),
     );

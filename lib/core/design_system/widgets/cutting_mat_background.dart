@@ -15,7 +15,7 @@ class CuttingMatBackground extends StatefulWidget {
 
 class _CuttingMatBackgroundState extends State<CuttingMatBackground> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  final List<_Particle> _particles = List.generate(15, (_) => _Particle());
+  final List<_Particle> _particles = List.generate(30, (_) => _Particle());
 
   @override
   void initState() {
@@ -85,9 +85,9 @@ class _CuttingMatBackgroundState extends State<CuttingMatBackground> with Single
 class _Particle {
   double x = Random().nextDouble();
   double y = Random().nextDouble();
-  double size = Random().nextDouble() * 2 + 1;
-  double speed = Random().nextDouble() * 0.05 + 0.01;
-  double opacity = Random().nextDouble() * 0.3 + 0.1;
+  double size = Random().nextDouble() * 3 + 1.5;
+  double speed = Random().nextDouble() * 0.08 + 0.02;
+  double opacity = Random().nextDouble() * 0.4 + 0.15;
 }
 
 class _ParticlePainter extends CustomPainter {
@@ -173,7 +173,7 @@ class _TechnicalMatPainter extends CustomPainter {
       letterSpacing: 2,
     );
     
-    _drawText(canvas, "1/24 SCALE WORKBENCH", const Offset(20, 40), textStyle);
+    // Top left text removed based on user request
     _drawText(canvas, "SCALEBOOK PRECISION SYSTEM", Offset(20, size.height - 60), textStyle);
     _drawText(canvas, "MODEL: GENERIC_MAT_V2", Offset(size.width - 150, size.height - 60), textStyle);
   }

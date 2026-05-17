@@ -26,7 +26,7 @@ class _ShowcaseStageBackgroundState extends State<ShowcaseStageBackground> with 
       duration: const Duration(seconds: 5),
     )..repeat(reverse: true);
     
-    _pulseAnimation = Tween<double>(begin: 0.85, end: 1.0).animate(
+    _pulseAnimation = Tween<double>(begin: 0.75, end: 1.1).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOutSine),
     );
   }

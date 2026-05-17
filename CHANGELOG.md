@@ -10,6 +10,14 @@
 - Pomijaj długie szczegóły implementacyjne, chyba że są kluczowe dla zrozumienia zmiany.
 - Opcjonalnie używaj emoji dla czytelności, ale bez przesady.
 
+## 2026-05-17
+- Zaktualizowano wersję aplikacji do 1.2.0.
+- Dodano płynne animacje interfejsu (kaskadowe ładowanie, przenikanie, skalowanie) na Pulpicie oraz w Gablocie.
+- Wzmocniono oświetlenie tła w Gablocie.
+- Usunięto tekst "1/24 SCALE WORKBENCH" z maty warsztatowej.
+- Naprawiono wyświetlanie ikony aplikacji na systemie Android (usunięto białą ramkę i odpowiednio przeskalowano grafikę z pędzlem/nożem w ikonach adaptacyjnych).
+- Analiza przedpublikacyjna: Dodano wymaganą zgodę INTERNET w manifeście Androida oraz klucze CFBundleLocalizations w iOS Info.plist.
+
 ## 2026-05-10
 - Zaimplementowano funkcję sortowania projektów na Pulpicie (według daty oraz statusu).
 - Dodano ikonki sortowania w AppBarze z wizualnym wskaźnikiem aktywnego trybu.

@@ -101,10 +101,21 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         floatingActionButton: BlocBuilder<SessionCubit, UserSession>(
           builder: (context, session) {
-            return FloatingActionButton(
-              heroTag: 'home_fab',
-              onPressed: () => _showAddSelectionDialog(context, session),
-              child: const Icon(Icons.add),
+            return TweenAnimationBuilder<double>(
+              tween: Tween<double>(begin: 0.0, end: 1.0),
+              duration: const Duration(milliseconds: 800),
+              curve: Curves.elasticOut,
+              builder: (context, value, child) {
+                return Transform.scale(
+                  scale: value,
+                  child: child,
+                );
+              },
+              child: FloatingActionButton(
+                heroTag: 'home_fab',
+                onPressed: () => _showAddSelectionDialog(context, session),
+                child: const Icon(Icons.add),
+              ),
             );
           },
         ),
@@ -295,7 +306,21 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 16),
-          _buildHeader(context, projects.length),
+          TweenAnimationBuilder<double>(
+            tween: Tween<double>(begin: 0.0, end: 1.0),
+            duration: const Duration(milliseconds: 800),
+            curve: Curves.easeOutCubic,
+            builder: (context, value, child) {
+              return Transform.translate(
+                offset: Offset(0, -20 * (1 - value)),
+                child: Opacity(
+                  opacity: value.clamp(0.0, 1.0),
+                  child: child,
+                ),
+              );
+            },
+            child: _buildHeader(context, projects.length),
+          ),
           const SizedBox(height: 16),
           Expanded(
             child: GridView.builder(
@@ -308,30 +333,47 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: projects.length,
               itemBuilder: (context, index) {
                 final model = projects[index];
-                return GestureDetector(
-                  onTap: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ModelDetailScreen(
-                          projectId: model.id,
-                          title: model.title,
+                return TweenAnimationBuilder<double>(
+                  tween: Tween<double>(begin: 0.0, end: 1.0),
+                  duration: Duration(milliseconds: 500 + (index * 100).clamp(0, 1000)),
+                  curve: Curves.easeOutCubic,
+                  builder: (context, value, child) {
+                    return Transform.translate(
+                      offset: Offset(0, 50 * (1 - value)),
+                      child: Opacity(
+                        opacity: value.clamp(0.0, 1.0),
+                        child: Transform.scale(
+                          scale: 0.95 + (0.05 * value),
+                          child: child,
                         ),
                       ),
                     );
-                    if (context.mounted) {
-                      context.read<HomeCubit>().loadProjects();
-                    }
                   },
-                  onLongPress: () {
-                    _showDeleteConfirmation(context, model.id, model.title);
-                  },
-                  child: ModelCard(
-                    title: model.title,
-                    scale: model.scale,
-                    progress: model.progress,
-                    status: model.status,
-                    imageUrl: model.mainImageUrl,
+                  child: GestureDetector(
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ModelDetailScreen(
+                            projectId: model.id,
+                            title: model.title,
+                          ),
+                        ),
+                      );
+                      if (context.mounted) {
+                        context.read<HomeCubit>().loadProjects();
+                      }
+                    },
+                    onLongPress: () {
+                      _showDeleteConfirmation(context, model.id, model.title);
+                    },
+                    child: ModelCard(
+                      title: model.title,
+                      scale: model.scale,
+                      progress: model.progress,
+                      status: model.status,
+                      imageUrl: model.mainImageUrl,
+                    ),
                   ),
                 );
               },
