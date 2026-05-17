@@ -274,5 +274,9 @@
   "aboutApp": "About App",
   "aboutAppTitle": "ABOUT SCALEBOOK",
   "aboutAppDescription": "ScaleBook is a technical build log created by a hobbyist for hobbyists. The app helps track progress on models, store photographic documentation, and share finished projects with others.",
-  "donationInfo": "The project is developed pro bono and maintained thanks to voluntary user donations. Your support covers server costs and the further development of new features."
+  "donationInfo": "The project is developed pro bono and maintained thanks to voluntary user donations. Your support covers server costs and the further development of new features.",
+  "coffeeModalTitle": "Support the Creator",
+  "coffeeModalDescription": "ScaleBook is a passion project developed after hours. Writing, updating and maintaining the app servers are significant and growing costs. If you find the app useful, consider buying me a virtual coffee!",
+  "coffeeModalButton": "With pleasure!",
+  "coffeeModalLater": "Maybe later"
 }

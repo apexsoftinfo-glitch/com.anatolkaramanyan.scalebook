@@ -618,4 +618,17 @@ class SPl extends S {
   @override
   String get donationInfo =>
       'Projekt jest rozwijany pro bono i utrzymywany dzięki dobrowolnym datkom użytkowników. Twoje wsparcie pozwala na pokrycie kosztów serwerów i dalszy rozwój nowych funkcji.';
+
+  @override
+  String get coffeeModalTitle => 'Wsparcie Twórcy';
+
+  @override
+  String get coffeeModalDescription =>
+      'ScaleBook to projekt rozwijany z pasją po godzinach. Napisanie, aktualizacja oraz utrzymanie serwerów aplikacji to spore i rosnące koszty. Jeśli aplikacja jest dla Ciebie przydatna, rozważ postawienie mi wirtualnej kawy!';
+
+  @override
+  String get coffeeModalButton => 'Z przyjemnością!';
+
+  @override
+  String get coffeeModalLater => 'Może później';
 }

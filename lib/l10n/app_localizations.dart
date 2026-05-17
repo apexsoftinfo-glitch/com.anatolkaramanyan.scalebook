@@ -1218,6 +1218,30 @@ abstract class S {
   /// In pl, this message translates to:
   /// **'Projekt jest rozwijany pro bono i utrzymywany dzięki dobrowolnym datkom użytkowników. Twoje wsparcie pozwala na pokrycie kosztów serwerów i dalszy rozwój nowych funkcji.'**
   String get donationInfo;
+
+  /// No description provided for @coffeeModalTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wsparcie Twórcy'**
+  String get coffeeModalTitle;
+
+  /// No description provided for @coffeeModalDescription.
+  ///
+  /// In pl, this message translates to:
+  /// **'ScaleBook to projekt rozwijany z pasją po godzinach. Napisanie, aktualizacja oraz utrzymanie serwerów aplikacji to spore i rosnące koszty. Jeśli aplikacja jest dla Ciebie przydatna, rozważ postawienie mi wirtualnej kawy!'**
+  String get coffeeModalDescription;
+
+  /// No description provided for @coffeeModalButton.
+  ///
+  /// In pl, this message translates to:
+  /// **'Z przyjemnością!'**
+  String get coffeeModalButton;
+
+  /// No description provided for @coffeeModalLater.
+  ///
+  /// In pl, this message translates to:
+  /// **'Może później'**
+  String get coffeeModalLater;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

@@ -618,4 +618,17 @@ class SEn extends S {
   @override
   String get donationInfo =>
       'The project is developed pro bono and maintained thanks to voluntary user donations. Your support covers server costs and the further development of new features.';
+
+  @override
+  String get coffeeModalTitle => 'Support the Creator';
+
+  @override
+  String get coffeeModalDescription =>
+      'ScaleBook is a passion project developed after hours. Writing, updating and maintaining the app servers are significant and growing costs. If you find the app useful, consider buying me a virtual coffee!';
+
+  @override
+  String get coffeeModalButton => 'With pleasure!';
+
+  @override
+  String get coffeeModalLater => 'Maybe later';
 }

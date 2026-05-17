@@ -274,5 +274,9 @@
   "aboutApp": "O aplikacji",
   "aboutAppTitle": "O SCALEBOOK",
   "aboutAppDescription": "ScaleBook to techniczny dziennik budowy stworzony przez pasjonata dla pasjonatów. Aplikacja pomaga śledzić postępy prac nad modelami, przechowywać dokumentację fotograficzną oraz dzielić się gotowymi projektami z innymi.",
-  "donationInfo": "Projekt jest rozwijany pro bono i utrzymywany dzięki dobrowolnym datkom użytkowników. Twoje wsparcie pozwala na pokrycie kosztów serwerów i dalszy rozwój nowych funkcji."
+  "donationInfo": "Projekt jest rozwijany pro bono i utrzymywany dzięki dobrowolnym datkom użytkowników. Twoje wsparcie pozwala na pokrycie kosztów serwerów i dalszy rozwój nowych funkcji.",
+  "coffeeModalTitle": "Wsparcie Twórcy",
+  "coffeeModalDescription": "ScaleBook to projekt rozwijany z pasją po godzinach. Napisanie, aktualizacja oraz utrzymanie serwerów aplikacji to spore i rosnące koszty. Jeśli aplikacja jest dla Ciebie przydatna, rozważ postawienie mi wirtualnej kawy!",
+  "coffeeModalButton": "Z przyjemnością!",
+  "coffeeModalLater": "Może później"
 }

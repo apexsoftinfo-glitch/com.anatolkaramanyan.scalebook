@@ -6,10 +6,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:get_it/get_it.dart';
 import 'package:uuid/uuid.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/design_system/app_colors.dart';
 import '../../../core/services/image_service.dart';
 import '../domain/models/model_project.dart';
 import '../presentation/cubit/home_cubit.dart';
+import 'widgets/coffee_donation_modal.dart';
 
 class AddModelScreen extends StatefulWidget {
   final bool initialIsStash;
@@ -352,6 +354,19 @@ class _AddModelScreenState extends State<AddModelScreen> {
 
         if (!context.mounted) return;
         await context.read<HomeCubit>().addProject(newProject);
+        
+        final prefs = await SharedPreferences.getInstance();
+        int addedCount = (prefs.getInt('added_projects_count') ?? 0) + 1;
+        await prefs.setInt('added_projects_count', addedCount);
+
+        if (!context.mounted) return;
+        if (addedCount > 0 && addedCount % 5 == 0) {
+          await showDialog(
+            context: context,
+            builder: (context) => const CoffeeDonationModal(),
+          );
+        }
+
         if (!context.mounted) return;
         Navigator.pop(context);
       } catch (e) {

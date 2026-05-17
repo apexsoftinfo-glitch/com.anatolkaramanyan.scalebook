@@ -451,11 +451,12 @@ class SettingsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             ElevatedButton.icon(
-              onPressed: () async {
+              onPressed: () {
                 final url = Uri.parse(supportUrl);
-                if (await canLaunchUrl(url)) {
-                  await launchUrl(url, mode: LaunchMode.externalApplication);
-                }
+                launchUrl(url, mode: LaunchMode.externalApplication).catchError((e) {
+                  debugPrint('Error launching url: $e');
+                  return false;
+                });
               },
               icon: const Icon(Icons.open_in_new),
               label: const Text('POSTAW KAWĘ'), // L10N
@@ -528,12 +529,13 @@ class SettingsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             ElevatedButton.icon(
-              onPressed: () async {
+              onPressed: () {
                 const String supportUrl = 'https://buycoffee.to/scalebook';
                 final url = Uri.parse(supportUrl);
-                if (await canLaunchUrl(url)) {
-                  await launchUrl(url, mode: LaunchMode.externalApplication);
-                }
+                launchUrl(url, mode: LaunchMode.externalApplication).catchError((e) {
+                  debugPrint('Error launching url: $e');
+                  return false;
+                });
               },
               icon: const Icon(Icons.coffee),
               label: Text(S.of(context).buyMeACoffee),
