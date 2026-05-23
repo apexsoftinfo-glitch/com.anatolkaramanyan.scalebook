@@ -18,6 +18,15 @@ class _AuthScreenState extends State<AuthScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
+  bool _obscurePassword = true;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -112,8 +121,21 @@ class _AuthScreenState extends State<AuthScreen> {
                             labelText: S.of(context).password, // L10N
                             border: const OutlineInputBorder(),
                             prefixIcon: const Icon(Icons.lock_outline),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscurePassword
+                                    ? Icons.visibility_off_outlined
+                                    : Icons.visibility_outlined,
+                                color: AppColors.navyBlue,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscurePassword = !_obscurePassword;
+                                });
+                              },
+                            ),
                           ),
-                          obscureText: true,
+                          obscureText: _obscurePassword,
                           validator: (v) => v?.isEmpty ?? true ? S.of(context).required : null, // L10N
                         ),
                         const SizedBox(height: 24),
@@ -211,6 +233,7 @@ class _AuthScreenState extends State<AuthScreen> {
     final newPasswordController = TextEditingController();
     bool codeSent = false;
     bool isDialogLoading = false;
+    bool obscureNewPassword = true;
 
     showDialog(
       context: context,
@@ -249,8 +272,21 @@ class _AuthScreenState extends State<AuthScreen> {
                   decoration: InputDecoration(
                     labelText: S.of(context).newPasswordLabel,
                     border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        obscureNewPassword
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                        color: AppColors.navyBlue,
+                      ),
+                      onPressed: () {
+                        setDialogState(() {
+                          obscureNewPassword = !obscureNewPassword;
+                        });
+                      },
+                    ),
                   ),
-                  obscureText: true,
+                  obscureText: obscureNewPassword,
                 ),
               ],
               if (isDialogLoading)

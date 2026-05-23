@@ -10,6 +10,10 @@
 - Pomijaj długie szczegóły implementacyjne, chyba że są kluczowe dla zrozumienia zmiany.
 - Opcjonalnie używaj emoji dla czytelności, ale bez przesady.
 
+## 2026-05-23
+- Dodano możliwość podejrzenia wprowadzanego hasła (ikona oka) na ekranie logowania oraz rejestracji.
+- Dodano analogiczną możliwość zobaczenia wpisywanego hasła w oknie resetowania hasła.
+
 ## 2026-05-17
 - Zaktualizowano wersję aplikacji do 1.2.0.
 - Dodano płynne animacje interfejsu (kaskadowe ładowanie, przenikanie, skalowanie) na Pulpicie oraz w Gablocie.
