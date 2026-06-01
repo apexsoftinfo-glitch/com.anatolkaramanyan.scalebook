@@ -11,7 +11,7 @@
 - Opcjonalnie używaj emoji dla czytelności, ale bez przesady.
 
 ## 2026-06-01
-- Zaktualizowano wersję aplikacji do 1.2.0+5 (podniesiono build number o 1).
+- Zaktualizowano wersję aplikacji do 1.2.1+6 (wprowadzono nową wersję patch dla App Store oraz podniesiono build number do 6 dla zachowania monotoniczności w Google Play).
 - Podniesiono wersje kluczowych zależności w `pubspec.yaml` do ich najnowszych głównych wersji (m.in. `get_it`, `share_plus`, `purchases_flutter`, `google_fonts`, `flutter_launcher_icons`).
 - Dostosowano kod aplikacji do najnowszego interfejsu `SharePlus.instance.share(ShareParams(...))`, eliminując przestarzałe metody.
 - Wdrożono nowoczesną składnię warunkowego dodawania elementów w kolekcjach Dart (`?element`) zgodnie z najnowszymi regułami analizatora.
