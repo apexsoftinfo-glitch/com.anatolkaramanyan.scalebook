@@ -142,10 +142,12 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
         final box = context.findRenderObject() as RenderBox?;
         final rect = box != null ? box.localToGlobal(Offset.zero) & box.size : null;
 
-        await Share.shareXFiles(
-          exportedFiles,
-          text: S.of(context).myProgressTitle(widget.title),
-          sharePositionOrigin: rect,
+        await SharePlus.instance.share(
+          ShareParams(
+            files: exportedFiles,
+            text: S.of(context).myProgressTitle(widget.title),
+            sharePositionOrigin: rect,
+          ),
         );
       } else {
       }
@@ -236,10 +238,12 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
         final box = context.findRenderObject() as RenderBox?;
         final rect = box != null ? box.localToGlobal(Offset.zero) & box.size : null;
 
-        await Share.shareXFiles(
-          [XFile(file.path)],
-          text: S.of(context).buildStepProgressTitle(widget.title),
-          sharePositionOrigin: rect,
+        await SharePlus.instance.share(
+          ShareParams(
+            files: [XFile(file.path)],
+            text: S.of(context).buildStepProgressTitle(widget.title),
+            sharePositionOrigin: rect,
+          ),
         );
       }
     } catch (e) {

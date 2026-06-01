@@ -56,7 +56,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 return Stack(
                   children: <Widget>[
                     ...previousChildren,
-                    if (currentChild != null) currentChild,
+                    ?currentChild,
                   ],
                 );
               },

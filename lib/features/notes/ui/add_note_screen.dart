@@ -342,7 +342,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                 letterSpacing: 1.2,
               ),
             ),
-            if (toolbar != null) toolbar,
+            ?toolbar,
           ],
         ),
         const SizedBox(height: 8),

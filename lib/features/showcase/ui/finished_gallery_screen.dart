@@ -438,10 +438,12 @@ class _FinishedGalleryScreenState extends State<FinishedGalleryScreen> {
         final box = context.findRenderObject() as RenderBox?;
         final rect = box != null ? box.localToGlobal(Offset.zero) & box.size : null;
 
-        await Share.shareXFiles(
-          [XFile(file.path)],
-          text: 'Mój ukończony projekt: ${project.title} #ScaleBook',
-          sharePositionOrigin: rect,
+        await SharePlus.instance.share(
+          ShareParams(
+            files: [XFile(file.path)],
+            text: 'Mój ukończony projekt: ${project.title} #ScaleBook',
+            sharePositionOrigin: rect,
+          ),
         );
       }
     } catch (e) {

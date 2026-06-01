@@ -259,10 +259,12 @@ class _NotesScreenState extends State<NotesScreen> {
       final renderObject = context.findRenderObject();
       final box = renderObject is RenderBox ? renderObject : null;
 
-      await Share.shareXFiles(
-        [XFile(file.path)],
-        text: S.of(context).myModelingNote(note.title),
-        sharePositionOrigin: box != null ? box.localToGlobal(Offset.zero) & box.size : null,
+      await SharePlus.instance.share(
+        ShareParams(
+          files: [XFile(file.path)],
+          text: S.of(context).myModelingNote(note.title),
+          sharePositionOrigin: box != null ? box.localToGlobal(Offset.zero) & box.size : null,
+        ),
       );
     } catch (e) {
       if (context.mounted) Navigator.pop(context);

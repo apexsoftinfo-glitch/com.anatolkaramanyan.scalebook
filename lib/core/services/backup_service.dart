@@ -93,10 +93,12 @@ class BackupService {
 
   Future<void> shareBackup({Rect? sharePositionOrigin, Function(double)? onProgress}) async {
     final path = await createBackup(onProgress: onProgress);
-    await Share.shareXFiles(
-      [XFile(path)],
-      text: 'My ScaleBook Collection Backup',
-      sharePositionOrigin: sharePositionOrigin,
+    await SharePlus.instance.share(
+      ShareParams(
+        files: [XFile(path)],
+        text: 'My ScaleBook Collection Backup',
+        sharePositionOrigin: sharePositionOrigin,
+      ),
     );
   }
 

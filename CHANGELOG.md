@@ -10,6 +10,12 @@
 - Pomijaj długie szczegóły implementacyjne, chyba że są kluczowe dla zrozumienia zmiany.
 - Opcjonalnie używaj emoji dla czytelności, ale bez przesady.
 
+## 2026-06-01
+- Zaktualizowano wersję aplikacji do 1.2.0+5 (podniesiono build number o 1).
+- Podniesiono wersje kluczowych zależności w `pubspec.yaml` do ich najnowszych głównych wersji (m.in. `get_it`, `share_plus`, `purchases_flutter`, `google_fonts`, `flutter_launcher_icons`).
+- Dostosowano kod aplikacji do najnowszego interfejsu `SharePlus.instance.share(ShareParams(...))`, eliminując przestarzałe metody.
+- Wdrożono nowoczesną składnię warunkowego dodawania elementów w kolekcjach Dart (`?element`) zgodnie z najnowszymi regułami analizatora.
+
 ## 2026-05-23
 - Dodano możliwość podejrzenia wprowadzanego hasła (ikona oka) na ekranie logowania oraz rejestracji.
 - Dodano analogiczną możliwość zobaczenia wpisywanego hasła w oknie resetowania hasła.
