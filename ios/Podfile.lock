@@ -42,20 +42,20 @@ PODS:
     - Flutter
   - printing (1.0.0):
     - Flutter
-  - purchases_flutter (9.10.8):
+  - purchases_flutter (10.2.0):
     - Flutter
-    - PurchasesHybridCommon (= 17.30.0)
-  - purchases_ui_flutter (9.10.8):
+    - PurchasesHybridCommon (= 18.8.0)
+  - purchases_ui_flutter (10.2.0):
     - Flutter
-    - PurchasesHybridCommonUI (= 17.30.0)
-  - PurchasesHybridCommon (17.30.0):
-    - RevenueCat (= 5.56.0)
-  - PurchasesHybridCommonUI (17.30.0):
-    - PurchasesHybridCommon (= 17.30.0)
-    - RevenueCatUI (= 5.56.0)
-  - RevenueCat (5.56.0)
-  - RevenueCatUI (5.56.0):
-    - RevenueCat (= 5.56.0)
+    - PurchasesHybridCommonUI (= 18.8.0)
+  - PurchasesHybridCommon (18.8.0):
+    - RevenueCat (= 5.74.0)
+  - PurchasesHybridCommonUI (18.8.0):
+    - PurchasesHybridCommon (= 18.8.0)
+    - RevenueCatUI (= 5.74.0)
+  - RevenueCat (5.74.0)
+  - RevenueCatUI (5.74.0):
+    - RevenueCat (= 5.74.0)
   - SDWebImage (5.21.7):
     - SDWebImage/Core (= 5.21.7)
   - SDWebImage/Core (5.21.7)
@@ -125,12 +125,12 @@ SPEC CHECKSUMS:
   image_picker_ios: e0ece4aa2a75771a7de3fa735d26d90817041326
   in_app_review: 7dd1ea365263f834b8464673f9df72c80c17c937
   printing: 54ff03f28fe9ba3aa93358afb80a8595a071dd07
-  purchases_flutter: 388ea2288fa901f38661d5b5149cacbca558008e
-  purchases_ui_flutter: 216d7c323bf10f5a0cdbcb325f4b8805ef8c3f98
-  PurchasesHybridCommon: c00f6ce5933b9928e99766a45c9e53c0a5a03240
-  PurchasesHybridCommonUI: 3aed98f646f9f7f6915a12908766d468412be064
-  RevenueCat: 9e2a13bead55198a72272ff105a7265e9510cd11
-  RevenueCatUI: 2200b8ec1cadb1c69c6f05452144184f929eadef
+  purchases_flutter: 8e0d2c774c5bef250651b4b017864eac5105f48e
+  purchases_ui_flutter: e908fe7d4fbdf5f7626af6828b2ee3d4f2f278f0
+  PurchasesHybridCommon: e723f7c9b109be51f7ec6c85a104791369f1b562
+  PurchasesHybridCommonUI: 50cad0cd7729da2195b74edc618e605a89705bc6
+  RevenueCat: efcd02bf9b14ffce229e57dc6863a2513136b9ca
+  RevenueCatUI: c0eba5eccdd3eedd3d69ce8d552a445ebe62eff0
   SDWebImage: e9fc87c1aab89a8ab1bbd74eba378c6f53be8abf
   share_plus: 50da8cb520a8f0f65671c6c6a99b3617ed10a58a
   shared_preferences_foundation: 7036424c3d8ec98dfe75ff1667cb0cd531ec82bb
