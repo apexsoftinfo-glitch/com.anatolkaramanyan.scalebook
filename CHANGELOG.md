@@ -10,6 +10,9 @@
 - Pomijaj długie szczegóły implementacyjne, chyba że są kluczowe dla zrozumienia zmiany.
 - Opcjonalnie używaj emoji dla czytelności, ale bez przesady.
 
+## 2026-06-03
+- Zaktualizowano wersję do 1.2.2+8, aby rozwiązać błąd zablokowanej ścieżki wydań (train version 1.2.1) w App Store Connect oraz zapewnić poprawną kolejność wersji w Google Play.
+
 ## 2026-06-01
 - Zaktualizowano wersję aplikacji do 1.2.1+6 (wprowadzono nową wersję patch dla App Store oraz podniesiono build number do 6 dla zachowania monotoniczności w Google Play).
 - Podniesiono wersje kluczowych zależności w `pubspec.yaml` do ich najnowszych głównych wersji (m.in. `get_it`, `share_plus`, `purchases_flutter`, `google_fonts`, `flutter_launcher_icons`).
