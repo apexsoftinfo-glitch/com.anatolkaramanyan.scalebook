@@ -519,6 +519,8 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
   }
 
   Widget _buildProjectHeader(BuildContext context, ModelProject project) {
+    final totalMinutes = project.steps.fold<int>(0, (sum, step) => sum + (step.durationMinutes ?? 0));
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -588,13 +590,41 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
                         tooltip: S.of(context).editProject,
                       ),
                       const SizedBox(width: 16),
-                      Text(
-                        S.of(context).buildStepsCount(project.steps.length).toUpperCase(),
-                        style: const TextStyle(
-                          color: Colors.white38,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.1,
+                      Expanded(
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          spacing: 6,
+                          runSpacing: 4,
+                          children: [
+                            Text(
+                              S.of(context).buildStepsCount(project.steps.length).toUpperCase(),
+                              style: const TextStyle(
+                                color: Colors.white38,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.1,
+                              ),
+                            ),
+                            if (totalMinutes > 0) ...[
+                              const Text(
+                                '•',
+                                style: TextStyle(
+                                  color: Colors.white38,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                S.of(context).totalTime(_formatDuration(context, totalMinutes)).toUpperCase(),
+                                style: const TextStyle(
+                                  color: Colors.white38,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1.1,
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
                       ),
                     ],
@@ -793,9 +823,26 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  '${step.date.day}.${step.date.month}.${step.date.year}',
-                                  style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.red, fontSize: 10, letterSpacing: 1),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      '${step.date.day}.${step.date.month}.${step.date.year}',
+                                      style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.red, fontSize: 10, letterSpacing: 1),
+                                    ),
+                                    if (step.durationMinutes != null && step.durationMinutes! > 0)
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Icon(Icons.access_time, size: 12, color: Colors.white60),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            _formatDuration(context, step.durationMinutes!),
+                                            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white60, fontSize: 10),
+                                          ),
+                                        ],
+                                      ),
+                                  ],
                                 ),
                                 const SizedBox(height: 10),
                                 if (step.imageUrl != null)
@@ -898,6 +945,22 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
       ),
     );
   }
+}
+
+String _formatDuration(BuildContext context, int minutes) {
+  final isPl = Localizations.localeOf(context).languageCode == 'pl';
+  final minSuffix = 'min'; // L10N
+  final hourSuffix = isPl ? 'godz.' : 'h'; // L10N
+  
+  if (minutes < 60) {
+    return '$minutes $minSuffix';
+  }
+  final h = minutes ~/ 60;
+  final m = minutes % 60;
+  if (m == 0) {
+    return '$h $hourSuffix';
+  }
+  return '$h $hourSuffix $m $minSuffix';
 }
 
 class _ProgressPoster extends StatelessWidget {
@@ -1033,7 +1096,7 @@ class _ProgressPoster extends StatelessWidget {
                                   // Left Side
                                   Expanded(
                                     child: !isRight 
-                                      ? _buildTimelineCard(step, index, false, connector: Container(
+                                      ? _buildTimelineCard(context, step, index, false, connector: Container(
                                           width: 40,
                                           height: 2,
                                           color: AppColors.navyBlue,
@@ -1068,7 +1131,7 @@ class _ProgressPoster extends StatelessWidget {
                                   // Right Side
                                   Expanded(
                                     child: isRight 
-                                      ? _buildTimelineCard(step, index, true, connector: Container(
+                                      ? _buildTimelineCard(context, step, index, true, connector: Container(
                                           width: 40,
                                           height: 2,
                                           color: AppColors.navyBlue,
@@ -1116,7 +1179,7 @@ class _ProgressPoster extends StatelessWidget {
     );
   }
 
-  Widget _buildTimelineCard(dynamic step, int index, bool isRight, {Widget? connector}) {
+  Widget _buildTimelineCard(BuildContext context, dynamic step, int index, bool isRight, {Widget? connector}) {
     return Column(
       crossAxisAlignment: isRight ? CrossAxisAlignment.start : CrossAxisAlignment.end,
       children: [
@@ -1141,6 +1204,25 @@ class _ProgressPoster extends StatelessWidget {
                 ),
               ),
             ),
+            if (step.durationMinutes != null && step.durationMinutes! > 0) ...[
+              const SizedBox(width: 4),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: AppColors.navyBlue,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  _formatDuration(context, step.durationMinutes!),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.none,
+                  ),
+                ),
+              ),
+            ],
             if (!isRight && connector != null) connector,
             if (isRight) const Spacer(),
           ],

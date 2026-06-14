@@ -69,6 +69,7 @@ CREATE TABLE IF NOT EXISTS public.build_steps (
   date TIMESTAMPTZ NOT NULL,
   note TEXT NOT NULL,
   imageUrl TEXT,
+  duration_minutes INTEGER,
   createdAt TIMESTAMPTZ DEFAULT NOW()
 );
 

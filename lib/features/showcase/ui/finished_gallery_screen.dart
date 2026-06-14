@@ -308,6 +308,8 @@ class _FinishedGalleryScreenState extends State<FinishedGalleryScreen> {
     );
   }
 
+
+
   Widget _buildStatsRow(BuildContext context, ModelProject project) {
     int duration = 0;
     if (project.steps.isNotEmpty) {
@@ -318,6 +320,9 @@ class _FinishedGalleryScreenState extends State<FinishedGalleryScreen> {
       duration = lastDate.difference(DateTime(firstDate.year, firstDate.month, firstDate.day)).inDays + 1;
     }
     final stepsCount = project.steps.length;
+    final totalMinutes = project.steps.fold<int>(0, (sum, step) => sum + (step.durationMinutes ?? 0));
+    final isPl = Localizations.localeOf(context).languageCode == 'pl';
+    final timeSpentLabel = isPl ? 'POŚWIĘCONY CZAS' : 'TIME SPENT'; // L10N
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -331,15 +336,21 @@ class _FinishedGalleryScreenState extends State<FinishedGalleryScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildStatItem(
-            label: 'CZAS BUDOWY',
-            value: '$duration DNI',
+            label: isPl ? 'CZAS BUDOWY' : 'BUILD DURATION', // L10N
+            value: '$duration ${isPl ? "DNI" : "DAYS"}', // L10N
             icon: Icons.timer_outlined,
           ),
           Container(width: 1, height: 40, color: Colors.white12),
           _buildStatItem(
-            label: 'ETAPY PRAC',
+            label: isPl ? 'ETAPY PRAC' : 'BUILD STEPS', // L10N
             value: '$stepsCount',
             icon: Icons.history_edu_outlined,
+          ),
+          Container(width: 1, height: 40, color: Colors.white12),
+          _buildStatItem(
+            label: timeSpentLabel,
+            value: _formatDurationShort(totalMinutes),
+            icon: Icons.access_time_outlined,
           ),
         ],
       ),
@@ -460,6 +471,18 @@ class _FinishedGalleryScreenState extends State<FinishedGalleryScreen> {
   }
 }
 
+String _formatDurationShort(int minutes) {
+  if (minutes < 60) {
+    return '$minutes min'; // L10N
+  }
+  final h = minutes ~/ 60;
+  final m = minutes % 60;
+  if (m == 0) {
+    return '${h}h'; // L10N
+  }
+  return '${h}h ${m}m'; // L10N
+}
+
 // --- POSTER WIDGET FOR EXPORT ---
 
 class _ShowcasePoster extends StatelessWidget {
@@ -484,6 +507,7 @@ class _ShowcasePoster extends StatelessWidget {
       duration = lastDate.difference(DateTime(firstDate.year, firstDate.month, firstDate.day)).inDays + 1;
     }
     final stepsCount = project.steps.length;
+    final totalMinutes = project.steps.fold<int>(0, (sum, step) => sum + (step.durationMinutes ?? 0));
 
     return RepaintBoundary(
       key: boundaryKey,
@@ -651,8 +675,10 @@ class _ShowcasePoster extends StatelessWidget {
                         child: Row(
                           children: [
                             _buildPosterStat('CZAS BUDOWY', '$duration DNI'),
-                            Container(width: 1, height: 60, color: Colors.black12, margin: const EdgeInsets.symmetric(horizontal: 40)),
+                            Container(width: 1, height: 60, color: Colors.black12, margin: const EdgeInsets.symmetric(horizontal: 30)),
                             _buildPosterStat('ETAPY PRAC', '$stepsCount'),
+                            Container(width: 1, height: 60, color: Colors.black12, margin: const EdgeInsets.symmetric(horizontal: 30)),
+                            _buildPosterStat('POŚWIĘCONY CZAS', _formatDurationShort(totalMinutes)),
                           ],
                         ),
                       ),

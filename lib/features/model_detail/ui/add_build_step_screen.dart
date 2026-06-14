@@ -28,6 +28,7 @@ class AddBuildStepScreen extends StatefulWidget {
 
 class _AddBuildStepScreenState extends State<AddBuildStepScreen> {
   late TextEditingController _noteController;
+  int _durationMinutes = 30;
   final _imagePicker = ImagePicker();
   File? _selectedImage;
   late DateTime _selectedDate;
@@ -40,12 +41,29 @@ class _AddBuildStepScreenState extends State<AddBuildStepScreen> {
     _noteController = TextEditingController(text: widget.initialStep?.note ?? '');
     _selectedDate = widget.initialStep?.date ?? DateTime.now();
     _existingImageUrl = widget.initialStep?.imageUrl;
+    _durationMinutes = widget.initialStep?.durationMinutes ?? 30;
   }
 
   @override
   void dispose() {
     _noteController.dispose();
     super.dispose();
+  }
+
+  String _formatDurationValue(BuildContext context, int minutes) {
+    final isPl = Localizations.localeOf(context).languageCode == 'pl';
+    final minSuffix = 'min'; // L10N
+    final hourSuffix = isPl ? 'godz.' : 'h'; // L10N
+    
+    if (minutes < 60) {
+      return '$minutes $minSuffix';
+    }
+    final h = minutes ~/ 60;
+    final m = minutes % 60;
+    if (m == 0) {
+      return '$h $hourSuffix';
+    }
+    return '$h $hourSuffix $m $minSuffix';
   }
 
   Future<void> _pickImage(ImageSource source) async {
@@ -138,6 +156,7 @@ class _AddBuildStepScreenState extends State<AddBuildStepScreen> {
         date: _selectedDate,
         note: _noteController.text,
         imageUrl: savedImagePath,
+        durationMinutes: _durationMinutes,
       );
 
       widget.onSave(step);
@@ -196,16 +215,105 @@ class _AddBuildStepScreenState extends State<AddBuildStepScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              TextField(
-                controller: _noteController,
-                maxLines: 5,
-                decoration: InputDecoration(
-                  labelText: S.of(context).stepDescriptionLabel, // L10N
-                  hintText: S.of(context).stepDescriptionHint, // L10N
-                  alignLabelWithHint: true,
-                  fillColor: Colors.white.withAlpha(230),
-                  filled: true,
-                  border: const OutlineInputBorder(),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.access_time, color: AppColors.navyBlue),
+                              const SizedBox(width: 8),
+                              Text(
+                                S.of(context).stepDurationLabel.replaceAll(' (WYMAGANE)', '').replaceAll(' (REQUIRED)', ''), // L10N
+                                style: TextStyle(fontSize: 12, color: AppColors.grey, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            _formatDurationValue(context, _durationMinutes),
+                            style: const TextStyle(fontSize: 16, color: AppColors.red, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Slider(
+                        value: _durationMinutes.toDouble(),
+                        min: 1,
+                        max: _durationMinutes > 300 ? _durationMinutes.toDouble() : 300,
+                        activeColor: AppColors.red,
+                        inactiveColor: AppColors.lightGrey,
+                        onChanged: (val) {
+                          setState(() {
+                            _durationMinutes = val.round();
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [15, 30, 45, 60, 90, 120, 180, 240, 300].map((mins) {
+                            final label = _formatDurationValue(context, mins);
+                            final isSelected = _durationMinutes == mins;
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: ChoiceChip(
+                                label: Text(label),
+                                selected: isSelected,
+                                onSelected: (selected) {
+                                  if (selected) {
+                                    setState(() {
+                                      _durationMinutes = mins;
+                                    });
+                                  }
+                                },
+                                selectedColor: AppColors.red,
+                                backgroundColor: AppColors.lightGrey,
+                                labelStyle: TextStyle(
+                                  color: isSelected ? Colors.white : AppColors.navyBlue,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        S.of(context).stepDescriptionLabel, // L10N
+                        style: TextStyle(fontSize: 12, color: AppColors.grey, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _noteController,
+                        maxLines: 5,
+                        style: const TextStyle(fontSize: 16, color: AppColors.navyBlue, fontWeight: FontWeight.bold),
+                        decoration: InputDecoration(
+                          hintText: S.of(context).stepDescriptionHint, // L10N
+                          hintStyle: const TextStyle(color: Colors.black38, fontWeight: FontWeight.normal),
+                          border: InputBorder.none,
+                          isDense: true,
+                          contentPadding: EdgeInsets.zero,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 24),

@@ -190,6 +190,11 @@
   "stepDate": "DATA ETAPU",
   "stepDescriptionLabel": "OPIS ETAPU PRAC",
   "stepDescriptionHint": "Co dziś zrobiono przy modelu?",
+  "stepDurationLabel": "CZAS TRWANIA ETAPU (WYMAGANE)",
+  "stepDurationMin": "minuty",
+  "stepDurationHours": "godziny",
+  "stepDurationMinError": "Czas trwania musi wynosić co najmniej 1 minutę",
+  "stepDurationRequired": "Czas trwania jest wymagany",
   "saveStep": "ZAPISZ ETAP",
   "addPhoto": "DODAJ ZDJĘCIE",
   "noteNameLabel": "NAZWA NOTATKI (WYMAGANE)",
@@ -261,6 +266,12 @@
   "@buildStepsCount": {
     "placeholders": {
       "count": { "type": "int" }
+    }
+  },
+  "totalTime": "ŁĄCZNY CZAS: {time}",
+  "@totalTime": {
+    "placeholders": {
+      "time": { "type": "String" }
     }
   },
   "backingUp": "TWORZENIE KOPII ZAPASOWEJ...",

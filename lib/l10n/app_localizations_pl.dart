@@ -439,6 +439,22 @@ class SPl extends S {
   String get stepDescriptionHint => 'Co dziś zrobiono przy modelu?';
 
   @override
+  String get stepDurationLabel => 'CZAS TRWANIA ETAPU (WYMAGANE)';
+
+  @override
+  String get stepDurationMin => 'minuty';
+
+  @override
+  String get stepDurationHours => 'godziny';
+
+  @override
+  String get stepDurationMinError =>
+      'Czas trwania musi wynosić co najmniej 1 minutę';
+
+  @override
+  String get stepDurationRequired => 'Czas trwania jest wymagany';
+
+  @override
   String get saveStep => 'ZAPISZ ETAP';
 
   @override
@@ -579,6 +595,11 @@ class SPl extends S {
   @override
   String buildStepsCount(int count) {
     return '$count etapów';
+  }
+
+  @override
+  String totalTime(String time) {
+    return 'ŁĄCZNY CZAS: $time';
   }
 
   @override

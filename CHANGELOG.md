@@ -10,6 +10,12 @@
 - Pomijaj długie szczegóły implementacyjne, chyba że są kluczowe dla zrozumienia zmiany.
 - Opcjonalnie używaj emoji dla czytelności, ale bez przesady.
 
+## 2026-06-14
+- Dodano pole czasu trwania (w minutach lub godzinach, z minimalną wartością 1 minuty) podczas tworzenia i edycji etapów budowy modelu.
+- Zintegrowano czas trwania etapu z lokalnym zapisem JSON oraz bazą danych Supabase.
+- Zaimplementowano wyświetlanie czasu trwania na osi czasu projektu oraz na generowanych plakatach i plikach PDF.
+- Zlokalizowano wszystkie nowe etykiety i komunikaty walidacji w językach polskim oraz angielskim.
+
 ## 2026-06-03
 - Zaktualizowano wersję do 1.2.2+8, aby rozwiązać błąd zablokowanej ścieżki wydań (train version 1.2.1) w App Store Connect oraz zapewnić poprawną kolejność wersji w Google Play.
 

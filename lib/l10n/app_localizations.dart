@@ -889,6 +889,36 @@ abstract class S {
   /// **'Co dziś zrobiono przy modelu?'**
   String get stepDescriptionHint;
 
+  /// No description provided for @stepDurationLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'CZAS TRWANIA ETAPU (WYMAGANE)'**
+  String get stepDurationLabel;
+
+  /// No description provided for @stepDurationMin.
+  ///
+  /// In pl, this message translates to:
+  /// **'minuty'**
+  String get stepDurationMin;
+
+  /// No description provided for @stepDurationHours.
+  ///
+  /// In pl, this message translates to:
+  /// **'godziny'**
+  String get stepDurationHours;
+
+  /// No description provided for @stepDurationMinError.
+  ///
+  /// In pl, this message translates to:
+  /// **'Czas trwania musi wynosić co najmniej 1 minutę'**
+  String get stepDurationMinError;
+
+  /// No description provided for @stepDurationRequired.
+  ///
+  /// In pl, this message translates to:
+  /// **'Czas trwania jest wymagany'**
+  String get stepDurationRequired;
+
   /// No description provided for @saveStep.
   ///
   /// In pl, this message translates to:
@@ -1146,6 +1176,12 @@ abstract class S {
   /// In pl, this message translates to:
   /// **'{count} etapów'**
   String buildStepsCount(int count);
+
+  /// No description provided for @totalTime.
+  ///
+  /// In pl, this message translates to:
+  /// **'ŁĄCZNY CZAS: {time}'**
+  String totalTime(String time);
 
   /// No description provided for @backingUp.
   ///

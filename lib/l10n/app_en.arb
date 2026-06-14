@@ -190,6 +190,11 @@
   "stepDate": "STEP DATE",
   "stepDescriptionLabel": "BUILD STEP DESCRIPTION",
   "stepDescriptionHint": "What was done on the model today?",
+  "stepDurationLabel": "STEP DURATION (REQUIRED)",
+  "stepDurationMin": "minutes",
+  "stepDurationHours": "hours",
+  "stepDurationMinError": "Duration must be at least 1 minute",
+  "stepDurationRequired": "Duration is required",
   "saveStep": "SAVE STEP",
   "addPhoto": "ADD PHOTO",
   "noteNameLabel": "NOTE NAME (REQUIRED)",
@@ -261,6 +266,12 @@
   "@buildStepsCount": {
     "placeholders": {
       "count": { "type": "int" }
+    }
+  },
+  "totalTime": "TOTAL TIME: {time}",
+  "@totalTime": {
+    "placeholders": {
+      "time": { "type": "String" }
     }
   },
   "backingUp": "CREATING BACKUP...",

@@ -12,6 +12,7 @@ _BuildStep _$BuildStepFromJson(Map<String, dynamic> json) => _BuildStep(
   date: DateTime.parse(json['date'] as String),
   note: json['note'] as String,
   imageUrl: json['image_url'] as String?,
+  durationMinutes: (json['duration_minutes'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$BuildStepToJson(_BuildStep instance) =>
@@ -21,4 +22,5 @@ Map<String, dynamic> _$BuildStepToJson(_BuildStep instance) =>
       'date': instance.date.toIso8601String(),
       'note': instance.note,
       'image_url': instance.imageUrl,
+      'duration_minutes': instance.durationMinutes,
     };

@@ -12,6 +12,7 @@ abstract class BuildStep with _$BuildStep {
     required DateTime date,
     required String note,
     String? imageUrl,
+    int? durationMinutes,
   }) = _BuildStep;
 
   const BuildStep._();

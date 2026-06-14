@@ -439,6 +439,21 @@ class SEn extends S {
   String get stepDescriptionHint => 'What was done on the model today?';
 
   @override
+  String get stepDurationLabel => 'STEP DURATION (REQUIRED)';
+
+  @override
+  String get stepDurationMin => 'minutes';
+
+  @override
+  String get stepDurationHours => 'hours';
+
+  @override
+  String get stepDurationMinError => 'Duration must be at least 1 minute';
+
+  @override
+  String get stepDurationRequired => 'Duration is required';
+
+  @override
   String get saveStep => 'SAVE STEP';
 
   @override
@@ -579,6 +594,11 @@ class SEn extends S {
   @override
   String buildStepsCount(int count) {
     return '$count steps';
+  }
+
+  @override
+  String totalTime(String time) {
+    return 'TOTAL TIME: $time';
   }
 
   @override

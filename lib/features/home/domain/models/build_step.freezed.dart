@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BuildStep {
 
- String get id; String get projectId; DateTime get date; String get note; String? get imageUrl;
+ String get id; String get projectId; DateTime get date; String get note; String? get imageUrl; int? get durationMinutes;
 /// Create a copy of BuildStep
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $BuildStepCopyWith<BuildStep> get copyWith => _$BuildStepCopyWithImpl<BuildStep>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BuildStep&&(identical(other.id, id) || other.id == id)&&(identical(other.projectId, projectId) || other.projectId == projectId)&&(identical(other.date, date) || other.date == date)&&(identical(other.note, note) || other.note == note)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BuildStep&&(identical(other.id, id) || other.id == id)&&(identical(other.projectId, projectId) || other.projectId == projectId)&&(identical(other.date, date) || other.date == date)&&(identical(other.note, note) || other.note == note)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.durationMinutes, durationMinutes) || other.durationMinutes == durationMinutes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,projectId,date,note,imageUrl);
+int get hashCode => Object.hash(runtimeType,id,projectId,date,note,imageUrl,durationMinutes);
 
 @override
 String toString() {
-  return 'BuildStep(id: $id, projectId: $projectId, date: $date, note: $note, imageUrl: $imageUrl)';
+  return 'BuildStep(id: $id, projectId: $projectId, date: $date, note: $note, imageUrl: $imageUrl, durationMinutes: $durationMinutes)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $BuildStepCopyWith<$Res>  {
   factory $BuildStepCopyWith(BuildStep value, $Res Function(BuildStep) _then) = _$BuildStepCopyWithImpl;
 @useResult
 $Res call({
- String id, String projectId, DateTime date, String note, String? imageUrl
+ String id, String projectId, DateTime date, String note, String? imageUrl, int? durationMinutes
 });
 
 
@@ -65,14 +65,15 @@ class _$BuildStepCopyWithImpl<$Res>
 
 /// Create a copy of BuildStep
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? projectId = null,Object? date = null,Object? note = null,Object? imageUrl = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? projectId = null,Object? date = null,Object? note = null,Object? imageUrl = freezed,Object? durationMinutes = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,projectId: null == projectId ? _self.projectId : projectId // ignore: cast_nullable_to_non_nullable
 as String,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
 as DateTime,note: null == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,durationMinutes: freezed == durationMinutes ? _self.durationMinutes : durationMinutes // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
@@ -157,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String projectId,  DateTime date,  String note,  String? imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String projectId,  DateTime date,  String note,  String? imageUrl,  int? durationMinutes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BuildStep() when $default != null:
-return $default(_that.id,_that.projectId,_that.date,_that.note,_that.imageUrl);case _:
+return $default(_that.id,_that.projectId,_that.date,_that.note,_that.imageUrl,_that.durationMinutes);case _:
   return orElse();
 
 }
@@ -178,10 +179,10 @@ return $default(_that.id,_that.projectId,_that.date,_that.note,_that.imageUrl);c
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String projectId,  DateTime date,  String note,  String? imageUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String projectId,  DateTime date,  String note,  String? imageUrl,  int? durationMinutes)  $default,) {final _that = this;
 switch (_that) {
 case _BuildStep():
-return $default(_that.id,_that.projectId,_that.date,_that.note,_that.imageUrl);case _:
+return $default(_that.id,_that.projectId,_that.date,_that.note,_that.imageUrl,_that.durationMinutes);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +199,10 @@ return $default(_that.id,_that.projectId,_that.date,_that.note,_that.imageUrl);c
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String projectId,  DateTime date,  String note,  String? imageUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String projectId,  DateTime date,  String note,  String? imageUrl,  int? durationMinutes)?  $default,) {final _that = this;
 switch (_that) {
 case _BuildStep() when $default != null:
-return $default(_that.id,_that.projectId,_that.date,_that.note,_that.imageUrl);case _:
+return $default(_that.id,_that.projectId,_that.date,_that.note,_that.imageUrl,_that.durationMinutes);case _:
   return null;
 
 }
@@ -213,7 +214,7 @@ return $default(_that.id,_that.projectId,_that.date,_that.note,_that.imageUrl);c
 @JsonSerializable()
 
 class _BuildStep extends BuildStep {
-  const _BuildStep({required this.id, required this.projectId, required this.date, required this.note, this.imageUrl}): super._();
+  const _BuildStep({required this.id, required this.projectId, required this.date, required this.note, this.imageUrl, this.durationMinutes}): super._();
   factory _BuildStep.fromJson(Map<String, dynamic> json) => _$BuildStepFromJson(json);
 
 @override final  String id;
@@ -221,6 +222,7 @@ class _BuildStep extends BuildStep {
 @override final  DateTime date;
 @override final  String note;
 @override final  String? imageUrl;
+@override final  int? durationMinutes;
 
 /// Create a copy of BuildStep
 /// with the given fields replaced by the non-null parameter values.
@@ -235,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BuildStep&&(identical(other.id, id) || other.id == id)&&(identical(other.projectId, projectId) || other.projectId == projectId)&&(identical(other.date, date) || other.date == date)&&(identical(other.note, note) || other.note == note)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BuildStep&&(identical(other.id, id) || other.id == id)&&(identical(other.projectId, projectId) || other.projectId == projectId)&&(identical(other.date, date) || other.date == date)&&(identical(other.note, note) || other.note == note)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.durationMinutes, durationMinutes) || other.durationMinutes == durationMinutes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,projectId,date,note,imageUrl);
+int get hashCode => Object.hash(runtimeType,id,projectId,date,note,imageUrl,durationMinutes);
 
 @override
 String toString() {
-  return 'BuildStep(id: $id, projectId: $projectId, date: $date, note: $note, imageUrl: $imageUrl)';
+  return 'BuildStep(id: $id, projectId: $projectId, date: $date, note: $note, imageUrl: $imageUrl, durationMinutes: $durationMinutes)';
 }
 
 
@@ -255,7 +257,7 @@ abstract mixin class _$BuildStepCopyWith<$Res> implements $BuildStepCopyWith<$Re
   factory _$BuildStepCopyWith(_BuildStep value, $Res Function(_BuildStep) _then) = __$BuildStepCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String projectId, DateTime date, String note, String? imageUrl
+ String id, String projectId, DateTime date, String note, String? imageUrl, int? durationMinutes
 });
 
 
@@ -272,14 +274,15 @@ class __$BuildStepCopyWithImpl<$Res>
 
 /// Create a copy of BuildStep
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? projectId = null,Object? date = null,Object? note = null,Object? imageUrl = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? projectId = null,Object? date = null,Object? note = null,Object? imageUrl = freezed,Object? durationMinutes = freezed,}) {
   return _then(_BuildStep(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,projectId: null == projectId ? _self.projectId : projectId // ignore: cast_nullable_to_non_nullable
 as String,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
 as DateTime,note: null == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,durationMinutes: freezed == durationMinutes ? _self.durationMinutes : durationMinutes // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
