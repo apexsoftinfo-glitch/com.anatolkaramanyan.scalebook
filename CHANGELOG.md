@@ -10,6 +10,12 @@
 - Pomijaj długie szczegóły implementacyjne, chyba że są kluczowe dla zrozumienia zmiany.
 - Opcjonalnie używaj emoji dla czytelności, ale bez przesady.
 
+## 2026-06-18
+- Poprawiono mechanizm przywracania kopii zapasowej, dodając natychmiastowe przeładowanie interfejsu (HomeCubit i NotesCubit) po imporcie pliku ZIP.
+- Wprowadzono automatyczne rozwiązywanie konfliktów identyfikatorów projektów i etapów przy imporcie (w przypadku konfliktu RLS lub duplikatu w bazie Supabase, generowane są nowe identyfikatory UUID).
+- Dodano przycisk "Instrukcja kopii zapasowej" wraz z nowym, ostylowanym oknem dialogowym z objaśnieniem procesu eksportu i importu krok po kroku.
+- Zlokalizowano instrukcję kopii zapasowej w językach polskim oraz angielskim.
+
 ## 2026-06-14
 - Dodano pole czasu trwania (w minutach lub godzinach, z minimalną wartością 1 minuty) podczas tworzenia i edycji etapów budowy modelu.
 - Zintegrowano czas trwania etapu z lokalnym zapisem JSON oraz bazą danych Supabase.

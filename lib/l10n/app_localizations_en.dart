@@ -90,6 +90,47 @@ class SEn extends S {
   String get importCollectionSuccess => 'Collection imported successfully!';
 
   @override
+  String get backupInstructions => 'Backup instructions';
+
+  @override
+  String get backupInstructionsTitle => 'BACKUP INSTRUCTIONS';
+
+  @override
+  String get backupInstructionsExportTitle => '1. Creating a backup (Export)';
+
+  @override
+  String get backupInstructionsExportStep1 =>
+      'Click \"Export collection (ZIP)\" and wait for the process to complete.';
+
+  @override
+  String get backupInstructionsExportStep2 =>
+      'Once packaging is done, the system share sheet will open.';
+
+  @override
+  String get backupInstructionsExportStep3 =>
+      'Send the ZIP file to the second device (e.g., via email, Google Drive, AirDrop) or save it to your local files.';
+
+  @override
+  String get backupInstructionsImportTitle =>
+      '2. Restoring on a new device (Import)';
+
+  @override
+  String get backupInstructionsImportStep1 =>
+      'Transfer the backup ZIP file to the memory of the new phone.';
+
+  @override
+  String get backupInstructionsImportStep2 =>
+      'Log in to your account before importing (if using the cloud) or select Guest mode.';
+
+  @override
+  String get backupInstructionsImportStep3 =>
+      'Click \"Import collection (ZIP)\" and select the transferred ZIP file.';
+
+  @override
+  String get backupInstructionsImportStep4 =>
+      'Data and photos will be loaded. Any conflicts with existing projects will be resolved by creating copies.';
+
+  @override
   String get support => 'SUPPORT';
 
   @override

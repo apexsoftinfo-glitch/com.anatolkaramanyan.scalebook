@@ -92,6 +92,47 @@ class SPl extends S {
       'Kolekcja została zaimportowana pomyślnie!';
 
   @override
+  String get backupInstructions => 'Instrukcja kopii zapasowej';
+
+  @override
+  String get backupInstructionsTitle => 'INSTRUKCJA KOPII ZAPASOWEJ';
+
+  @override
+  String get backupInstructionsExportTitle => '1. Tworzenie kopii (Eksport)';
+
+  @override
+  String get backupInstructionsExportStep1 =>
+      'Kliknij \"Eksportuj kolekcję (ZIP)\" i zaczekaj na zakończenie procesu.';
+
+  @override
+  String get backupInstructionsExportStep2 =>
+      'Po spakowaniu danych otworzy się systemowe okno udostępniania.';
+
+  @override
+  String get backupInstructionsExportStep3 =>
+      'Prześlij plik ZIP na drugie urządzenie (np. e-mail, Dysk Google, AirDrop) lub zapisz go w plikach telefonu.';
+
+  @override
+  String get backupInstructionsImportTitle =>
+      '2. Przywracanie na nowym urządzeniu (Import)';
+
+  @override
+  String get backupInstructionsImportStep1 =>
+      'Przenieś plik ZIP z kopią na pamięć nowego telefonu.';
+
+  @override
+  String get backupInstructionsImportStep2 =>
+      'Zaloguj się na swoje konto przed importem (jeśli używasz chmury) lub wybierz tryb Gościa.';
+
+  @override
+  String get backupInstructionsImportStep3 =>
+      'Kliknij \"Importuj kolekcję (ZIP)\" i wskaż pobrany plik ZIP.';
+
+  @override
+  String get backupInstructionsImportStep4 =>
+      'Dane i zdjęcia zostaną wczytane. Ewentualne konflikty z istniejącymi projektami zostaną automatycznie rozwiązane poprzez utworzenie kopii.';
+
+  @override
   String get support => 'WSPARCIE';
 
   @override

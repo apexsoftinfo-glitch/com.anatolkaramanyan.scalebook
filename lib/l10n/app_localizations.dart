@@ -247,6 +247,72 @@ abstract class S {
   /// **'Kolekcja została zaimportowana pomyślnie!'**
   String get importCollectionSuccess;
 
+  /// No description provided for @backupInstructions.
+  ///
+  /// In pl, this message translates to:
+  /// **'Instrukcja kopii zapasowej'**
+  String get backupInstructions;
+
+  /// No description provided for @backupInstructionsTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'INSTRUKCJA KOPII ZAPASOWEJ'**
+  String get backupInstructionsTitle;
+
+  /// No description provided for @backupInstructionsExportTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'1. Tworzenie kopii (Eksport)'**
+  String get backupInstructionsExportTitle;
+
+  /// No description provided for @backupInstructionsExportStep1.
+  ///
+  /// In pl, this message translates to:
+  /// **'Kliknij \"Eksportuj kolekcję (ZIP)\" i zaczekaj na zakończenie procesu.'**
+  String get backupInstructionsExportStep1;
+
+  /// No description provided for @backupInstructionsExportStep2.
+  ///
+  /// In pl, this message translates to:
+  /// **'Po spakowaniu danych otworzy się systemowe okno udostępniania.'**
+  String get backupInstructionsExportStep2;
+
+  /// No description provided for @backupInstructionsExportStep3.
+  ///
+  /// In pl, this message translates to:
+  /// **'Prześlij plik ZIP na drugie urządzenie (np. e-mail, Dysk Google, AirDrop) lub zapisz go w plikach telefonu.'**
+  String get backupInstructionsExportStep3;
+
+  /// No description provided for @backupInstructionsImportTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'2. Przywracanie na nowym urządzeniu (Import)'**
+  String get backupInstructionsImportTitle;
+
+  /// No description provided for @backupInstructionsImportStep1.
+  ///
+  /// In pl, this message translates to:
+  /// **'Przenieś plik ZIP z kopią na pamięć nowego telefonu.'**
+  String get backupInstructionsImportStep1;
+
+  /// No description provided for @backupInstructionsImportStep2.
+  ///
+  /// In pl, this message translates to:
+  /// **'Zaloguj się na swoje konto przed importem (jeśli używasz chmury) lub wybierz tryb Gościa.'**
+  String get backupInstructionsImportStep2;
+
+  /// No description provided for @backupInstructionsImportStep3.
+  ///
+  /// In pl, this message translates to:
+  /// **'Kliknij \"Importuj kolekcję (ZIP)\" i wskaż pobrany plik ZIP.'**
+  String get backupInstructionsImportStep3;
+
+  /// No description provided for @backupInstructionsImportStep4.
+  ///
+  /// In pl, this message translates to:
+  /// **'Dane i zdjęcia zostaną wczytane. Ewentualne konflikty z istniejącymi projektami zostaną automatycznie rozwiązane poprzez utworzenie kopii.'**
+  String get backupInstructionsImportStep4;
+
   /// No description provided for @support.
   ///
   /// In pl, this message translates to:

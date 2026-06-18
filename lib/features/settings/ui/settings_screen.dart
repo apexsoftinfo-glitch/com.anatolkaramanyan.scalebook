@@ -14,6 +14,9 @@ import '../../profiles/models/profile_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'dart:async';
+import '../../home/presentation/cubit/home_cubit.dart';
+import '../../notes/presentation/cubit/notes_cubit.dart';
+
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -73,12 +76,17 @@ class SettingsScreen extends StatelessWidget {
 
               const Divider(),
 
-              // 2. DATA AND BACKUP
               _buildExpandableSection(
                 context: context,
                 title: S.of(context).dataAndBackup,
                 icon: Icons.storage_outlined,
                 children: [
+                  ListTile(
+                    leading: const Icon(Icons.help_outline, color: AppColors.navyBlue),
+                    title: Text(S.of(context).backupInstructions), // L10N
+                    onTap: () => _showInstructionsDialog(context),
+                  ),
+                  const Divider(height: 1),
                   Builder(
                     builder: (tileContext) => ListTile(
                       leading: const Icon(Icons.archive, color: AppColors.navyBlue),
@@ -144,6 +152,15 @@ class SettingsScreen extends StatelessWidget {
 
                             if (context.mounted) {
                               Navigator.pop(context); // Close dialog
+
+                              // Reload Cubits to update the UI immediately
+                              try {
+                                context.read<HomeCubit>().loadProjects();
+                              } catch (_) {}
+                              try {
+                                context.read<NotesCubit>().loadNotes();
+                              } catch (_) {}
+
                               _showSuccessDialog(context, S.of(context).importCollectionSuccess);
                             }
                           } catch (e) {
@@ -644,6 +661,103 @@ class SettingsScreen extends StatelessWidget {
             const SizedBox(height: 8),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showInstructionsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            const Icon(Icons.help_outline, color: AppColors.navyBlue),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                S.of(context).backupInstructionsTitle,
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                S.of(context).backupInstructionsExportTitle,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.red,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 8),
+              _buildStepRow('1', S.of(context).backupInstructionsExportStep1),
+              _buildStepRow('2', S.of(context).backupInstructionsExportStep2),
+              _buildStepRow('3', S.of(context).backupInstructionsExportStep3),
+              const SizedBox(height: 16),
+              const Divider(),
+              const SizedBox(height: 16),
+              Text(
+                S.of(context).backupInstructionsImportTitle,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.red,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 8),
+              _buildStepRow('1', S.of(context).backupInstructionsImportStep1),
+              _buildStepRow('2', S.of(context).backupInstructionsImportStep2),
+              _buildStepRow('3', S.of(context).backupInstructionsImportStep3),
+              _buildStepRow('4', S.of(context).backupInstructionsImportStep4),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(S.of(context).close),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStepRow(String number, String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 20,
+            height: 20,
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              color: AppColors.navyBlue,
+              shape: BoxShape.circle,
+            ),
+            child: Text(
+              number,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(fontSize: 13, height: 1.3),
+            ),
+          ),
+        ],
       ),
     );
   }

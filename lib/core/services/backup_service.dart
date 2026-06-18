@@ -4,6 +4,8 @@ import 'package:archive/archive_io.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:flutter/foundation.dart';
+import 'package:uuid/uuid.dart';
 
 import 'dart:convert';
 import 'package:scalebook/features/home/domain/repositories/models_repository.dart';
@@ -149,7 +151,7 @@ class BackupService {
           }
         }
       } catch (e) {
-        // Silently fail or log properly in production
+        debugPrint('Failed to restore settings: $e');
       }
     }
 
@@ -162,11 +164,46 @@ class BackupService {
         
         for (final item in projectsList) {
           final project = ModelProject.fromJson(item as Map<String, dynamic>);
-          // This will either update existing or add new to the active repository (Local or Supabase)
-          await _modelsRepository.updateProject(project);
+          
+          try {
+            // Try updating/inserting the project with its original ID
+            await _modelsRepository.updateProject(project);
+          } catch (e) {
+            final errStr = e.toString();
+            // Check for Supabase RLS violation (42501) or constraint violation (23505)
+            if (errStr.contains('42501') || 
+                errStr.contains('violates row-level security') || 
+                errStr.contains('23505') ||
+                errStr.contains('unique_conflict')) {
+              debugPrint('Project ID conflict detected for project "${project.title}". Generating new IDs.');
+              
+              // Generate new project ID
+              final newProjectId = const Uuid().v4();
+              
+              // Update steps with new IDs and new project ID
+              final updatedSteps = project.steps.map((step) {
+                return step.copyWith(
+                  id: const Uuid().v4(),
+                  projectId: newProjectId,
+                );
+              }).toList();
+              
+              // Copy project with new ID and updated steps
+              final newProject = project.copyWith(
+                id: newProjectId,
+                steps: updatedSteps,
+              );
+              
+              // Retry updating/inserting
+              await _modelsRepository.updateProject(newProject);
+            } else {
+              rethrow;
+            }
+          }
         }
       } catch (e) {
-        // Silently fail or log properly in production
+        debugPrint('Failed to restore projects: $e');
+        rethrow;
       }
     }
   }
