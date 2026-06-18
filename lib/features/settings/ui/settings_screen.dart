@@ -16,6 +16,7 @@ import 'dart:io';
 import 'dart:async';
 import '../../home/presentation/cubit/home_cubit.dart';
 import '../../notes/presentation/cubit/notes_cubit.dart';
+import '../../../core/services/sound_service.dart';
 
 
 class SettingsScreen extends StatelessWidget {
@@ -149,6 +150,9 @@ class SettingsScreen extends StatelessWidget {
                               file,
                               onProgress: (p) => progressController.add(p),
                             );
+
+                            // Play sound when backup is successfully restored
+                            GetIt.I<SoundService>().playNewProject();
 
                             if (context.mounted) {
                               Navigator.pop(context); // Close dialog

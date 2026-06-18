@@ -5,6 +5,7 @@ import '../services/image_service.dart';
 import '../services/backup_service.dart';
 import '../services/review_service.dart';
 
+import '../services/sound_service.dart';
 import '../../features/home/domain/repositories/models_repository.dart';
 
 void registerCoreModule(GetIt getIt) {
@@ -12,4 +13,5 @@ void registerCoreModule(GetIt getIt) {
   getIt.registerLazySingleton(() => BackupService(getIt<ModelsRepository>(), getIt<SharedPreferences>()));
   getIt.registerLazySingleton(() => ReviewService());
   getIt.registerLazySingleton(() => LocaleCubit(getIt<SharedPreferences>()));
+  getIt.registerLazySingleton(() => SoundService());
 }

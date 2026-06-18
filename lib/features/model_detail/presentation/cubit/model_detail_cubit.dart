@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import '../../../../core/services/sound_service.dart';
 import '../../../home/domain/models/build_step.dart';
 import '../../../home/domain/repositories/models_repository.dart';
 import 'model_detail_state.dart';
@@ -41,6 +43,7 @@ class ModelDetailCubit extends Cubit<ModelDetailState> {
         try {
           await _repository.updateProject(updatedProject);
           emit(ModelDetailState.loaded(updatedProject));
+          GetIt.I<SoundService>().playNewEtap();
         } catch (e) {
           emit(ModelDetailState.error(e.toString()));
         }
@@ -95,6 +98,9 @@ class ModelDetailCubit extends Cubit<ModelDetailState> {
         try {
           await _repository.updateProject(updatedProject);
           emit(ModelDetailState.loaded(updatedProject));
+          if (status == 'FINISHED') {
+            GetIt.I<SoundService>().playProjectFin();
+          }
         } catch (e) {
           emit(ModelDetailState.error(e.toString()));
         }

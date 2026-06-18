@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
+import 'package:scalebook/core/services/sound_service.dart';
 
 import 'dart:convert';
 import 'package:scalebook/features/home/domain/repositories/models_repository.dart';
@@ -95,6 +96,10 @@ class BackupService {
 
   Future<void> shareBackup({Rect? sharePositionOrigin, Function(double)? onProgress}) async {
     final path = await createBackup(onProgress: onProgress);
+    
+    // Play sound when backup is successfully created
+    GetIt.I<SoundService>().playNewProject();
+
     await SharePlus.instance.share(
       ShareParams(
         files: [XFile(path)],

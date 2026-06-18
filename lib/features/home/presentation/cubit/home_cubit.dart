@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import '../../../../core/services/review_service.dart';
+import '../../../../core/services/sound_service.dart';
 import '../../domain/models/model_project.dart';
 import '../../domain/repositories/models_repository.dart';
 import 'home_state.dart';
@@ -29,6 +30,9 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       await _repository.addProject(project);
       await loadProjects(); // Refresh list
+      
+      // Play sound
+      GetIt.I<SoundService>().playNewProject();
       
       // Track project creation for review prompt
       GetIt.I<ReviewService>().recordProjectCreated();

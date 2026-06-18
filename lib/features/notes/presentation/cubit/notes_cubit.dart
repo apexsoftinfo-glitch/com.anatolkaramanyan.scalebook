@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get_it/get_it.dart';
+import '../../../../core/services/sound_service.dart';
 import '../../domain/models/note_model.dart';
 import '../../domain/repositories/notes_repository.dart';
 
@@ -30,6 +32,7 @@ class NotesCubit extends Cubit<NotesState> {
     try {
       await _repository.addNote(note);
       await loadNotes();
+      GetIt.I<SoundService>().playNewProject();
     } catch (e) {
       emit(state.copyWith(errorMessage: e.toString()));
     }
