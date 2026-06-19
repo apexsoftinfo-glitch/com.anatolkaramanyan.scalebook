@@ -79,6 +79,7 @@ class ModelDetailCubit extends Cubit<ModelDetailState> {
           final updatedSteps = s.project.steps.where((e) => e.id != stepId).toList();
           final updatedProject = s.project.copyWith(steps: updatedSteps);
           emit(ModelDetailState.loaded(updatedProject));
+          GetIt.I<SoundService>().playDelete();
         } catch (e) {
           emit(ModelDetailState.error(e.toString()));
         }

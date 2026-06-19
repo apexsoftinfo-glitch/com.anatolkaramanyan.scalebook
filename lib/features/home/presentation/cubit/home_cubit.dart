@@ -56,6 +56,7 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       await _repository.deleteProject(id);
       await loadProjects(); // Refresh list
+      GetIt.I<SoundService>().playDelete();
     } catch (e) {
       emit(HomeState.error(e.toString()));
       rethrow;

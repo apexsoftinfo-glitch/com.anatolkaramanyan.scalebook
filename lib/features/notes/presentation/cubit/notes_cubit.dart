@@ -32,7 +32,7 @@ class NotesCubit extends Cubit<NotesState> {
     try {
       await _repository.addNote(note);
       await loadNotes();
-      GetIt.I<SoundService>().playNewProject();
+      GetIt.I<SoundService>().playNewNote();
     } catch (e) {
       emit(state.copyWith(errorMessage: e.toString()));
     }
@@ -51,6 +51,7 @@ class NotesCubit extends Cubit<NotesState> {
     try {
       await _repository.deleteNote(id);
       await loadNotes();
+      GetIt.I<SoundService>().playDelete();
     } catch (e) {
       emit(state.copyWith(errorMessage: e.toString()));
     }

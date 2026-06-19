@@ -24,7 +24,7 @@ class AddModelScreen extends StatefulWidget {
 class _AddModelScreenState extends State<AddModelScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
-  final _scaleController = TextEditingController(text: '1/24');
+  final _scaleController = TextEditingController(text: '1/'); // L10N
   final _imagePicker = ImagePicker();
   File? _selectedImage;
   DateTime _startDate = DateTime.now();
@@ -204,11 +204,12 @@ class _AddModelScreenState extends State<AddModelScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
+                  Material(
+                    color: Colors.white,
+                    clipBehavior: Clip.antiAlias,
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: AppColors.grey.withValues(alpha: 0.2)),
+                      side: BorderSide(color: AppColors.grey.withValues(alpha: 0.2)),
                     ),
                     child: SwitchListTile(
                       title: Text(

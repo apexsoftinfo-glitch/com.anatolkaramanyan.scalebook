@@ -216,7 +216,7 @@ class SettingsScreen extends StatelessWidget {
               _buildExpandableSection(
                 context: context,
                 title: S.of(context).application,
-                subtitle: 'v1.2.3+10',
+                subtitle: 'v1.2.4+11',
                 icon: Icons.settings_applications_outlined,
                 children: [
                   BlocBuilder<LocaleCubit, Locale>(

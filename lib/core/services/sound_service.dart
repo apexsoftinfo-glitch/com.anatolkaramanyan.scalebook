@@ -26,6 +26,14 @@ class SoundService {
     await _playSound('sounds/projectfin.mp3');
   }
 
+  Future<void> playDelete() async {
+    await _playSound('sounds/delete.mp3');
+  }
+
+  Future<void> playNewNote() async {
+    await _playSound('sounds/newnotes.mp3');
+  }
+
   void dispose() {
     _player.dispose();
   }
