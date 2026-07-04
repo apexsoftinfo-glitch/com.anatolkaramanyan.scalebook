@@ -31,6 +31,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   HomeSortMode _sortMode = HomeSortMode.date;
   bool _isGridView = true;
+  bool _hasShownStaleReminder = false;
 
   @override
   void initState() {
@@ -103,7 +104,29 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         body: CuttingMatBackground(
-          child: BlocBuilder<HomeCubit, HomeState>(
+          child: BlocConsumer<HomeCubit, HomeState>(
+            listener: (context, state) {
+              state.maybeMap(
+                loaded: (s) {
+                  if (!_hasShownStaleReminder) {
+                    _hasShownStaleReminder = true;
+                    final now = DateTime.now();
+                    final staleProjects = s.projects.where((p) {
+                      if (p.status != 'WARSZTAT') return false;
+                      final lastChange = p.updatedAt ?? p.createdAt;
+                      return now.difference(lastChange).inDays >= 15;
+                    }).toList();
+
+                    if (staleProjects.isNotEmpty) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        _showStaleProjectsReminder(context, staleProjects);
+                      });
+                    }
+                  }
+                },
+                orElse: () {},
+              );
+            },
             builder: (context, state) {
               return state.maybeMap(
                 loaded: (s) {
@@ -564,6 +587,81 @@ class _HomeScreenState extends State<HomeScreen> {
         onAction: () {
           context.read<HomeCubit>().deleteProject(id);
         },
+      ),
+    );
+  }
+
+  void _showStaleProjectsReminder(BuildContext context, List<ModelProject> staleProjects) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => Dialog(
+        backgroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(), // Tamiya box style
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Row(
+                children: [
+                  Icon(Icons.hourglass_empty_rounded, color: AppColors.red, size: 32),
+                  SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'PRZESTÓJ W WARSZTACIE', // L10N
+                      style: TextStyle(
+                        color: AppColors.navyBlue,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Następujące projekty w toku nie były modyfikowane od co najmniej 15 dni. Może warto wrócić do prac?', // L10N
+                style: TextStyle(color: AppColors.grey, fontSize: 14),
+              ),
+              const SizedBox(height: 12),
+              ...staleProjects.map((p) {
+                final lastChange = p.updatedAt ?? p.createdAt;
+                final days = DateTime.now().difference(lastChange).inDays;
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.arrow_right, color: AppColors.red, size: 20),
+                      Expanded(
+                        child: Text(
+                          '${p.title.toUpperCase()} ($days dni bez zmian)', // L10N
+                          style: const TextStyle(
+                            color: AppColors.navyBlue,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(dialogContext),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.navyBlue,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: const RoundedRectangleBorder(),
+                ),
+                child: const Text('WRACAM DO WARSZTATU'), // L10N
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
