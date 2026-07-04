@@ -21,6 +21,7 @@ abstract class ModelProject with _$ModelProject {
     @Default([]) List<String> galleryUrls,
     required DateTime createdAt,
     DateTime? finishedAt,
+    DateTime? updatedAt,
   }) = _ModelProject;
 
   const ModelProject._();

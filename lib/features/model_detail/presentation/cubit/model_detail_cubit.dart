@@ -39,6 +39,7 @@ class ModelDetailCubit extends Cubit<ModelDetailState> {
       loaded: (s) async {
         final updatedProject = s.project.copyWith(
           steps: [step, ...s.project.steps],
+          updatedAt: DateTime.now(),
         );
         try {
           await _repository.updateProject(updatedProject);
@@ -56,7 +57,10 @@ class ModelDetailCubit extends Cubit<ModelDetailState> {
     state.maybeMap(
       loaded: (s) async {
         final updatedSteps = s.project.steps.map((e) => e.id == step.id ? step : e).toList();
-        final updatedProject = s.project.copyWith(steps: updatedSteps);
+        final updatedProject = s.project.copyWith(
+          steps: updatedSteps,
+          updatedAt: DateTime.now(),
+        );
         try {
           await _repository.updateProject(updatedProject);
           emit(ModelDetailState.loaded(updatedProject));
@@ -77,7 +81,10 @@ class ModelDetailCubit extends Cubit<ModelDetailState> {
           
           // 2. Update local state
           final updatedSteps = s.project.steps.where((e) => e.id != stepId).toList();
-          final updatedProject = s.project.copyWith(steps: updatedSteps);
+          final updatedProject = s.project.copyWith(
+            steps: updatedSteps,
+            updatedAt: DateTime.now(),
+          );
           emit(ModelDetailState.loaded(updatedProject));
           GetIt.I<SoundService>().playDelete();
         } catch (e) {
@@ -95,6 +102,7 @@ class ModelDetailCubit extends Cubit<ModelDetailState> {
         final updatedProject = s.project.copyWith(
           status: status,
           finishedAt: status == 'FINISHED' ? now : null,
+          updatedAt: now,
         );
         try {
           await _repository.updateProject(updatedProject);
@@ -113,7 +121,10 @@ class ModelDetailCubit extends Cubit<ModelDetailState> {
   Future<void> updateMainImage(String imageUrl) async {
     state.maybeMap(
       loaded: (s) async {
-        final updatedProject = s.project.copyWith(mainImageUrl: imageUrl);
+        final updatedProject = s.project.copyWith(
+          mainImageUrl: imageUrl,
+          updatedAt: DateTime.now(),
+        );
         try {
           await _repository.updateProject(updatedProject);
           emit(ModelDetailState.loaded(updatedProject));
@@ -128,7 +139,11 @@ class ModelDetailCubit extends Cubit<ModelDetailState> {
   Future<void> updateProjectDetails(String title, String scale) async {
     state.maybeMap(
       loaded: (s) async {
-        final updatedProject = s.project.copyWith(title: title, scale: scale);
+        final updatedProject = s.project.copyWith(
+          title: title,
+          scale: scale,
+          updatedAt: DateTime.now(),
+        );
         try {
           await _repository.updateProject(updatedProject);
           emit(ModelDetailState.loaded(updatedProject));

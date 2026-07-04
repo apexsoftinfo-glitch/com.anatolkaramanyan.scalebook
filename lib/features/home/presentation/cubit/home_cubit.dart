@@ -44,7 +44,8 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> updateProject(ModelProject project) async {
     try {
-      await _repository.updateProject(project);
+      final updated = project.copyWith(updatedAt: DateTime.now());
+      await _repository.updateProject(updated);
       await loadProjects(); // Refresh list
     } catch (e) {
       emit(HomeState.error(e.toString()));

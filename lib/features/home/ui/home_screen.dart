@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:scalebook/l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'widgets/model_list_tile.dart';
 import '../../../../core/design_system/widgets/cutting_mat_background.dart';
 import '../../../../core/design_system/app_colors.dart';
 import '../presentation/cubit/home_cubit.dart';
@@ -27,6 +30,28 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   HomeSortMode _sortMode = HomeSortMode.date;
+  bool _isGridView = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadViewMode();
+  }
+
+  void _loadViewMode() {
+    final prefs = GetIt.I<SharedPreferences>();
+    setState(() {
+      _isGridView = prefs.getBool('is_grid_view') ?? true;
+    });
+  }
+
+  Future<void> _toggleViewMode() async {
+    final prefs = GetIt.I<SharedPreferences>();
+    setState(() {
+      _isGridView = !_isGridView;
+    });
+    await prefs.setBool('is_grid_view', _isGridView);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +71,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           actions: [
+            IconButton(
+              icon: Icon(
+                _isGridView ? Icons.view_list : Icons.grid_view,
+                color: Colors.white,
+              ),
+              tooltip: _isGridView ? 'Pokaż jako listę' : 'Pokaż jako siatkę', // L10N
+              onPressed: _toggleViewMode,
+            ),
             IconButton(
               icon: Icon(Icons.calendar_today, 
                 color: _sortMode == HomeSortMode.date ? AppColors.red : Colors.white),
@@ -78,12 +111,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   
                   // Apply Sorting
                   activeProjects.sort((a, b) {
+                    final dateA = a.updatedAt ?? a.createdAt;
+                    final dateB = b.updatedAt ?? b.createdAt;
                     if (_sortMode == HomeSortMode.date) {
-                      return b.createdAt.compareTo(a.createdAt);
+                      return dateB.compareTo(dateA);
                     } else {
                       // Status: WARSZTAT first, then others (PAUSED)
                       if (a.status == b.status) {
-                        return b.createdAt.compareTo(a.createdAt);
+                        return dateB.compareTo(dateA);
                       }
                       if (a.status == 'WARSZTAT') return -1;
                       if (b.status == 'WARSZTAT') return 1;
@@ -91,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                   });
 
-                  return _buildGrid(context, activeProjects);
+                  return _isGridView ? _buildGrid(context, activeProjects) : _buildList(context, activeProjects);
                 },
                 error: (s) => Center(child: Text(s.message)),
                 orElse: () => const Center(child: CircularProgressIndicator()),
@@ -368,6 +403,82 @@ class _HomeScreenState extends State<HomeScreen> {
                       _showDeleteConfirmation(context, model.id, model.title);
                     },
                     child: ModelCard(
+                      title: model.title,
+                      scale: model.scale,
+                      progress: model.progress,
+                      status: model.status,
+                      imageUrl: model.mainImageUrl,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildList(BuildContext context, List<dynamic> projects) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 16),
+          TweenAnimationBuilder<double>(
+            tween: Tween<double>(begin: 0.0, end: 1.0),
+            duration: const Duration(milliseconds: 800),
+            curve: Curves.easeOutCubic,
+            builder: (context, value, child) {
+              return Transform.translate(
+                offset: Offset(0, -20 * (1 - value)),
+                child: Opacity(
+                  opacity: value.clamp(0.0, 1.0),
+                  child: child,
+                ),
+              );
+            },
+            child: _buildHeader(context, projects.length),
+          ),
+          const SizedBox(height: 16),
+          Expanded(
+            child: ListView.builder(
+              itemCount: projects.length,
+              itemBuilder: (context, index) {
+                final model = projects[index];
+                return TweenAnimationBuilder<double>(
+                  tween: Tween<double>(begin: 0.0, end: 1.0),
+                  duration: Duration(milliseconds: 500 + (index * 100).clamp(0, 1000)),
+                  curve: Curves.easeOutCubic,
+                  builder: (context, value, child) {
+                    return Transform.translate(
+                      offset: Offset(0, 30 * (1 - value)),
+                      child: Opacity(
+                        opacity: value.clamp(0.0, 1.0),
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: GestureDetector(
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ModelDetailScreen(
+                            projectId: model.id,
+                            title: model.title,
+                          ),
+                        ),
+                      );
+                      if (context.mounted) {
+                        context.read<HomeCubit>().loadProjects();
+                      }
+                    },
+                    onLongPress: () {
+                      _showDeleteConfirmation(context, model.id, model.title);
+                    },
+                    child: ModelListTile(
                       title: model.title,
                       scale: model.scale,
                       progress: model.progress,

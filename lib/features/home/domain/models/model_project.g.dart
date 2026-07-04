@@ -35,6 +35,9 @@ _ModelProject _$ModelProjectFromJson(Map<String, dynamic> json) =>
       finishedAt: json['finished_at'] == null
           ? null
           : DateTime.parse(json['finished_at'] as String),
+      updatedAt: json['updated_at'] == null
+          ? null
+          : DateTime.parse(json['updated_at'] as String),
     );
 
 Map<String, dynamic> _$ModelProjectToJson(_ModelProject instance) =>
@@ -52,4 +55,5 @@ Map<String, dynamic> _$ModelProjectToJson(_ModelProject instance) =>
       'gallery_urls': instance.galleryUrls,
       'created_at': instance.createdAt.toIso8601String(),
       'finished_at': instance.finishedAt?.toIso8601String(),
+      'updated_at': instance.updatedAt?.toIso8601String(),
     };

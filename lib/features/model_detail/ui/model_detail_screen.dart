@@ -1,6 +1,7 @@
 import 'dart:ui' as ui;
 import 'package:scalebook/l10n/app_localizations.dart';
 import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -42,11 +43,28 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
   bool _isExporting = false;
   String _exportStatus = '';
   double _exportProgress = 0.0;
+  bool _isCompactSteps = false;
 
   @override
   void initState() {
     super.initState();
     _cubit = GetIt.I<ModelDetailCubit>()..loadProject(widget.projectId);
+    _loadViewMode();
+  }
+
+  void _loadViewMode() {
+    final prefs = GetIt.I<SharedPreferences>();
+    setState(() {
+      _isCompactSteps = prefs.getBool('is_compact_steps') ?? false;
+    });
+  }
+
+  Future<void> _toggleViewMode() async {
+    final prefs = GetIt.I<SharedPreferences>();
+    setState(() {
+      _isCompactSteps = !_isCompactSteps;
+    });
+    await prefs.setBool('is_compact_steps', _isCompactSteps);
   }
 
   Future<void> _generateProgressImages(BuildContext context, dynamic project, List<dynamic> selectedSteps) async {
@@ -178,11 +196,23 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
       final session = context.read<SessionCubit>().state;
       final modelerName = session.displayName;
 
+      final detailState = _cubit.state;
+      final project = detailState.maybeMap(
+        loaded: (s) => s.project,
+        orElse: () => null,
+      );
+      if (project == null) throw Exception('Nie można załadować szczegółów projektu.');
+
+      final allSteps = List<BuildStep>.from(project.steps)..sort((a, b) => a.date.compareTo(b.date));
+      final stepIndex = allSteps.indexWhere((s) => s.id == step.id);
+      final stepNumber = stepIndex != -1 ? stepIndex + 1 : 1;
+
       final poster = _SingleStepSharePoster(
         projectTitle: widget.title,
         step: step,
         modelerName: modelerName,
         boundaryKey: boundaryKey,
+        stepNumber: stepNumber,
       );
 
       final overlay = Overlay.of(context);
@@ -663,6 +693,14 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
               ),
               actions: [
                 IconButton(
+                  icon: Icon(
+                    _isCompactSteps ? Icons.view_agenda_outlined : Icons.view_list,
+                    color: Colors.white,
+                  ),
+                  tooltip: _isCompactSteps ? 'Pokaż jako oś czasu' : 'Pokaż jako listę', // L10N
+                  onPressed: _toggleViewMode,
+                ),
+                IconButton(
                   icon: const Icon(Icons.share),
                   onPressed: () {
                     _cubit.state.maybeMap(
@@ -761,6 +799,8 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
             padding: const EdgeInsets.only(top: 40.0),
             child: Center(child: Text(S.of(context).noBuildSteps, style: const TextStyle(color: Colors.white54))),
           )
+        else if (_isCompactSteps)
+          ...sortedSteps.map((step) => _buildCompactStepTile(context, step))
         else
           ...sortedSteps.asMap().entries.map((entry) {
             final index = entry.key;
@@ -850,7 +890,7 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
                                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImagePreviewScreen(imageUrl: step.imageUrl!))),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
-                                      child: AppImage(imageUrl: step.imageUrl, fit: BoxFit.cover, width: double.infinity, height: 110),
+                                      child: AppImage(imageUrl: step.imageUrl, fit: BoxFit.cover, width: double.infinity, height: 180),
                                     ),
                                   ),
                                 if (step.note.isNotEmpty) ...[
@@ -910,6 +950,164 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
         );
       }),
       ],
+    );
+  }
+
+  Widget _buildCompactStepTile(BuildContext context, BuildStep step) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E242C),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.white12, width: 1),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // 1. Photo on the left (if present)
+              if (step.imageUrl != null)
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ImagePreviewScreen(imageUrl: step.imageUrl!),
+                    ),
+                  ),
+                  child: SizedBox(
+                    width: 90,
+                    height: 70,
+                    child: AppImage(
+                      imageUrl: step.imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                )
+              else
+                Container(
+                  width: 90,
+                  height: 70,
+                  color: const Color(0xFF15191F),
+                  child: const Icon(Icons.photo, color: Colors.white24, size: 24),
+                ),
+              // Vertical Divider
+              Container(
+                width: 2,
+                color: Colors.white.withAlpha(20),
+              ),
+              // 2. Text Content in the middle
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Date and Duration
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '${step.date.day}.${step.date.month}.${step.date.year}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.red,
+                              fontSize: 10,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                          if (step.durationMinutes != null && step.durationMinutes! > 0)
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.access_time, size: 10, color: Colors.white54),
+                                const SizedBox(width: 2),
+                                Text(
+                                  _formatDuration(context, step.durationMinutes!),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white54,
+                                    fontSize: 9,
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      // Note
+                      Expanded(
+                        child: Text(
+                          step.note.isNotEmpty ? step.note : S.of(context).noNotes,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            height: 1.3,
+                            color: Colors.white70,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // 3. Actions menu on the right
+              Container(
+                width: 40,
+                color: const Color(0xFF15191F),
+                child: PopupMenuButton<String>(
+                  icon: const Icon(Icons.more_vert, size: 18, color: Colors.white60),
+                  color: const Color(0xFF1E242C),
+                  onSelected: (value) {
+                    if (value == 'share') {
+                      _shareSingleStep(context, step);
+                    } else if (value == 'edit') {
+                      _editStep(context, step);
+                    } else if (value == 'delete') {
+                      _showDeleteStepConfirmation(context, step.id);
+                    }
+                  },
+                  itemBuilder: (BuildContext context) => [
+                    PopupMenuItem(
+                      value: 'share',
+                      child: Row(
+                        children: [
+                          const Icon(Icons.ios_share, size: 16, color: Colors.white70),
+                          const SizedBox(width: 8),
+                          Text(S.of(context).share, style: const TextStyle(color: Colors.white, fontSize: 13)),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 'edit',
+                      child: Row(
+                        children: [
+                          const Icon(Icons.edit_note, size: 18, color: Colors.white70),
+                          const SizedBox(width: 8),
+                          Text(S.of(context).edit, style: const TextStyle(color: Colors.white, fontSize: 13)),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 'delete',
+                      child: Row(
+                        children: [
+                          const Icon(Icons.delete_outline, size: 16, color: AppColors.red),
+                          const SizedBox(width: 8),
+                          Text(S.of(context).delete, style: const TextStyle(color: AppColors.red, fontSize: 13)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -1180,6 +1378,7 @@ class _ProgressPoster extends StatelessWidget {
   }
 
   Widget _buildTimelineCard(BuildContext context, dynamic step, int index, bool isRight, {Widget? connector}) {
+    final stepNumber = (pageNumber != null ? (pageNumber! - 1) * 8 : 0) + index + 1;
     return Column(
       crossAxisAlignment: isRight ? CrossAxisAlignment.start : CrossAxisAlignment.end,
       children: [
@@ -1195,7 +1394,7 @@ class _ProgressPoster extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(
-                '${step.date.day}.${step.date.month}.${step.date.year}',
+                '${Localizations.localeOf(context).languageCode == 'pl' ? 'ETAP' : 'STEP'} $stepNumber',
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 10,
@@ -1269,12 +1468,14 @@ class _SingleStepSharePoster extends StatelessWidget {
   final BuildStep step;
   final String modelerName;
   final GlobalKey boundaryKey;
+  final int stepNumber;
 
   const _SingleStepSharePoster({
     required this.projectTitle,
     required this.step,
     required this.modelerName,
     required this.boundaryKey,
+    required this.stepNumber,
   });
 
   @override
@@ -1351,7 +1552,7 @@ class _SingleStepSharePoster extends StatelessWidget {
                     ),
                   const SizedBox(height: 24),
                   Text(
-                    '${step.date.day}.${step.date.month}.${step.date.year}',
+                    '${Localizations.localeOf(context).languageCode == 'pl' ? 'ETAP' : 'STEP'} $stepNumber',
                     style: const TextStyle(
                       color: AppColors.red,
                       fontSize: 18,

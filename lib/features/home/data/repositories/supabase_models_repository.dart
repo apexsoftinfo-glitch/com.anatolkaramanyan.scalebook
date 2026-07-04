@@ -34,6 +34,7 @@ class SupabaseModelsRepository implements ModelsRepository {
       if (data.containsKey('final_notes')) data['finalNotes'] = data['final_notes'];
       if (data.containsKey('created_at')) data['createdAt'] = data['created_at'];
       if (data.containsKey('finished_at')) data['finishedAt'] = data['finished_at'];
+      if (data.containsKey('updated_at')) data['updatedAt'] = data['updated_at'];
 
       final stepsData = data['build_steps'] as List;
       final steps = stepsData.map((s) {
@@ -131,6 +132,7 @@ class SupabaseModelsRepository implements ModelsRepository {
       if (data.containsKey('final_notes')) data['finalNotes'] = data['final_notes'];
       if (data.containsKey('created_at')) data['createdAt'] = data['created_at'];
       if (data.containsKey('finished_at')) data['finishedAt'] = data['finished_at'];
+      if (data.containsKey('updated_at')) data['updatedAt'] = data['updated_at'];
 
       final stepsData = data['build_steps'] as List;
       final steps = stepsData.map((s) {
