@@ -18,18 +18,21 @@ class LocalModelsRepository implements ModelsRepository {
   @override
   Future<List<ModelProject>> getProjects() async {
     final directory = await _dataDir;
-    final files = directory.listSync().whereType<File>().where((f) => f.path.endsWith('.json'));
+    final entities = await directory.list().toList();
+    final files = entities.whereType<File>().where((f) => f.path.endsWith('.json'));
     
-    final projects = <ModelProject>[];
-    for (final file in files) {
+    final projectFutures = files.map((file) async {
       try {
         final content = await file.readAsString();
         final json = jsonDecode(content) as Map<String, dynamic>;
-        projects.add(ModelProject.fromJson(json));
+        return ModelProject.fromJson(json);
       } catch (e) {
-        // Skip corrupted files
+        return null;
       }
-    }
+    });
+
+    final results = await Future.wait(projectFutures);
+    final projects = results.whereType<ModelProject>().toList();
     
     // Sort by creation date descending
     projects.sort((a, b) => b.createdAt.compareTo(a.createdAt));

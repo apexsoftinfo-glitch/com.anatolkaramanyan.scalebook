@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BuildStep {
 
- String get id; String get projectId; DateTime get date; String get note; String? get imageUrl; int? get durationMinutes;
+ String get id;@JsonKey(name: 'project_id') String get projectId; DateTime get date; String get note;@JsonKey(name: 'image_url') String? get imageUrl;@JsonKey(name: 'duration_minutes') int? get durationMinutes;
 /// Create a copy of BuildStep
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $BuildStepCopyWith<$Res>  {
   factory $BuildStepCopyWith(BuildStep value, $Res Function(BuildStep) _then) = _$BuildStepCopyWithImpl;
 @useResult
 $Res call({
- String id, String projectId, DateTime date, String note, String? imageUrl, int? durationMinutes
+ String id,@JsonKey(name: 'project_id') String projectId, DateTime date, String note,@JsonKey(name: 'image_url') String? imageUrl,@JsonKey(name: 'duration_minutes') int? durationMinutes
 });
 
 
@@ -158,7 +158,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String projectId,  DateTime date,  String note,  String? imageUrl,  int? durationMinutes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'project_id')  String projectId,  DateTime date,  String note, @JsonKey(name: 'image_url')  String? imageUrl, @JsonKey(name: 'duration_minutes')  int? durationMinutes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BuildStep() when $default != null:
 return $default(_that.id,_that.projectId,_that.date,_that.note,_that.imageUrl,_that.durationMinutes);case _:
@@ -179,7 +179,7 @@ return $default(_that.id,_that.projectId,_that.date,_that.note,_that.imageUrl,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String projectId,  DateTime date,  String note,  String? imageUrl,  int? durationMinutes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'project_id')  String projectId,  DateTime date,  String note, @JsonKey(name: 'image_url')  String? imageUrl, @JsonKey(name: 'duration_minutes')  int? durationMinutes)  $default,) {final _that = this;
 switch (_that) {
 case _BuildStep():
 return $default(_that.id,_that.projectId,_that.date,_that.note,_that.imageUrl,_that.durationMinutes);case _:
@@ -199,7 +199,7 @@ return $default(_that.id,_that.projectId,_that.date,_that.note,_that.imageUrl,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String projectId,  DateTime date,  String note,  String? imageUrl,  int? durationMinutes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'project_id')  String projectId,  DateTime date,  String note, @JsonKey(name: 'image_url')  String? imageUrl, @JsonKey(name: 'duration_minutes')  int? durationMinutes)?  $default,) {final _that = this;
 switch (_that) {
 case _BuildStep() when $default != null:
 return $default(_that.id,_that.projectId,_that.date,_that.note,_that.imageUrl,_that.durationMinutes);case _:
@@ -214,15 +214,15 @@ return $default(_that.id,_that.projectId,_that.date,_that.note,_that.imageUrl,_t
 @JsonSerializable()
 
 class _BuildStep extends BuildStep {
-  const _BuildStep({required this.id, required this.projectId, required this.date, required this.note, this.imageUrl, this.durationMinutes}): super._();
+  const _BuildStep({required this.id, @JsonKey(name: 'project_id') required this.projectId, required this.date, required this.note, @JsonKey(name: 'image_url') this.imageUrl, @JsonKey(name: 'duration_minutes') this.durationMinutes}): super._();
   factory _BuildStep.fromJson(Map<String, dynamic> json) => _$BuildStepFromJson(json);
 
 @override final  String id;
-@override final  String projectId;
+@override@JsonKey(name: 'project_id') final  String projectId;
 @override final  DateTime date;
 @override final  String note;
-@override final  String? imageUrl;
-@override final  int? durationMinutes;
+@override@JsonKey(name: 'image_url') final  String? imageUrl;
+@override@JsonKey(name: 'duration_minutes') final  int? durationMinutes;
 
 /// Create a copy of BuildStep
 /// with the given fields replaced by the non-null parameter values.
@@ -257,7 +257,7 @@ abstract mixin class _$BuildStepCopyWith<$Res> implements $BuildStepCopyWith<$Re
   factory _$BuildStepCopyWith(_BuildStep value, $Res Function(_BuildStep) _then) = __$BuildStepCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String projectId, DateTime date, String note, String? imageUrl, int? durationMinutes
+ String id,@JsonKey(name: 'project_id') String projectId, DateTime date, String note,@JsonKey(name: 'image_url') String? imageUrl,@JsonKey(name: 'duration_minutes') int? durationMinutes
 });
 
 

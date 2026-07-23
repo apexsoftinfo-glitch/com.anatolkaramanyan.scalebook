@@ -147,6 +147,7 @@
   "statusStash": "STASH",
   "statusSold": "SOLD",
   "share": "SHARE",
+  "shareBuildSteps": "SHARE BUILD STEPS",
   "newModel": "NEW MODEL",
   "boxPhotoRequired": "BOX PHOTO (REQUIRED)",
   "addToStash": "ADD TO STASH",

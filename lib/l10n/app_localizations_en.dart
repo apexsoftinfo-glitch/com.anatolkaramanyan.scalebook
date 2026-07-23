@@ -365,6 +365,9 @@ class SEn extends S {
   String get share => 'SHARE';
 
   @override
+  String get shareBuildSteps => 'SHARE BUILD STEPS';
+
+  @override
   String get newModel => 'NEW MODEL';
 
   @override

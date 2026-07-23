@@ -147,6 +147,7 @@
   "statusStash": "GARDEROBA",
   "statusSold": "SPRZEDANE",
   "share": "UDOSTĘPNIJ",
+  "shareBuildSteps": "UDOSTĘPNIJ ETAPY BUDOWY",
   "newModel": "NOWY MODEL",
   "boxPhotoRequired": "ZDJĘCIE OPAKOWANIA (WYMAGANE)",
   "addToStash": "DODAJ DO GARDEROBY",

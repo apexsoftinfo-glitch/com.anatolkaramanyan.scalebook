@@ -751,6 +751,12 @@ abstract class S {
   /// **'UDOSTĘPNIJ'**
   String get share;
 
+  /// No description provided for @shareBuildSteps.
+  ///
+  /// In pl, this message translates to:
+  /// **'UDOSTĘPNIJ ETAPY BUDOWY'**
+  String get shareBuildSteps;
+
   /// No description provided for @newModel.
   ///
   /// In pl, this message translates to:

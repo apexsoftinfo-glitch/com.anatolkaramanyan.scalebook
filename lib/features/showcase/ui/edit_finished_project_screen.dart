@@ -49,7 +49,12 @@ class _EditFinishedProjectScreenState extends State<EditFinishedProjectScreen> {
   }
 
   Future<void> _pickMainImage() async {
-    final XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+    final XFile? image = await _imagePicker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1920,
+      maxHeight: 1920,
+      imageQuality: 80,
+    );
     if (image != null) {
       setState(() {
         _newMainImage = File(image.path);

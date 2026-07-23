@@ -130,6 +130,8 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
     } else {
       final XFile? image = await _imagePicker.pickImage(
         source: ImageSource.camera,
+        maxWidth: 1920,
+        maxHeight: 1920,
         imageQuality: 80,
       );
       if (image != null) {

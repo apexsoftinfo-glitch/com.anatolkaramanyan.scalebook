@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ModelProject {
 
- String get id; String get title; String get scale; double get progress; String get status; String? get mainImageUrl; String? get finishedMainImageUrl; List<String> get finishedGalleryUrls; String? get finalNotes; List<BuildStep> get steps; List<String> get galleryUrls; DateTime get createdAt; DateTime? get finishedAt; DateTime? get updatedAt;
+ String get id; String get title; String get scale; double get progress; String get status;@JsonKey(name: 'main_image_url') String? get mainImageUrl;@JsonKey(name: 'finished_main_image_url') String? get finishedMainImageUrl;@JsonKey(name: 'finished_gallery_urls') List<String> get finishedGalleryUrls;@JsonKey(name: 'final_notes') String? get finalNotes; List<BuildStep> get steps;@JsonKey(name: 'gallery_urls') List<String> get galleryUrls;@JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'finished_at') DateTime? get finishedAt;@JsonKey(name: 'updated_at') DateTime? get updatedAt;
 /// Create a copy of ModelProject
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $ModelProjectCopyWith<$Res>  {
   factory $ModelProjectCopyWith(ModelProject value, $Res Function(ModelProject) _then) = _$ModelProjectCopyWithImpl;
 @useResult
 $Res call({
- String id, String title, String scale, double progress, String status, String? mainImageUrl, String? finishedMainImageUrl, List<String> finishedGalleryUrls, String? finalNotes, List<BuildStep> steps, List<String> galleryUrls, DateTime createdAt, DateTime? finishedAt, DateTime? updatedAt
+ String id, String title, String scale, double progress, String status,@JsonKey(name: 'main_image_url') String? mainImageUrl,@JsonKey(name: 'finished_main_image_url') String? finishedMainImageUrl,@JsonKey(name: 'finished_gallery_urls') List<String> finishedGalleryUrls,@JsonKey(name: 'final_notes') String? finalNotes, List<BuildStep> steps,@JsonKey(name: 'gallery_urls') List<String> galleryUrls,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'finished_at') DateTime? finishedAt,@JsonKey(name: 'updated_at') DateTime? updatedAt
 });
 
 
@@ -166,7 +166,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String scale,  double progress,  String status,  String? mainImageUrl,  String? finishedMainImageUrl,  List<String> finishedGalleryUrls,  String? finalNotes,  List<BuildStep> steps,  List<String> galleryUrls,  DateTime createdAt,  DateTime? finishedAt,  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String scale,  double progress,  String status, @JsonKey(name: 'main_image_url')  String? mainImageUrl, @JsonKey(name: 'finished_main_image_url')  String? finishedMainImageUrl, @JsonKey(name: 'finished_gallery_urls')  List<String> finishedGalleryUrls, @JsonKey(name: 'final_notes')  String? finalNotes,  List<BuildStep> steps, @JsonKey(name: 'gallery_urls')  List<String> galleryUrls, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'finished_at')  DateTime? finishedAt, @JsonKey(name: 'updated_at')  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ModelProject() when $default != null:
 return $default(_that.id,_that.title,_that.scale,_that.progress,_that.status,_that.mainImageUrl,_that.finishedMainImageUrl,_that.finishedGalleryUrls,_that.finalNotes,_that.steps,_that.galleryUrls,_that.createdAt,_that.finishedAt,_that.updatedAt);case _:
@@ -187,7 +187,7 @@ return $default(_that.id,_that.title,_that.scale,_that.progress,_that.status,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String scale,  double progress,  String status,  String? mainImageUrl,  String? finishedMainImageUrl,  List<String> finishedGalleryUrls,  String? finalNotes,  List<BuildStep> steps,  List<String> galleryUrls,  DateTime createdAt,  DateTime? finishedAt,  DateTime? updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String scale,  double progress,  String status, @JsonKey(name: 'main_image_url')  String? mainImageUrl, @JsonKey(name: 'finished_main_image_url')  String? finishedMainImageUrl, @JsonKey(name: 'finished_gallery_urls')  List<String> finishedGalleryUrls, @JsonKey(name: 'final_notes')  String? finalNotes,  List<BuildStep> steps, @JsonKey(name: 'gallery_urls')  List<String> galleryUrls, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'finished_at')  DateTime? finishedAt, @JsonKey(name: 'updated_at')  DateTime? updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _ModelProject():
 return $default(_that.id,_that.title,_that.scale,_that.progress,_that.status,_that.mainImageUrl,_that.finishedMainImageUrl,_that.finishedGalleryUrls,_that.finalNotes,_that.steps,_that.galleryUrls,_that.createdAt,_that.finishedAt,_that.updatedAt);case _:
@@ -207,7 +207,7 @@ return $default(_that.id,_that.title,_that.scale,_that.progress,_that.status,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String scale,  double progress,  String status,  String? mainImageUrl,  String? finishedMainImageUrl,  List<String> finishedGalleryUrls,  String? finalNotes,  List<BuildStep> steps,  List<String> galleryUrls,  DateTime createdAt,  DateTime? finishedAt,  DateTime? updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String scale,  double progress,  String status, @JsonKey(name: 'main_image_url')  String? mainImageUrl, @JsonKey(name: 'finished_main_image_url')  String? finishedMainImageUrl, @JsonKey(name: 'finished_gallery_urls')  List<String> finishedGalleryUrls, @JsonKey(name: 'final_notes')  String? finalNotes,  List<BuildStep> steps, @JsonKey(name: 'gallery_urls')  List<String> galleryUrls, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'finished_at')  DateTime? finishedAt, @JsonKey(name: 'updated_at')  DateTime? updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _ModelProject() when $default != null:
 return $default(_that.id,_that.title,_that.scale,_that.progress,_that.status,_that.mainImageUrl,_that.finishedMainImageUrl,_that.finishedGalleryUrls,_that.finalNotes,_that.steps,_that.galleryUrls,_that.createdAt,_that.finishedAt,_that.updatedAt);case _:
@@ -222,7 +222,7 @@ return $default(_that.id,_that.title,_that.scale,_that.progress,_that.status,_th
 @JsonSerializable()
 
 class _ModelProject extends ModelProject {
-  const _ModelProject({required this.id, required this.title, required this.scale, this.progress = 0.0, required this.status, this.mainImageUrl, this.finishedMainImageUrl, final  List<String> finishedGalleryUrls = const [], this.finalNotes, final  List<BuildStep> steps = const [], final  List<String> galleryUrls = const [], required this.createdAt, this.finishedAt, this.updatedAt}): _finishedGalleryUrls = finishedGalleryUrls,_steps = steps,_galleryUrls = galleryUrls,super._();
+  const _ModelProject({required this.id, required this.title, required this.scale, this.progress = 0.0, required this.status, @JsonKey(name: 'main_image_url') this.mainImageUrl, @JsonKey(name: 'finished_main_image_url') this.finishedMainImageUrl, @JsonKey(name: 'finished_gallery_urls') final  List<String> finishedGalleryUrls = const [], @JsonKey(name: 'final_notes') this.finalNotes, final  List<BuildStep> steps = const [], @JsonKey(name: 'gallery_urls') final  List<String> galleryUrls = const [], @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'finished_at') this.finishedAt, @JsonKey(name: 'updated_at') this.updatedAt}): _finishedGalleryUrls = finishedGalleryUrls,_steps = steps,_galleryUrls = galleryUrls,super._();
   factory _ModelProject.fromJson(Map<String, dynamic> json) => _$ModelProjectFromJson(json);
 
 @override final  String id;
@@ -230,16 +230,16 @@ class _ModelProject extends ModelProject {
 @override final  String scale;
 @override@JsonKey() final  double progress;
 @override final  String status;
-@override final  String? mainImageUrl;
-@override final  String? finishedMainImageUrl;
+@override@JsonKey(name: 'main_image_url') final  String? mainImageUrl;
+@override@JsonKey(name: 'finished_main_image_url') final  String? finishedMainImageUrl;
  final  List<String> _finishedGalleryUrls;
-@override@JsonKey() List<String> get finishedGalleryUrls {
+@override@JsonKey(name: 'finished_gallery_urls') List<String> get finishedGalleryUrls {
   if (_finishedGalleryUrls is EqualUnmodifiableListView) return _finishedGalleryUrls;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_finishedGalleryUrls);
 }
 
-@override final  String? finalNotes;
+@override@JsonKey(name: 'final_notes') final  String? finalNotes;
  final  List<BuildStep> _steps;
 @override@JsonKey() List<BuildStep> get steps {
   if (_steps is EqualUnmodifiableListView) return _steps;
@@ -248,15 +248,15 @@ class _ModelProject extends ModelProject {
 }
 
  final  List<String> _galleryUrls;
-@override@JsonKey() List<String> get galleryUrls {
+@override@JsonKey(name: 'gallery_urls') List<String> get galleryUrls {
   if (_galleryUrls is EqualUnmodifiableListView) return _galleryUrls;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_galleryUrls);
 }
 
-@override final  DateTime createdAt;
-@override final  DateTime? finishedAt;
-@override final  DateTime? updatedAt;
+@override@JsonKey(name: 'created_at') final  DateTime createdAt;
+@override@JsonKey(name: 'finished_at') final  DateTime? finishedAt;
+@override@JsonKey(name: 'updated_at') final  DateTime? updatedAt;
 
 /// Create a copy of ModelProject
 /// with the given fields replaced by the non-null parameter values.
@@ -291,7 +291,7 @@ abstract mixin class _$ModelProjectCopyWith<$Res> implements $ModelProjectCopyWi
   factory _$ModelProjectCopyWith(_ModelProject value, $Res Function(_ModelProject) _then) = __$ModelProjectCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String title, String scale, double progress, String status, String? mainImageUrl, String? finishedMainImageUrl, List<String> finishedGalleryUrls, String? finalNotes, List<BuildStep> steps, List<String> galleryUrls, DateTime createdAt, DateTime? finishedAt, DateTime? updatedAt
+ String id, String title, String scale, double progress, String status,@JsonKey(name: 'main_image_url') String? mainImageUrl,@JsonKey(name: 'finished_main_image_url') String? finishedMainImageUrl,@JsonKey(name: 'finished_gallery_urls') List<String> finishedGalleryUrls,@JsonKey(name: 'final_notes') String? finalNotes, List<BuildStep> steps,@JsonKey(name: 'gallery_urls') List<String> galleryUrls,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'finished_at') DateTime? finishedAt,@JsonKey(name: 'updated_at') DateTime? updatedAt
 });
 
 

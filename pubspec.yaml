@@ -76,6 +76,8 @@ dependencies:
     sdk: flutter
   file_picker: ^11.0.2
   audioplayers: ^6.0.0
+  gal: ^2.3.0
+  image: ^4.8.0
 
 dev_dependencies:
   flutter_test:

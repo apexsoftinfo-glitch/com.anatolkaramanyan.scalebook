@@ -11,6 +11,7 @@ import 'package:get_it/get_it.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../core/services/image_service.dart';
+import '../../../core/services/sound_service.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../session/presentation/cubit/session_cubit.dart';
 import '../../../core/design_system/app_colors.dart';
@@ -85,7 +86,7 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
       final documentsDir = await getApplicationDocumentsDirectory();
       final List<XFile> exportedFiles = [];
 
-      const int stepsPerPage = 8;
+      const int stepsPerPage = 5;
       final int totalPages = (selectedSteps.length / stepsPerPage).ceil();
 
       for (int i = 0; i < totalPages; i++) {
@@ -291,11 +292,107 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
     }
   }
 
+  Future<void> _savePhotosToGallery(BuildContext context, ModelProject project) async {
+    setState(() {
+      _isExporting = true;
+      _exportStatus = 'Przygotowywanie zapisu...';
+      _exportProgress = 0.05;
+    });
+
+    try {
+      final imageService = GetIt.I<ImageService>();
+      final savedCount = await imageService.saveProjectPhotosToGallery(
+        project: project,
+        onProgress: (current, total) {
+          if (mounted) {
+            setState(() {
+              _exportStatus = 'Zapisywanie zdjęć w Galerii ($current/$total)...';
+              _exportProgress = current / total;
+            });
+          }
+        },
+      );
+
+      if (mounted) {
+        setState(() {
+          _isExporting = false;
+          _exportStatus = '';
+          _exportProgress = 0.0;
+        });
+
+        if (savedCount > 0) {
+          GetIt.I<SoundService>().playNewProject();
+          _showGalleryExportSuccessDialog(this.context, savedCount);
+        } else {
+          ScaffoldMessenger.of(this.context).showSnackBar(
+            const SnackBar(content: Text('Brak zdjęć do zapisania.')), // L10N
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isExporting = false;
+          _exportStatus = '';
+          _exportProgress = 0.0;
+        });
+        ScaffoldMessenger.of(this.context).showSnackBar(
+          SnackBar(
+            content: Text('Błąd zapisu do Galerii: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  void _showGalleryExportSuccessDialog(BuildContext context, int count) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        backgroundColor: AppColors.navyBlue,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Column(
+          children: [
+            Icon(Icons.photo_library, color: Colors.greenAccent, size: 54),
+            SizedBox(height: 12),
+            Text(
+              'ZAPISANO W GALERII', // L10N
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1.5, fontSize: 16),
+            ),
+          ],
+        ),
+        content: Text(
+          'Pomyślnie wyeksportowano $count zdjęć etapów budowy wprost do systemowej Galerii zdjęć!', // L10N
+          textAlign: TextAlign.center,
+          style: const TextStyle(color: Colors.white70, fontSize: 14, height: 1.4),
+        ),
+        actions: [
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.red,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              onPressed: () => Navigator.pop(dialogContext),
+              child: const Text('SUPER', style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showStepSelectionDialog(BuildContext context, ModelProject project) {
     if (project.steps.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Brak etapów do udostępnienia.'))); // L10N
       return;
     }
+    final chronologicalSteps = List<BuildStep>.from(project.steps)..sort((a, b) => a.date.compareTo(b.date));
     final sortedSteps = List<BuildStep>.from(project.steps)..sort((a, b) => b.date.compareTo(a.date));
 
     showDialog(
@@ -305,6 +402,9 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
         return StatefulBuilder(
           builder: (builderContext, setState) {
             final bool allSelected = selectedIds.length == sortedSteps.length;
+            final isPl = Localizations.localeOf(context).languageCode == 'pl';
+            final stagePrefix = isPl ? 'ETAP' : 'STEP';
+
             return AlertDialog(
               title: Text(S.of(context).selectProgress),
               content: SizedBox(
@@ -334,10 +434,11 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
                         itemCount: sortedSteps.length,
                         itemBuilder: (context, index) {
                           final step = sortedSteps[index];
+                          final stepNumber = chronologicalSteps.indexWhere((s) => s.id == step.id) + 1;
                           return CheckboxListTile(
                             title: Text(
-                              '${step.date.day}.${step.date.month}.${step.date.year}',
-                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                              '$stagePrefix $stepNumber • ${step.date.day}.${step.date.month}.${step.date.year}',
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                             ),
                             subtitle: Text(step.note, maxLines: 1, overflow: TextOverflow.ellipsis),
                             value: selectedIds.contains(step.id),
@@ -357,9 +458,27 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
                   ],
                 ),
               ),
+              actionsAlignment: MainAxisAlignment.end,
+              actionsOverflowDirection: VerticalDirection.down,
               actions: [
                 TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('ANULUJ')),
-                ElevatedButton(
+                OutlinedButton.icon(
+                  icon: const Icon(Icons.photo_library, size: 16),
+                  label: const Text('DO GALERII'), // L10N
+                  onPressed: selectedIds.isEmpty ? null : () async {
+                    final selectedSteps = sortedSteps.where((s) => selectedIds.contains(s.id)).toList()
+                      ..sort((a, b) => a.date.compareTo(b.date)); // Chronological order
+                    final selectedProject = project.copyWith(steps: selectedSteps);
+                    Navigator.pop(dialogContext);
+                    await Future.delayed(const Duration(milliseconds: 200));
+                    if (context.mounted) {
+                      await _savePhotosToGallery(context, selectedProject);
+                    }
+                  },
+                ),
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.share, size: 16),
+                  label: Text(S.of(context).shareBuildSteps),
                   onPressed: selectedIds.isEmpty ? null : () async {
                     final selectedSteps = sortedSteps.where((s) => selectedIds.contains(s.id)).toList()
                       ..sort((a, b) => a.date.compareTo(b.date)); // Chronological order for export
@@ -369,7 +488,6 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
                       await _generateProgressImages(context, project, selectedSteps);
                     }
                   },
-                  child: Text(S.of(context).share),
                 ),
               ],
             );
@@ -790,26 +908,39 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
     final steps = project.steps;
     final sortedSteps = List<BuildStep>.from(steps)..sort((a, b) => b.date.compareTo(a.date));
 
-    return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-      children: [
-        _buildProjectHeader(context, project),
-        if (sortedSteps.isEmpty)
+    if (sortedSteps.isEmpty) {
+      return ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        children: [
+          _buildProjectHeader(context, project),
           Padding(
             padding: const EdgeInsets.only(top: 40.0),
             child: Center(child: Text(S.of(context).noBuildSteps, style: const TextStyle(color: Colors.white54))),
-          )
-        else if (_isCompactSteps)
-          ...sortedSteps.map((step) => _buildCompactStepTile(context, step))
-        else
-          ...sortedSteps.asMap().entries.map((entry) {
-            final index = entry.key;
-            final step = entry.value;
-            final bool isLast = index == sortedSteps.length - 1;
+          ),
+        ],
+      );
+    }
 
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      itemCount: sortedSteps.length + 1,
+      itemBuilder: (context, index) {
+        if (index == 0) {
+          return _buildProjectHeader(context, project);
+        }
+
+        final stepIndex = index - 1;
+        final step = sortedSteps[stepIndex];
+
+        if (_isCompactSteps) {
+          return _buildCompactStepTile(context, step);
+        }
+
+        final bool isLast = stepIndex == sortedSteps.length - 1;
+
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             // Timeline line and dot
             SizedBox(
               width: 20,
@@ -890,7 +1021,13 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
                                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImagePreviewScreen(imageUrl: step.imageUrl!))),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
-                                      child: AppImage(imageUrl: step.imageUrl, fit: BoxFit.cover, width: double.infinity, height: 180),
+                                      child: AppImage(
+                                        imageUrl: step.imageUrl, 
+                                        fit: BoxFit.cover, 
+                                        width: double.infinity, 
+                                        height: 180,
+                                        cacheWidth: 800,
+                                      ),
                                     ),
                                   ),
                                 if (step.note.isNotEmpty) ...[
@@ -948,8 +1085,7 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
             ),
           ],
         );
-      }),
-      ],
+      },
     );
   }
 
@@ -982,6 +1118,7 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
                     child: AppImage(
                       imageUrl: step.imageUrl,
                       fit: BoxFit.cover,
+                      cacheWidth: 300,
                     ),
                   ),
                 )
@@ -1262,7 +1399,7 @@ class _ProgressPoster extends StatelessWidget {
                     const SizedBox(height: 48),
                     // Interleaved Central Timeline
                     SizedBox(
-                      height: (steps.length * 160.0) + 100, // Dynamic height based on steps
+                      height: (steps.length * 300.0) + 150, // Dynamic height based on taller steps
                       child: Stack(
                         children: [
                           // Central Vertical Line
@@ -1282,7 +1419,7 @@ class _ProgressPoster extends StatelessWidget {
                             final int index = entry.key;
                             final step = entry.value;
                             final bool isRight = index % 2 != 0;
-                            final double topOffset = index * 160.0;
+                            final double topOffset = index * 300.0;
                             
                             return Positioned(
                               top: topOffset,
@@ -1319,7 +1456,7 @@ class _ProgressPoster extends StatelessWidget {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            '${(pageNumber != null ? (pageNumber! - 1) * 8 : 0) + index + 1}',
+                                            '${(pageNumber != null ? (pageNumber! - 1) * 5 : 0) + index + 1}',
                                             style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold, decoration: TextDecoration.none),
                                           ),
                                         ),
@@ -1378,7 +1515,7 @@ class _ProgressPoster extends StatelessWidget {
   }
 
   Widget _buildTimelineCard(BuildContext context, dynamic step, int index, bool isRight, {Widget? connector}) {
-    final stepNumber = (pageNumber != null ? (pageNumber! - 1) * 8 : 0) + index + 1;
+    final stepNumber = (pageNumber != null ? (pageNumber! - 1) * 5 : 0) + index + 1;
     return Column(
       crossAxisAlignment: isRight ? CrossAxisAlignment.start : CrossAxisAlignment.end,
       children: [
@@ -1403,25 +1540,6 @@ class _ProgressPoster extends StatelessWidget {
                 ),
               ),
             ),
-            if (step.durationMinutes != null && step.durationMinutes! > 0) ...[
-              const SizedBox(width: 4),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(
-                  color: AppColors.navyBlue,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Text(
-                  _formatDuration(context, step.durationMinutes!),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.none,
-                  ),
-                ),
-              ),
-            ],
             if (!isRight && connector != null) connector,
             if (isRight) const Spacer(),
           ],
@@ -1441,7 +1559,7 @@ class _ProgressPoster extends StatelessWidget {
                 imageUrl: step.imageUrl, 
                 fit: BoxFit.cover, 
                 width: 440,
-                height: 240,
+                height: 380,
               ),
             ),
           ),

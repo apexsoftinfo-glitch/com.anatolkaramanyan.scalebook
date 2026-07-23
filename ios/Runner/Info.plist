@@ -59,6 +59,8 @@
 	<string>ScaleBook requires camera access to take photos of your scale models for your build log.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>ScaleBook requires gallery access to add photos of your scale models to your build log.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>ScaleBook requires gallery access to save build step photos to your photo library.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>ScaleBook requires microphone access for video recording and system camera features.</string>
 	<key>UISupportedInterfaceOrientations</key>

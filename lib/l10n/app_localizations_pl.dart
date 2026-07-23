@@ -366,6 +366,9 @@ class SPl extends S {
   String get share => 'UDOSTĘPNIJ';
 
   @override
+  String get shareBuildSteps => 'UDOSTĘPNIJ ETAPY BUDOWY';
+
+  @override
   String get newModel => 'NOWY MODEL';
 
   @override

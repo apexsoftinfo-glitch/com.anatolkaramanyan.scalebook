@@ -47,6 +47,17 @@ class SupabaseAuthDataSource implements AuthDataSource {
 
   @override
   Future<void> deleteAccount() async {
+    final user = currentUser;
+    if (user != null) {
+      final userId = user.id;
+      try {
+        await _client.from('projects').delete().eq('user_id', userId);
+        await _client.from('notes').delete().eq('user_id', userId);
+        await _client.from('profiles').delete().eq('id', userId);
+      } catch (_) {
+        // Continue to sign out even if data deletion fails or tables don't exist
+      }
+    }
     await _client.auth.signOut();
   }
 }

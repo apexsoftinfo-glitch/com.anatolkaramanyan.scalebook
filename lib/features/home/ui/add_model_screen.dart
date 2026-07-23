@@ -47,6 +47,8 @@ class _AddModelScreenState extends State<AddModelScreen> {
   Future<void> _pickImage(ImageSource source) async {
     final XFile? image = await _imagePicker.pickImage(
       source: source,
+      maxWidth: 1920,
+      maxHeight: 1920,
       imageQuality: 80,
     );
 
