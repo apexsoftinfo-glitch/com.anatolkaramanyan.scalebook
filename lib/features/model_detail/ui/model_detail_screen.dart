@@ -1399,7 +1399,7 @@ class _ProgressPoster extends StatelessWidget {
                     const SizedBox(height: 48),
                     // Interleaved Central Timeline
                     SizedBox(
-                      height: (steps.length * 300.0) + 150, // Dynamic height based on taller steps
+                      height: (steps.length * 170.0) + 120, // Compact height for tight vertical step spacing
                       child: Stack(
                         children: [
                           // Central Vertical Line
@@ -1419,7 +1419,7 @@ class _ProgressPoster extends StatelessWidget {
                             final int index = entry.key;
                             final step = entry.value;
                             final bool isRight = index % 2 != 0;
-                            final double topOffset = index * 300.0;
+                            final double topOffset = index * 170.0;
                             
                             return Positioned(
                               top: topOffset,
@@ -1559,7 +1559,7 @@ class _ProgressPoster extends StatelessWidget {
                 imageUrl: step.imageUrl, 
                 fit: BoxFit.cover, 
                 width: 440,
-                height: 380,
+                height: 260,
               ),
             ),
           ),
